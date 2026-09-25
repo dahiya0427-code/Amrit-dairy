@@ -9,16 +9,17 @@
 
 | Stage | Geography | Primary audience | Primary products | Main conversion |
 |---|---|---|---|---|
-| **1. Sonipat** | Sonipat city sectors and colonies | Families living within 5–10 km of the farm | Daily milk, curd, paneer, ghee | Online milk subscription + one-time orders (WhatsApp as fallback) |
-| **2. 50 km** | Kundli, Rai, Murthal, Ganaur, Gohana, North/Outer Delhi, Bahadurgarh | Premium NCR-edge households; gated societies (TDI, Omaxe, Parker) | Milk subscription and ghee | Online subscription with a society launch coupon |
-| **3. 100 km** | Delhi NCR, Panipat, Rohtak, Karnal edge | Urban health-conscious families, fitness buyers, cafés | Ghee, paneer; milk via hubs | Online checkout (ghee, paneer), B2B enquiry |
-| **4. India** | Pan-India | Online shoppers looking for authentic desi ghee, NRI gifting | Ghee, honey, mustard oil | Online checkout with courier shipping, gift packs, marketplaces |
+| **1. Sonipat** | Sonipat city sectors and colonies | Families living within 5–10 km of the farm | Daily milk (glass bottle), matka dahi, paneer, Bilona ghee, achar | Online milk subscription + one-time orders (WhatsApp as fallback) |
+| **2. 50 km** | Kundli, Rai, Murthal, Ganaur, Gohana, North/Outer Delhi, Bahadurgarh | Premium NCR-edge households; gated societies (TDI, Omaxe, Parker) | Milk subscription, ghee, achar | Online subscription with a society launch coupon |
+| **3. 100 km** | Delhi NCR, Panipat, Rohtak, Karnal edge | Urban health-conscious families, fitness buyers, cafés | Ghee, achar, honey; paneer and milk via hubs | Online checkout (ghee, paneer), B2B enquiry |
+| **4. India** | Pan-India | Online shoppers looking for authentic desi ghee, NRI gifting | Bilona ghee (1 kg jar, 5/10 kg kettle), achar, honey, mustard oil, gift packs | Online checkout with courier shipping, gift packs, marketplaces |
 
 **Search-intent map**
 - Stage 1: *"desi cow milk Sonipat"*, *"milk delivery Sector 23 Sonipat"*, *"pure milk near me"*
 - Stage 2: *"A2 milk delivery Kundli"*, *"fresh cow milk Rohini"*, *"farm milk subscription north Delhi"*
 - Stage 3: *"desi ghee Delhi"*, *"bilona ghee NCR"*, *"fresh paneer delivery Gurgaon"*
-- Stage 4: *"pure desi cow ghee online"*, *"best bilona ghee India"*, *"is A2 ghee worth it"* (AEO/GEO questions)
+- Stage 4: *"pure desi cow ghee online"*, *"best bilona ghee India"*, *"ker sangri achar online"*, *"Rajasthani achar buy online"*, *"is A2 ghee worth it"* (AEO/GEO questions)
+- Cow enquiries: *"Gir cow for sale Haryana"*, *"Sahiwal cow price Sonipat"*, *"desi cow dealer near me"*
 
 ---
 
@@ -30,14 +31,14 @@
 | **Age / Location** | 38 · Sector 15, Sonipat |
 | **Family** | Husband (businessman), two school-going children, mother-in-law |
 | **Household income** | ₹8–15 L / year |
-| **Language** | Hindi / Haryanvi at home, reads English comfortably. Mostly on WhatsApp and YouTube |
+| **Language** | Hindi / Haryanvi at home, reads English comfortably. Mostly on WhatsApp and YouTube. Responds to Hindi headlines like "हर घर अमृत, हर घर शुद्धता" |
 | **Device** | Mid-range Android, often on 4G |
 | **Current behaviour** | Buys 2 L of loose milk a day from a local doodhwala; sometimes switches to Amul packets. Makes ghee at home from malai |
 | **Goals** | Pure milk for the children, no adulteration or water, delivery before 7 AM |
 | **Pain points** | Doesn't know where the milk comes from. Worries about urea and detergent adulteration news. Quality isn't consistent. Keeping the monthly *hisaab* is a hassle |
 | **Triggers to switch** | A neighbour's recommendation, a farm visit, a free trial |
 | **Objections** | "Why pay more than the doodhwala?" "What if the delivery boy doesn't come?" |
-| **What the website must do** | Show the real farm and cows. Pincode checker. Simple trial offer. WhatsApp button. Clear prices in ₹ per litre. Hindi toggle (later) |
+| **What the website must do** | Show the real farm and cows. Pincode checker. Simple trial offer. WhatsApp button. Clear prices in ₹ per litre. **Bilingual Hindi + English** from day one (as on the current site) |
 | **Quote** | *"Bachchon ko jo doodh de rahi hoon, wo asli hona chahiye."* ("The milk I give my children has to be the real thing.") |
 
 ### Persona 2 — "Rohit & Neha Sharma", the Young Working Couple (Stage 1–2)
@@ -59,18 +60,28 @@
 | **Age / Location** | 52 · Rohini (Delhi) / Rohtak |
 | **Profile** | Doctor, fitness enthusiast. Reads labels and compares A2 claims |
 | **Goals** | Real desi cow milk and bilona ghee, with proof |
-| **Pain points** | Marketing claims he can't verify; "A2" is a buzzword that many brands misuse |
-| **What the website must do** | Lab reports, a process page (bilona step by step), breed information, FAQs written as fact, no pseudo-science. Blog articles that cite sources |
+| **Pain points** | Marketing claims he can't verify; "A2" is a buzzword that many brands misuse. Placeholder reviews or inflated numbers ("50,000+ families") put him off immediately |
+| **What the website must do** | Lab reports, a process page (Bilona step by step), the five farm breeds with photos, FAQs written as fact, no pseudo-science. Blog articles that cite sources |
 | **Quote** | *"Show me the lab report and the cows, then I'll pay the premium."* |
 
 ### Persona 4 — "Kavita Arora", the Ghee Gifter / Online Shopper (Stage 3–4)
 | | |
 |---|---|
 | **Age / Location** | 45 · Gurugram / Bengaluru / Pune; some NRI buyers too |
-| **Goals** | Authentic ghee for her family or as a festive gift (Diwali, Raksha Bandhan, weddings) |
-| **Pain points** | Fake "desi ghee", leaking plastic jars, slow shipping |
-| **What the website must do** | E-commerce product page, gift packs, pan-India shipping estimate, reviews, secure checkout, order tracking by email (Resend) |
+| **Goals** | Authentic ghee, and Rajasthani achar "like nani's", for her family or as a festive gift (Diwali, Raksha Bandhan, weddings) |
+| **Pain points** | Fake "desi ghee", leaking plastic jars, broken glass in transit, slow shipping |
+| **What the website must do** | Rich product pages, combos and gift packs (ghee + achar + honey), pan-India shipping estimate by pincode, "breakage-safe packing" promise, reviews, secure checkout, order tracking by email (Resend) |
 | **Quote** | *"I want to send something pure, not something with a pretty label."* |
+
+### Persona 5 — "Mahender Singh", the Cow Buyer (enquiry, Stage 1–3)
+| | |
+|---|---|
+| **Age / Location** | 45 · a village near Gohana / Rohtak / Panipat |
+| **Profile** | Small dairy farmer or gaushala trustee who wants to buy a good-yielding Gir or Sahiwal cow |
+| **Goals** | A healthy, genuine-breed cow at a fair price, from a seller he can trust |
+| **Pain points** | Being cheated on breed or milk yield by traders; no health records |
+| **What the website must do** | Breed pages (the 18 breeds) with traits and typical yield. A "Cows available" listing (photo, breed, age, lactation, price on request). An enquiry form with a click-to-call on **+91 80595 93666**. This is **not** a cart checkout |
+| **Quote** | *"Gaay dekh ke, kagaz dekh ke hi loonga."* ("I'll buy only after seeing the cow and her papers.") |
 
 ---
 
@@ -80,12 +91,14 @@
 |---|---|
 | **UPI is the default payment method** in India, especially on mobile | Put UPI first at checkout (UPI intent / QR through Razorpay); keep cards and netbanking as secondary options |
 | Buyers compare prices on quick-commerce apps (Blinkit, Zepto, BigBasket) | Show unit price (₹/L, ₹/kg) and explain the premium (farm, desi breed, lab report) next to the price |
-| **Reviews and real photos** decide a first purchase | Put reviews with customer photos on every product page, plus "Bought by 1,200+ families in Sonipat" style social proof (only with real numbers) |
+| **Reviews and real photos** decide a first purchase | Put reviews with customer photos on every product page, plus social proof such as "Bought by {real number} families in Sonipat" (real, verifiable numbers only) |
 | Many shoppers abandon carts because of surprise shipping fees or forced sign-up | Show delivery fee early; allow **guest checkout**; send login by email or phone OTP (no passwords) |
-| COD expectation for first-time pan-India buyers | Decide on the COD policy (see Doc 01 §4.2). If there is no COD, show strong trust signals: secure payment, refund promise, reviews |
+| COD expectation for first-time pan-India buyers | Decide on the COD policy (see Doc 01 §4.1). If there is no COD, show strong trust signals: secure payment, refund promise, reviews |
 | Shopping mostly happens on mobile, often at night | Mobile-first checkout in ≤ 3 steps; a sticky "Add to cart" bar; subscription cut-off clearly stated (e.g. "Order by 9 PM for tomorrow") |
 | WhatsApp is the trusted channel | Order updates on WhatsApp plus email; "Need help?" WhatsApp button on the cart and checkout pages |
 | Festive gifting peaks (Diwali, Rakhi, weddings, New Year) | Gift packs, gift message, ship to a different address, corporate bulk gifting |
+| Achar is an impulse / add-on purchase | "Frequently bought together" (ghee + achar), a free-shipping threshold nudge ("Add ₹250 more for free shipping") |
+| Bilingual browsing | A language toggle (हिंदी / English) in the header; product names in both languages |
 
 ## 4. Secondary personas
 
@@ -94,6 +107,7 @@
 | **B2B Buyer — "Aman, café / sweet shop / hotel owner"** | Cafés, halwais, gyms, PG and hostel kitchens, corporate canteens in Sonipat and Murthal | Bulk pricing enquiry form, reliability promise, invoice/GST details |
 | **Institution — schools and hospitals** | Sonipat Education City universities (Ashoka, OP Jindal, etc.) and their hostels | Tender/bulk contact, certifications, farm visit |
 | **Farm Visitor / School Trip** | Parents, schools, influencers | Farm-visit booking page, directions, timings |
+| **Bulk ghee buyer** | Families before weddings or festivals, temples and halwais buying the **5 kg / 10 kg steel kettle** | "On-demand bulk" request with quantity and date |
 | **Job Seeker** | Delivery staff, farm workers, sales | Careers section with an application form |
 | **Partner / Franchise / Distributor** | Entrepreneurs in new areas (Stages 2–3) | "Become a delivery partner / distributor" page |
 | **Media / AI crawler** | Journalists, ChatGPT/Gemini/Perplexity answer engines | Clean facts page, press kit, structured data, FAQ |
@@ -131,7 +145,7 @@ me Sonipat"        report, FAQ              UPI checkout → email    monthly bi
 
 - Many users are **older or less tech-savvy**: use big tap targets, plain language and phone/WhatsApp fallback everywhere.
 - **Low-end Android on 4G**: keep page weight under 1 MB, serve images as AVIF/WebP, keep JS light.
-- **Bilingual**: plan i18n routing (`/hi/`) from day one, even though Hindi launches later.
+- **Bilingual**: launch with English + Hindi (`/hi/`) for the store, product and checkout pages. The current site already mixes both, so customers expect it.
 - WCAG 2.2 AA contrast and screen-reader support.
 
 ---
@@ -153,3 +167,5 @@ me Sonipat"        report, FAQ              UPI checkout → email    monthly bi
 | Blog / resources | ★ | ★ | ★★★ | ★★ | – |
 | Bulk enquiry | – | – | – | – | ★★★ |
 | Hindi language | ★★★ | – | ★ | – | ★ |
+| Cow listings + enquiry | – | – | – | – | – (Persona 5: ★★★) |
+| Combos / gift packs / achar cross-sell | ★ | ★★ | ★ | ★★★ | – |
