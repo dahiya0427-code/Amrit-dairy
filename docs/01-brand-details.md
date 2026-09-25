@@ -1,6 +1,6 @@
 # 01 · Brand Details — Amrit Dairy
 
-> **Purpose:** The single source of truth for everything the website (and anyone writing for it) needs to know about Amrit Dairy.
+> **Purpose:** The single source of truth for everything the **Amrit Dairy e-commerce website** (and anyone writing for it) needs to know about the business.
 > **Status:** v1.0 draft · Sep 2026
 > **Legend:** ✅ = verified from amritdairy.in (as indexed by search engines) · 🟡 = recommended / to be confirmed by the owner
 
@@ -15,7 +15,8 @@
 | Category | Farm-to-home dairy: desi cow milk and traditional dairy products | ✅ |
 | Farm location | Near Anup Sports Village, Rajhbhaya, Garhi Brahmnan, Sonipat, Haryana – 131001 | ✅ |
 | Herd | About **250 desi cows**, kept on Amrit Dairy's own farm | ✅ |
-| Business model | Direct-to-consumer (D2C) home delivery on a subscription or scheduled basis | ✅ |
+| Business model (today) | Direct-to-consumer (D2C) home delivery on a subscription or scheduled basis; orders are taken manually | ✅ |
+| Business model (new website) | **D2C e-commerce store**: online catalogue, cart, checkout and payments, customer accounts, milk subscriptions with a prepaid wallet, plus pan-India shipping for shelf-stable products | 🟡 Target |
 | Ordering | WhatsApp or phone call. Three steps: choose quantity → choose schedule → we deliver | ✅ |
 | Payment | Prepaid. Razorpay payment link or UPI; customer shares the screenshot or UTR number on WhatsApp | ✅ |
 | Legal entity name, GSTIN, FSSAI licence no. | — | 🟡 Needed for footer and legal pages |
@@ -49,7 +50,34 @@ The website sums up the brand's promise: **"Real products, honest information an
 
 🟡 **Product data the website needs for every SKU:** pack sizes, MRP, shelf life, storage, ingredients, process, nutrition per 100 g/ml, FSSAI number, and images (pack shot, lifestyle shot, farm shot).
 
-## 4. Service area (current)
+## 4. E-commerce model
+
+The new amritdairy.in is an **online store first**. Everything a customer does today over WhatsApp should be possible online, with WhatsApp kept as a fallback and support channel.
+
+### 4.1 What we sell online
+| Sales type | Products | Where | Fulfilment |
+|---|---|---|---|
+| **Subscription (recurring)** | Desi cow milk, curd, buttermilk | Local service areas only | Own delivery staff, daily morning slot |
+| **One-time order: fresh** | Paneer, curd, milk add-ons | Local service areas only | Own delivery staff, next-day slot |
+| **One-time order: shelf-stable** | Desi cow ghee, organic honey, mustard oil | **All of India** | Courier (Shiprocket or similar) |
+| **Gift packs / combos** | Ghee + honey + oil hampers; festive boxes (Diwali, Rakhi, weddings) | All of India | Courier |
+| **Bulk / B2B** | Milk, ghee, paneer in bulk | Sonipat → NCR | Quote → invoice → own delivery |
+
+### 4.2 Commerce policies (🟡 the business must decide these before launch)
+| Policy | Current | Recommendation |
+|---|---|---|
+| Payment | Prepaid only (Razorpay link / UPI) | Prepaid through **Razorpay checkout** (UPI, cards, netbanking, wallets). Local fresh orders stay prepaid only. **COD** could be allowed on shipped products later, with a small fee, but courier returns (RTO) cost money |
+| Pricing display | ₹ per item | MRP plus selling price, GST-inclusive, with unit price shown (₹/L, ₹/kg) |
+| Minimum order / delivery fee | 🟡 | e.g. free local delivery above ₹X; flat shipping fee for pan-India orders below ₹Y |
+| Subscription billing | 🟡 | Prepaid wallet, debited daily for what is delivered. Pause or skip until 9 PM the night before |
+| Returns & refunds | 🟡 | Fresh products: replacement or refund within 24 h if there is a quality issue (photo proof). Sealed shelf-stable products: return within 7 days if damaged or incorrect |
+| Invoicing | 🟡 | GST invoice sent automatically with every order |
+| Discounts | 🟡 | First-order code, referral credit, subscription saving (e.g. 5 %), festive combos |
+
+### 4.3 Commerce KPIs the business should track
+Conversion rate · average order value (AOV) · repeat purchase rate · active subscriptions · subscription churn · cart abandonment · customer acquisition cost (CAC) · lifetime value (LTV) · on-time delivery %.
+
+## 5. Service area (current)
 
 Amrit Dairy currently delivers in these Sonipat areas:
 - Sector 23
@@ -69,7 +97,7 @@ The current site tells customers to *"WhatsApp your area/pincode to confirm cove
 
 > Fresh milk, curd and paneer stay **hyper-local** (Stages 1–3). Ghee, honey and oil are the **national** products (Stage 4). The website architecture must allow for both from day one.
 
-## 5. Brand positioning
+## 6. Brand positioning
 
 **For** health-conscious Indian families in and around Sonipat
 **who** don't trust packet milk or loose "doodhwala" milk of unknown origin,
@@ -106,15 +134,15 @@ The current site tells customers to *"WhatsApp your area/pincode to confirm cove
 - 🟡 "Doodh jaisa pehle hota tha." (Milk, the way it used to be)
 - 🟡 "250 desi cows. One promise: pure."
 
-## 6. Key messages for the website
+## 7. Key messages for the website
 
 1. **Our farm is real. Come see it.** (Address, map, photos, farm visit booking)
 2. **250 desi cows, our own herd.** (Nothing is bought in from outside)
-3. **Set it once, we deliver daily.** (Subscription convenience)
-4. **Prepaid, transparent pricing.** (No surprises)
-5. **Delivered to your area.** (Pincode checker, list of areas served)
+3. **Set it once, we deliver daily.** (Subscribe online in under a minute, then pause or skip from your account)
+4. **Buy online, pay by UPI.** (Transparent prices, GST invoice, secure Razorpay checkout)
+5. **Delivered to your area; ghee ships across India.** (Pincode checker, list of areas served)
 
-## 7. Proof points to collect (content checklist)
+## 8. Proof points to collect (content checklist)
 
 - [ ] Founder photo and story (why they started)
 - [ ] Farm photography: cows, feeding, milking, the bilona process, packing, delivery vans
@@ -126,7 +154,7 @@ The current site tells customers to *"WhatsApp your area/pincode to confirm cove
 - [ ] 10+ customer testimonials, with photo/video where possible
 - [ ] Google Business Profile, with review count and rating
 
-## 8. Competitive landscape (Sonipat / NCR)
+## 9. Competitive landscape (Sonipat / NCR)
 
 | Type | Examples | How Amrit wins |
 |---|---|---|
@@ -136,7 +164,7 @@ The current site tells customers to *"WhatsApp your area/pincode to confirm cove
 
 ⚠️ **Name-confusion risk:** several unrelated businesses use similar names, including *amritdairy.com*, *Maa Amrit Dairy (Sonipat)*, *Amrit Dhara* and *Amrit Milk Organic*. The new site must use a consistent name, a local address and "Sonipat" in its key titles, plus Organization schema (`sameAs` links to social profiles). This is how search engines and AI answer engines tell Amrit Dairy apart from the others. 🟡 Consider trademark registration.
 
-## 9. Digital presence (to set up or confirm)
+## 10. Digital presence (to set up or confirm)
 
 | Channel | Status |
 |---|---|
@@ -145,4 +173,5 @@ The current site tells customers to *"WhatsApp your area/pincode to confirm cove
 | WhatsApp Business | ✅ Current ordering channel. Add a catalogue and quick replies |
 | Instagram / YouTube / Facebook | 🟡 Farm-life reels do very well in this category |
 | Justdial / IndiaMART | 🟡 Claim listings and keep name, address and phone (NAP) consistent |
+| Google Merchant Center | 🟡 Free product listings in Google Shopping. Needs a product feed from the website |
 | Marketplaces (Stage 4) | 🟡 Amazon, Flipkart, BigBasket for ghee and honey |
