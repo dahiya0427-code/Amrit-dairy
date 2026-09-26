@@ -56,9 +56,10 @@ export default async function HomePage({ params }: Props) {
     return min ? formatINR(min) : null
   }
   const acharCat = categories.find((c) => c.slug === 'achar')
+  const storyCentre = { title: ghee?.title ?? 'Desi Cow Ghee', price: gheePrice ? formatINR(gheePrice) : null, image: '/images/ghee-cutout.png', href: href('/products/desi-cow-golden-ghee') }
   const storyItems = [
-    { title: ghee?.title ?? 'Desi Cow Ghee', price: gheePrice ? formatINR(gheePrice) : null, image: '/images/ghee-cutout.png', href: href('/products/desi-cow-golden-ghee') },
     { title: pick('raw-forest-honey')?.title ?? 'Raw Forest Honey', price: priceOf('raw-forest-honey'), image: '/images/honey-cutout.png', href: href('/products/raw-forest-honey') },
+    { title: pick('kaccha-mango-achar')?.title ?? 'Kaccha Mango Achar', price: priceOf('kaccha-mango-achar'), image: '/images/kaccha-mango-achar-cutout.png', href: href('/products/kaccha-mango-achar') },
     { title: pick('desi-cow-milk')?.title ?? 'Desi Cow Milk', price: priceOf('desi-cow-milk'), image: '/images/milk-cutout.png', href: href('/products/desi-cow-milk') },
     { title: acharCat?.title ?? 'Achar', price: null, image: '/images/mix-veg-achar-cutout.png', href: href('/shop/achar') },
   ]
@@ -70,6 +71,7 @@ export default async function HomePage({ params }: Props) {
         jar="/images/ghee-cutout.png"
         breeds={storyBreeds}
         items={storyItems}
+        centre={storyCentre}
         shopHref={href('/products/desi-cow-golden-ghee')}
         whatsappHref={whatsappLink(settings.ordersPhone, 'Hi Amrit Dairy, I want to order Bilona ghee.')}
       />

@@ -501,7 +501,7 @@ export const en = {
     s2: { title: 'Wondering what A2 is?', text: 'Gir, Sahiwal and Tharparkar cows naturally give A2 milk. It is the only milk we use.' },
     s3: { title: 'Made the Bilona way', steps: ['Fresh A2 milk', 'Set into curd', 'Churned in a bilona', 'Makkhan collected', 'Slow-cooked into ghee'] },
     s4: { title: 'Why families love Amrit', points: ['Our own desi cows', 'Hand-churned from curd', 'No preservatives', 'Packed in glass', 'Small batches', 'FSSAI licensed'] },
-    s5: { title: 'From our farm to your kitchen', cta: 'View' },
+    s5: { title: 'From our farm to your kitchen', label: 'Products', cta: 'View' },
     s6: { title: 'Goodness in every spoon', points: ['Vitamin A', 'Vitamin D', 'Vitamin E', 'Vitamin K', 'Omega-3', 'Good fats'] },
     s8: { title: 'Made for your kitchen' },
     s7: { title: 'Bring Amrit home', text: 'Order online or on WhatsApp. Fresh delivery in Sonipat, and ghee, achar and honey ship across India.', cta: 'Shop Ghee', cta2: 'Order on WhatsApp' },
