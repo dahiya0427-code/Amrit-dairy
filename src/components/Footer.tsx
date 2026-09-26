@@ -32,7 +32,7 @@ export function Footer({
   const link = 'hover:text-gold-500 hover:underline underline-offset-4'
 
   return (
-    <footer className="bg-walnut text-cream/85">
+    <footer className="bg-espresso text-cream/85">
       <div className="pb-24 md:pb-0">
       <div className="border-b border-cream/15">
         <div className="container-x flex flex-col items-center py-12 text-center">

@@ -37,7 +37,7 @@ export function ShopView({
       <Breadcrumbs locale={locale} items={active ? [{ name: t.nav.shop, path: '/shop' }, { name: active.title, path: base }] : [{ name: t.nav.shop, path: '/shop' }]} />
       {/* Collection banner: tagline, pills and a floating product */}
       <section className="container-x pt-4">
-        <div className="relative overflow-hidden rounded-lg bg-[linear-gradient(120deg,#f3e5c4,#f5efe3_45%,#efe5d3)]">
+        <div className="relative overflow-hidden rounded-lg bg-[linear-gradient(120deg,#efd9a8,#ead9ba_45%,#dfc9a4)]">
           <div className="grid items-center gap-4 p-6 md:grid-cols-[1.3fr_1fr] md:p-10">
             <div className="relative z-10">
               <p className="eyebrow">{active?.secondaryTitle ?? t.nav.shop}</p>

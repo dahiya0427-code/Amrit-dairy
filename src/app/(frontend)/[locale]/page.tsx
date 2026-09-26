@@ -44,14 +44,14 @@ function Heading({ eyebrow, title, light = false }: { eyebrow: string; title: st
 /** Studio banner backdrop: warm brown with a soft light and a wooden-table edge. */
 function Studio({ tone = 'walnut', children }: { tone?: 'walnut' | 'cocoa' | 'espresso'; children: React.ReactNode }) {
   const bg = {
-    walnut: 'bg-[radial-gradient(ellipse_at_72%_38%,#a98462_0%,#7d5f45_32%,#4a2e1c_78%)]',
-    cocoa: 'bg-[radial-gradient(ellipse_at_72%_38%,#b8a48c_0%,#8c6d52_35%,#4a2e1c_85%)]',
-    espresso: 'bg-[radial-gradient(ellipse_at_72%_40%,#8a5a2b_0%,#4a2e1c_40%,#2b1a10_85%)]',
+    walnut: 'bg-[radial-gradient(ellipse_at_72%_40%,#6b4526_0%,#3b2415_38%,#1c100a_82%)]',
+    cocoa: 'bg-[radial-gradient(ellipse_at_72%_40%,#5e3d27_0%,#34201a_40%,#170d08_85%)]',
+    espresso: 'bg-[radial-gradient(ellipse_at_72%_40%,#7a4a1e_0%,#3b2415_40%,#1a0f08_85%)]',
   }[tone]
   return (
     <div className={`relative min-h-[620px] overflow-hidden md:min-h-[600px] ${bg}`}>
       {/* wooden table the products stand on */}
-      <div className="absolute inset-x-0 bottom-0 h-[18%] bg-[linear-gradient(180deg,#6b4a33,#3b2415)] shadow-[0_-12px_30px_rgb(0_0_0/0.25)]" aria-hidden="true" />
+      <div className="absolute inset-x-0 bottom-0 h-[18%] bg-[linear-gradient(180deg,#3b2415,#1a0f08)] shadow-[0_-12px_30px_rgb(0_0_0/0.25)]" aria-hidden="true" />
       {children}
     </div>
   )
@@ -201,7 +201,7 @@ export default async function HomePage({ params }: Props) {
       )}
 
       {/* The Art of Slow */}
-      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_80%_50%,#a98462_0%,#7d5f45_40%,#4a2e1c_100%)] py-20 text-cream">
+      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_80%_50%,#6b4526_0%,#3b2415_45%,#1c100a_100%)] py-20 text-cream">
         <div className="container-x grid items-center gap-10 lg:grid-cols-[1.4fr_0.6fr]">
           <div>
             <Heading eyebrow={p.artEyebrow} title={p.artTitle} light />
@@ -233,7 +233,7 @@ export default async function HomePage({ params }: Props) {
           {categories.map((c) => (
             <li key={c.id}>
               <Link href={href(`/shop/${c.slug}`)} className="group block overflow-hidden bg-cream shadow-card transition hover:shadow-lift">
-                <span className="relative block aspect-[4/5] bg-[radial-gradient(circle_at_50%_40%,#f3e5c4,#efe5d3_60%,#e4d8c4)]">
+                <span className="relative block aspect-[4/5] bg-[radial-gradient(circle_at_50%_40%,#f1dcae,#e6d2b0_60%,#d8c29f)]">
                   {mediaUrl(c.bannerImage, 'card') && (
                     <Image src={mediaUrl(c.bannerImage, 'card') as string} alt="" fill sizes="(max-width: 640px) 100vw, 25vw" className="object-contain p-10 transition duration-700 group-hover:-translate-y-2 group-hover:scale-105" />
                   )}
@@ -253,7 +253,7 @@ export default async function HomePage({ params }: Props) {
 
       {/* Purity is a tradition: Amrit vs regular */}
       {comparison.length > 0 && (
-        <section className="bg-[linear-gradient(180deg,#7d5f45,#4a2e1c)] py-20 text-cream">
+        <section className="bg-[linear-gradient(180deg,#3b2415,#1c100a)] py-20 text-cream">
           <div className="container-x">
             <Heading eyebrow={p.compareEyebrow} title={p.compareTitle} light />
             <div className="relative grid gap-10 md:grid-cols-2">

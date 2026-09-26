@@ -67,7 +67,7 @@ export function FAQ({ locale, faqs, title }: { locale: Locale; faqs: { question:
 
 export function PageHero({ title, intro, eyebrow, secondary }: { title: string; intro?: string | null; eyebrow?: string; secondary?: string }) {
   return (
-    <section className="bg-[radial-gradient(ellipse_at_50%_0%,#7a5234,#4a2e1c_55%,#2b1a10)] text-cream">
+    <section className="bg-[radial-gradient(ellipse_at_50%_0%,#6b4526,#3b2415_50%,#1a0f08)] text-cream">
       <div className="container-x flex flex-col items-center py-14 text-center md:py-20">
         {eyebrow && <p className="eyebrow mb-3 !text-gold-500">{eyebrow}</p>}
         <h1 className="text-4xl !text-cream md:text-6xl">{title}</h1>

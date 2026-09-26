@@ -30,7 +30,7 @@ function FloatingPack({ image, cutout, className = '' }: { image: string | null;
 function Frame({ tone, children }: { tone: 'warm' | 'forest' | 'cream'; children: React.ReactNode }) {
   const bg = {
     warm: 'bg-[radial-gradient(circle_at_30%_20%,#fbebc7,#e8c27a_55%,#b77b2c)] text-ink',
-    forest: 'bg-[radial-gradient(circle_at_70%_10%,#7a5234,#4a2e1c_60%,#2b1a10)] text-cream',
+    forest: 'bg-[radial-gradient(circle_at_70%_10%,#6b4526,#3b2415_60%,#1a0f08)] text-cream',
     cream: 'bg-[linear-gradient(160deg,#fffdf7,#f6efdd)] text-ink',
   }[tone]
   return (
