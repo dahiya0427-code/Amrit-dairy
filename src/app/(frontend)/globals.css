@@ -282,3 +282,25 @@
   .animate-rise, .animate-float-wide { animation: none; }
   .parallax-layer { transform: none !important; }
 }
+
+/* ── Milk splash: bursts when the floating bottle dips (0% / 100% of the float) ── */
+.milk-crown { transform-box: fill-box; transform-origin: 50% 100%; animation: milk-crown 5s ease-in-out infinite; }
+@keyframes milk-crown {
+  0%, 100% { transform: scale(1, 1); opacity: 1; }
+  12% { transform: scale(1.08, 1.12); opacity: 1; }
+  35% { transform: scale(0.9, 0.25); opacity: 0.6; }
+  60% { transform: scale(0.85, 0.12); opacity: 0.35; }
+  85% { transform: scale(0.95, 0.6); opacity: 0.85; }
+}
+.milk-drop { transform-box: fill-box; transform-origin: center; animation: milk-drop 5s cubic-bezier(0.2, 0.6, 0.4, 1) infinite; opacity: 0; }
+@keyframes milk-drop {
+  0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  3% { opacity: 1; }
+  18% { transform: translate(var(--dx), var(--dy)) scale(1); opacity: 1; }
+  34% { transform: translate(calc(var(--dx) * 1.35), 10px) scale(0.8); opacity: 0; }
+  100% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .milk-crown, .milk-drop { animation: none; }
+  .milk-drop { opacity: 0; }
+}

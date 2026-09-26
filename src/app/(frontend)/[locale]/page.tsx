@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { HeroParallax } from '@/components/HeroParallax'
 import { Icon } from '@/components/Icon'
+import { MilkSplash } from '@/components/MilkSplash'
 import { PincodeChecker } from '@/components/PincodeChecker'
 import { ProductCard } from '@/components/ProductCard'
 import { FAQ, SectionHeading } from '@/components/ui'
@@ -93,10 +94,12 @@ export default async function HomePage({ params }: Props) {
                 </div>
               </div>
               <div data-depth="0.9" className="parallax-layer absolute bottom-[8%] right-[4%] h-[70%] w-[22%]">
-                <div className="animate-rise h-full w-full [animation-delay:0.4s]">
+                <div className="animate-rise relative h-full w-full [animation-delay:0.4s]">
                   <div className="animate-float-wide relative h-full w-full [animation-delay:-3.2s]">
                     <Image src="/images/milk-cutout.png" alt="" fill sizes="120px" className="object-contain drop-shadow-2xl" />
                   </div>
+                  {/* Milk splash bursts each time the bottle dips */}
+                  <MilkSplash delay="-3.2s" className="absolute -bottom-[12%] left-1/2 h-[44%] w-[240%] -translate-x-1/2" />
                 </div>
               </div>
               <div data-depth="1.2" className="parallax-layer absolute bottom-[2%] left-[27%] h-[92%] w-[46%]">

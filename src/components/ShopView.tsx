@@ -7,6 +7,7 @@ import type { Category, Product } from '@/payload-types'
 import { mediaUrl } from '@/lib/media'
 import { whatsappLink } from '@/lib/site'
 import { Icon } from './Icon'
+import { MilkSplash } from './MilkSplash'
 import { ProductCard } from './ProductCard'
 import { Breadcrumbs, FAQ } from './ui'
 
@@ -54,6 +55,7 @@ export function ShopView({
               <div className="animate-float relative h-full w-full">
                 <Image src={bannerSrc} alt="" fill sizes="320px" className="object-contain drop-shadow-2xl" priority />
               </div>
+              {active?.slug === 'dairy' && <MilkSplash duration="4.5s" className="absolute -bottom-[8%] left-1/2 h-[30%] w-[70%] -translate-x-1/2" />}
             </div>
           </div>
           <svg className="absolute inset-x-0 bottom-0 h-10 w-full md:h-14" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
