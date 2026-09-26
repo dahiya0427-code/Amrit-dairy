@@ -96,7 +96,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
         description: `Order ${data.orderNumber}`,
         prefill: { name: data.customer.name, email: data.customer.email, contact: data.customer.phone },
         notes: { orderNumber: data.orderNumber },
-        theme: { color: '#0F0C0A' },
+        theme: { color: '#2B1B10' },
         handler: async (resp: RazorpayResponse) => {
           const v = await fetch('/api/checkout/verify', {
             method: 'POST',

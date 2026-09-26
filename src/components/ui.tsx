@@ -69,10 +69,8 @@ export function PageHero({ title, intro, eyebrow, secondary }: { title: string; 
   return (
     <section className="relative overflow-hidden border-b border-line bg-coal">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <span className="absolute -right-14 -top-16 h-40 w-40 rounded-full bg-ghee md:-right-20 md:-top-24 md:h-96 md:w-96" />
-        <span className="absolute right-[18%] top-[62%] hidden h-24 w-24 rounded-full bg-milk md:block" />
-        <span className="absolute left-[4%] top-[12%] h-6 w-6 rounded-full bg-chilli" />
-        <span className="absolute -bottom-10 left-[38%] h-20 w-20 rounded-full border-2 border-dashed border-leaf/60" />
+        <span className="absolute -right-16 -top-20 h-48 w-48 rounded-full bg-ghee md:-right-24 md:-top-28 md:h-[26rem] md:w-[26rem]" />
+        <span className="absolute -right-24 -top-28 hidden h-[30rem] w-[30rem] rounded-full border border-gold-500/50 md:block" />
       </div>
       <div className="container-x relative py-16 md:py-24">
         {eyebrow && <p className="mb-4 inline-flex rounded-full bg-gold-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-gold-700">{eyebrow}</p>}

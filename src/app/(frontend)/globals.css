@@ -2,52 +2,51 @@
 
 /* Brand tokens (Doc 03 §2). Contrast-checked for WCAG 2.2 AA. */
 @theme {
-  /* Bright & vibrant: warm off-white base, deep-brown text and one bold
-     colour per product family. Contrast-checked for WCAG AA. */
-  --color-coal: #fff8ec;
+  /* Three colours only, taken from the logo: ivory, gold and deep brown.
+     Contrast-checked for WCAG AA. */
+  --color-coal: #fffaf2;
   --color-char: #ffffff;
-  --color-smoke: #fbf0dc;
-  --color-paper: #fff8ec;
-  --color-snow: #fffaf0;
-  --color-espresso: #fbf0dc;
-  --color-walnut: #ffc62b;
-  --color-cocoa: #62c9ff;
-  --color-caramel: #a8480f;
-  --color-taupe: #6b5d50;
-  --color-latte: #fbf0dc;
-  --color-gold-500: #ffc62b;
-  --color-gold-600: #f0b30f;
-  --color-gold-700: #875b00;
-  --color-butter: #fff1c7;
+  --color-smoke: #f8efdc;
+  --color-paper: #fffaf2;
+  --color-snow: #fffaf2;
+  --color-espresso: #f8efdc;
+  --color-walnut: #c9a24a;
+  --color-cocoa: #f3e6c9;
+  --color-caramel: #7a5a16;
+  --color-taupe: #66584b;
+  --color-latte: #f8efdc;
+  --color-gold-500: #c9a24a;
+  --color-gold-600: #b58d36;
+  --color-gold-700: #7a5a16;
+  --color-butter: #f3e6c9;
   --color-cream: #2b1b10;
-  --color-malai: #fbf0dc;
-  --color-parchment: #fff8ec;
-  --color-clay: #c2321a;
+  --color-malai: #f8efdc;
+  --color-parchment: #fffaf2;
+  --color-clay: #2b1b10;
   --color-ink: #2b1b10;
   --color-muted: #66584b;
-  --color-line: #efe2cb;
+  --color-line: #ecdfc4;
   --color-success: #1d7a44;
-  --color-warning: #9a5800;
-  --color-error: #c2321a;
+  --color-warning: #7a5a16;
+  --color-error: #b3261e;
   --color-whatsapp: #25d366;
-  /* product-family colours */
-  --color-ghee: #ffc62b;
-  --color-milk: #62c9ff;
-  --color-chilli: #ff5a3c;
-  --color-leaf: #43d17c;
-  --color-honey: #ff9f1c;
-  --color-berry: #ff5fa8;
-  /* darker versions of the family colours, for text on light backgrounds */
-  --color-ghee-ink: #875b00;
-  --color-milk-ink: #0a6698;
-  --color-chilli-ink: #b8301a;
-  --color-honey-ink: #9a4f00;
-  --color-leaf-ink: #16733c;
+  /* former product-family colours, now all the same soft gold (champagne) */
+  --color-ghee: #f3e6c9;
+  --color-milk: #f3e6c9;
+  --color-chilli: #f3e6c9;
+  --color-honey: #f3e6c9;
+  --color-leaf: #f3e6c9;
+  --color-berry: #f3e6c9;
+  --color-ghee-ink: #7a5a16;
+  --color-milk-ink: #7a5a16;
+  --color-chilli-ink: #7a5a16;
+  --color-honey-ink: #7a5a16;
+  --color-leaf-ink: #7a5a16;
   /* legacy names kept so older markup still renders in the new palette */
-  --color-sky: #0f0c0a;
-  --color-sun: #ffc62b;
-  --color-hill-2: #26201c;
-  --color-hill-3: #1a1613;
+  --color-sky: #fffaf2;
+  --color-sun: #c9a24a;
+  --color-hill-2: #f8efdc;
+  --color-hill-3: #f3e6c9;
 
   --font-serif: var(--font-display), var(--font-noto-serif-dev), Georgia, serif;
   --font-sans: var(--font-jost), var(--font-mukta), system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -55,7 +54,7 @@
 
   --radius-card: 24px;
   --shadow-card: 0 1px 2px rgb(60 35 10 / 0.05), 0 8px 24px rgb(60 35 10 / 0.06);
-  --shadow-lift: 0 18px 40px rgb(60 35 10 / 0.14), 0 0 0 2px rgb(255 198 43 / 0.6);
+  --shadow-lift: 0 18px 40px rgb(60 35 10 / 0.12), 0 0 0 1px rgb(201 162 74 / 0.7);
   --shadow-float: 0 24px 60px rgb(60 35 10 / 0.18);
 }
 

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, Jost, Mukta, Noto_Serif_Devanagari } from 'next/font/google'
+import { Jost, Mukta, Noto_Serif_Devanagari, Playfair_Display } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import '../globals.css'
 
@@ -22,7 +22,7 @@ export async function generateStaticParams() {
   return []
 }
 
-const display = Fraunces({ subsets: ['latin'], weight: ['500', '600', '700', '800'], style: ['normal', 'italic'], variable: '--font-display', display: 'swap' })
+const display = Playfair_Display({ subsets: ['latin'], weight: ['500', '600', '700'], style: ['normal', 'italic'], variable: '--font-display', display: 'swap' })
 const notoSerifDev = Noto_Serif_Devanagari({ subsets: ['devanagari'], weight: ['500', '600', '700'], variable: '--font-noto-serif-dev', display: 'swap' })
 const jost = Jost({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-jost', display: 'swap' })
 const mukta = Mukta({ subsets: ['latin', 'devanagari'], weight: ['400', '500', '600', '700'], variable: '--font-mukta', display: 'swap' })
@@ -30,7 +30,7 @@ const mukta = Mukta({ subsets: ['latin', 'devanagari'], weight: ['400', '500', '
 // Pages are rendered on first request and cached (ISR); CMS edits purge the cache.
 export const revalidate = 300
 
-export const viewport: Viewport = { themeColor: '#0F0C0A', width: 'device-width', initialScale: 1 }
+export const viewport: Viewport = { themeColor: '#FFFAF2', width: 'device-width', initialScale: 1 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params

@@ -5,7 +5,7 @@ import { getDictionary } from '@/i18n'
 import type { Category, LegalPage, ServiceArea, SiteSetting } from '@/payload-types'
 import { telLink, whatsappLink } from '@/lib/site'
 import { Icon } from './Icon'
-import { LogoMark, Wordmark } from './Logo'
+import { BrandLogo } from './Logo'
 
 export function Footer({
   locale,
@@ -33,12 +33,11 @@ export function Footer({
 
   return (
     <footer className="bg-espresso text-cream/85">
-      <div className="grid h-2 grid-cols-5" aria-hidden="true"><span className="bg-ghee" /><span className="bg-milk" /><span className="bg-chilli" /><span className="bg-honey" /><span className="bg-leaf" /></div>
+      <div className="h-px bg-gold-500" aria-hidden="true" />
       <div className="pb-24 md:pb-0">
       <div className="border-b border-cream/15">
         <div className="container-x flex flex-col items-center py-12 text-center">
-          <LogoMark size={56} />
-          <Wordmark light className="mt-3" />
+          <BrandLogo height={110} className="h-24 w-auto md:h-28" />
           <p className="mt-4 max-w-xl font-serif text-2xl italic text-cream">{t.footer.tagline}</p>
           <span className="mt-5 h-px w-24 bg-gold-500/60" aria-hidden="true" />
         </div>

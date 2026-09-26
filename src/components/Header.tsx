@@ -5,7 +5,7 @@ import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
 import { CartButton } from './CartButton'
 import { LanguageToggle } from './LanguageToggle'
-import { LogoMark, Wordmark } from './Logo'
+import { BrandLogo } from './Logo'
 import { MobileMenu } from './MobileMenu'
 import { Ticker } from './Ticker'
 
@@ -59,7 +59,7 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
         {t.nav.skipToContent}
       </a>
       <Ticker items={ticker} />
-      <div className="container-x grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[88px]">
+      <div className="container-x grid h-[80px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[100px]">
         <nav aria-label="Main" className="flex items-center">
           <span className="lg:hidden"><MobileMenu groups={menuGroups} buttonClassName="text-cream hover:bg-latte" /></span>
           <ul className="hidden items-center lg:flex">
@@ -69,9 +69,8 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
           </ul>
         </nav>
 
-        <Link href={href('/')} className="flex items-center gap-3" aria-label="Amrit Dairy home">
-          <span className="hidden sm:block"><LogoMark size={46} /></span>
-          <Wordmark />
+        <Link href={href('/')} className="flex items-center" aria-label="Amrit Dairy home">
+          <BrandLogo height={84} priority className="h-16 w-auto md:h-[84px]" />
         </Link>
 
         <div className="flex items-center justify-end gap-1">

@@ -30,7 +30,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const artIcons = ['cow', 'milk', 'flame', 'pot', 'churn', 'drop']
 const trustIcons = ['cow', 'churn', 'jar', 'shield']
 const trustTones: Tone[] = ['ghee', 'milk', 'chilli', 'leaf']
-const herdTones: Tone[] = ['ghee', 'milk', 'chilli', 'honey', 'leaf']
 
 /** Section heading: coloured eyebrow pill over a big display title. */
 function Heading({ eyebrow, title, tone = 'ghee', dark = false }: { eyebrow: string; title: string; tone?: Tone; dark?: boolean }) {
@@ -45,7 +44,7 @@ function Heading({ eyebrow, title, tone = 'ghee', dark = false }: { eyebrow: str
 }
 
 /** Hero stage: near-black with a big disc of the product's colour behind it. */
-function Stage({ tone, children }: { tone: Tone; children: React.ReactNode }) {
+function Stage({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative min-h-[680px] overflow-hidden bg-coal md:min-h-[620px]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgb(255_198_43/0.12),transparent_45%)]" aria-hidden="true" />
@@ -55,15 +54,15 @@ function Stage({ tone, children }: { tone: Tone; children: React.ReactNode }) {
 }
 
 /** The coloured disc + dashed orbit the hero product floats on. */
-function Disc({ tone }: { tone: Tone }) {
+function Disc() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
-      <div className={`absolute aspect-square w-[88%] max-w-[520px] rounded-full border-2 border-dashed opacity-40 ${tones[tone].border}`} />
-      <div className={`absolute aspect-square w-[72%] max-w-[430px] rounded-full ${tones[tone].bg} shadow-[0_30px_80px_rgb(60_35_10/0.18)]`}>
+      <div className="absolute aspect-square w-[88%] max-w-[520px] rounded-full border border-gold-500/60" />
+      <div className="absolute aspect-square w-[72%] max-w-[430px] rounded-full bg-[radial-gradient(circle_at_35%_30%,#fffaf2,#f3e6c9_55%,#e4cd98)] shadow-[0_30px_80px_rgb(60_35_10/0.14)]">
         <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgb(255_255_255/0.45),transparent_55%)]" />
       </div>
-      <span className={`absolute right-[8%] top-[10%] h-6 w-6 rounded-full ${tones[tone].bg} animate-float`} />
-      <span className="absolute bottom-[16%] left-[6%] h-3 w-3 rounded-full bg-chilli animate-float [animation-delay:-2s]" />
+      <span className="absolute right-[8%] top-[10%] h-3 w-3 rounded-full bg-gold-500 animate-float" />
+      <span className="absolute bottom-[16%] left-[6%] h-2 w-2 rounded-full bg-gold-500 animate-float [animation-delay:-2s]" />
     </div>
   )
 }
@@ -78,7 +77,7 @@ function SlideText({ s, tone, price, primary, secondary, hindiLine, as: H = 'h2'
       <p className="mt-5 max-w-md text-lg text-muted">{s.sub}</p>
       {price && <p className={`mt-4 font-serif text-3xl font-bold ${c.text}`}>{price}</p>}
       <div className="mt-8 flex flex-wrap gap-3">
-        <Link href={primary} className={`btn !px-8 text-ink hover:brightness-110 ${c.bg}`}>{s.cta} <Icon name="arrow" size={18} /></Link>
+        <Link href={primary} className="btn btn-gold !px-8">{s.cta} <Icon name="arrow" size={18} /></Link>
         <Link href={secondary} className="btn btn-outline !px-8">{s.cta2}</Link>
       </div>
     </div>
@@ -122,7 +121,7 @@ export default async function HomePage({ params }: Props) {
 
   const slides = [
     // 1 · Ghee
-    <Stage key="ghee" tone="ghee">
+    <Stage key="ghee">
       <div className="container-x grid min-h-[680px] items-center gap-4 py-14 md:min-h-[620px] md:grid-cols-2">
         <SlideText
           as="h1"
@@ -134,7 +133,7 @@ export default async function HomePage({ params }: Props) {
           secondary={href('/farm-story')}
         />
         <HeroParallax className="relative mx-auto h-[340px] w-full max-w-lg md:h-[540px]">
-          <Disc tone="ghee" />
+          <Disc />
           <div aria-hidden="true" className="absolute inset-0">
             <div data-depth="0.6" className="parallax-layer absolute bottom-[14%] left-[6%] h-[42%] w-[30%]">
               <div className="animate-rise h-full w-full [animation-delay:0.25s]">
@@ -155,11 +154,11 @@ export default async function HomePage({ params }: Props) {
       </div>
     </Stage>,
     // 2 · Milk with splash
-    <Stage key="milk" tone="milk">
+    <Stage key="milk">
       <div className="container-x grid min-h-[680px] items-center gap-4 py-14 md:min-h-[620px] md:grid-cols-2">
         <SlideText tone="milk" s={p.slides[1]} primary={href('/subscribe')} secondary={href('/delivery')} />
         <div className="relative mx-auto h-[340px] w-full max-w-lg md:h-[540px]" aria-hidden="true">
-          <Disc tone="milk" />
+          <Disc />
           <div className="absolute bottom-[12%] left-1/2 h-[76%] w-[32%] -translate-x-1/2">
             <div className="animate-float-wide relative h-full w-full">
               <Image src="/images/milk-cutout.png" alt="" fill sizes="220px" className="object-contain drop-shadow-[0_24px_30px_rgb(0_0_0/0.5)]" />
@@ -170,11 +169,11 @@ export default async function HomePage({ params }: Props) {
       </div>
     </Stage>,
     // 3 · Achar
-    <Stage key="achar" tone="chilli">
+    <Stage key="achar">
       <div className="container-x grid min-h-[680px] items-center gap-4 py-14 md:min-h-[620px] md:grid-cols-2">
         <SlideText tone="chilli" s={p.slides[2]} primary={href('/shop/achar')} secondary={href('/shop')} />
         <div className="relative mx-auto h-[340px] w-full max-w-lg md:h-[540px]" aria-hidden="true">
-          <Disc tone="chilli" />
+          <Disc />
           <div className="absolute inset-x-[10%] bottom-[16%] flex h-[62%] items-end justify-center gap-1">
             {['kaccha-mango-achar', 'mix-veg-achar', 'garlic-achar'].map((n, i) => (
               <div key={n} className={`relative w-1/3 ${i === 1 ? 'h-full' : 'h-[80%]'}`}>
@@ -233,7 +232,7 @@ export default async function HomePage({ params }: Props) {
       {/* The Art of Slow: a bright ghee-yellow block */}
       <section className="px-3 sm:px-6">
         <div className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[40px] bg-ghee py-16 text-ink md:py-20">
-          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-honey/60" aria-hidden="true" />
+          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full border border-gold-500/60" aria-hidden="true" />
           <div className="absolute -bottom-20 left-10 h-48 w-48 rounded-full bg-snow/50" aria-hidden="true" />
           <div className="container-x relative grid items-center gap-10 lg:grid-cols-[1.4fr_0.6fr]">
             <div>
@@ -293,7 +292,7 @@ export default async function HomePage({ params }: Props) {
         <section className="container-x pb-20">
           <Heading eyebrow={p.compareEyebrow} title={p.compareTitle} tone="chilli" />
           <div className="grid gap-5 md:grid-cols-2">
-            <div className="relative overflow-hidden rounded-[32px] border-2 border-ghee bg-char p-7 md:p-10">
+            <div className="relative overflow-hidden rounded-[32px] border border-gold-500 bg-char p-7 md:p-10">
               <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-ghee/20 blur-2xl" aria-hidden="true" />
               <p className="relative flex items-center gap-3 font-serif text-3xl font-bold text-ghee-ink">
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-leaf text-ink"><Icon name="check" size={20} /></span> {p.ours}
@@ -309,7 +308,7 @@ export default async function HomePage({ params }: Props) {
             </div>
             <div className="rounded-[32px] border border-line bg-char/60 p-7 text-muted md:p-10">
               <p className="flex items-center gap-3 font-serif text-3xl font-bold">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-chilli text-ink"><Icon name="close" size={20} /></span> {p.regular}
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-line text-ink"><Icon name="close" size={20} /></span> {p.regular}
               </p>
               <div className="mt-6 grid grid-cols-[1fr_auto] items-end gap-4">
                 <ul className="space-y-3 text-lg">{comparison.map((c) => <li key={c.id} className="flex gap-2"><Icon name="close" size={20} className="mt-1 shrink-0 text-error" />{c.regular}</li>)}</ul>
@@ -329,10 +328,10 @@ export default async function HomePage({ params }: Props) {
           <Heading eyebrow={p.herdEyebrow} title={p.herdTitle} tone="leaf" />
           <p className="mx-auto -mt-6 mb-12 max-w-2xl text-center text-lg text-muted">{t.home.farmText}</p>
           <ul className="flex flex-wrap justify-center gap-6 md:gap-10">
-            {farmBreeds.map((b, i) => (
+            {farmBreeds.map((b) => (
               <li key={b.id}>
                 <Link href={href(`/desi-cows/${b.slug}`)} className="group flex w-36 flex-col items-center text-center md:w-44">
-                  <span className={`relative block h-36 w-36 rounded-full ring-4 ring-offset-4 ring-offset-char md:h-44 md:w-44 ${tones[herdTones[i % herdTones.length]].ring}`}>
+                  <span className={`relative block h-36 w-36 rounded-full ring-4 ring-offset-4 ring-offset-char md:h-44 md:w-44 ring-gold-500`}>
                     <span className="relative block h-full w-full overflow-hidden rounded-full bg-paper">
                       {mediaUrl(b.image, 'card') && <Image src={mediaUrl(b.image, 'card') as string} alt={`${b.name} cow`} fill sizes="180px" className="object-contain transition duration-500 group-hover:scale-110" />}
                     </span>
