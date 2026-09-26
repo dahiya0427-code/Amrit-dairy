@@ -265,3 +265,20 @@
   .flip-inner { transition: none; }
 }
 .is-flipped .flip-inner { transform: rotateY(180deg); }
+
+/* ── Bottles rising into view on load, then floating ─────────────────── */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(60px) scale(0.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-rise { animation: rise-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes float-wide {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-22px) rotate(2deg); }
+}
+.animate-float-wide { animation: float-wide 5s ease-in-out infinite; }
+.parallax-layer { transition: transform 0.25s ease-out; will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise, .animate-float-wide { animation: none; }
+  .parallax-layer { transform: none !important; }
+}

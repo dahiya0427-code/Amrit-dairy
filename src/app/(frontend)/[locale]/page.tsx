@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { HeroParallax } from '@/components/HeroParallax'
 import { Icon } from '@/components/Icon'
 import { PincodeChecker } from '@/components/PincodeChecker'
 import { ProductCard } from '@/components/ProductCard'
@@ -80,26 +81,34 @@ export default async function HomePage({ params }: Props) {
               </div>
             </div>
           </div>
-          {/* Floating products (like a jar gently bobbing on the farm) */}
-          <div className="relative order-1 mx-auto aspect-[5/4] w-full max-w-[340px] sm:max-w-md md:order-2 md:max-w-lg" aria-hidden="true">
-            <div className="absolute inset-[8%] rounded-full bg-gold-500/25 blur-3xl" />
-            <div className="absolute bottom-[8%] left-[2%] h-[62%] w-[34%]">
-              <div className="animate-float relative h-full w-full [animation-delay:-1.5s]">
-                <Image src="/images/honey-cutout.png" alt="" fill sizes="160px" className="object-contain drop-shadow-2xl" />
+          {/* Floating bottles: rise in on load, float up and down, and follow the mouse/scroll at different depths */}
+          <HeroParallax className="relative order-1 mx-auto aspect-[5/4] w-full max-w-[340px] sm:max-w-md md:order-2 md:max-w-lg">
+            <div aria-hidden="true" className="absolute inset-0">
+              <div data-depth="0.3" className="parallax-layer absolute inset-[8%] rounded-full bg-gold-500/25 blur-3xl" />
+              <div data-depth="0.6" className="parallax-layer absolute bottom-[8%] left-[2%] h-[62%] w-[34%]">
+                <div className="animate-rise h-full w-full [animation-delay:0.25s]">
+                  <div className="animate-float-wide relative h-full w-full [animation-delay:-1.6s]">
+                    <Image src="/images/honey-cutout.png" alt="" fill sizes="160px" className="object-contain drop-shadow-2xl" />
+                  </div>
+                </div>
+              </div>
+              <div data-depth="0.9" className="parallax-layer absolute bottom-[8%] right-[4%] h-[70%] w-[22%]">
+                <div className="animate-rise h-full w-full [animation-delay:0.4s]">
+                  <div className="animate-float-wide relative h-full w-full [animation-delay:-3.2s]">
+                    <Image src="/images/milk-cutout.png" alt="" fill sizes="120px" className="object-contain drop-shadow-2xl" />
+                  </div>
+                </div>
+              </div>
+              <div data-depth="1.2" className="parallax-layer absolute bottom-[2%] left-[27%] h-[92%] w-[46%]">
+                <div className="animate-rise h-full w-full">
+                  <div className="animate-float-wide relative h-full w-full">
+                    <Image src="/images/ghee-cutout.png" alt="Amrit Desi Cow Golden Ghee" fill priority sizes="(max-width: 768px) 45vw, 22vw" className="object-contain drop-shadow-2xl" />
+                  </div>
+                  <div className="animate-float-shadow mx-auto -mt-1 h-4 w-3/4 rounded-full bg-black/50 blur-md" />
+                </div>
               </div>
             </div>
-            <div className="absolute bottom-[8%] right-[4%] h-[70%] w-[22%]">
-              <div className="animate-float relative h-full w-full [animation-delay:-3s]">
-                <Image src="/images/milk-cutout.png" alt="" fill sizes="120px" className="object-contain drop-shadow-2xl" />
-              </div>
-            </div>
-            <div className="absolute bottom-[2%] left-1/2 h-[92%] w-[46%] -translate-x-1/2">
-              <div className="animate-float relative h-full w-full">
-                <Image src="/images/ghee-cutout.png" alt="" fill priority sizes="(max-width: 768px) 45vw, 22vw" className="object-contain drop-shadow-2xl" />
-              </div>
-              <div className="animate-float-shadow mx-auto -mt-1 h-4 w-3/4 rounded-full bg-black/50 blur-md" />
-            </div>
-          </div>
+          </HeroParallax>
         </div>
         {/* Rolling farm hills into the trust strip */}
         <svg className="relative -mb-px block h-10 w-full md:h-16" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
