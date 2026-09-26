@@ -69,6 +69,7 @@ export default async function HomePage({ params }: Props) {
     <>
       <ScrollStory
         jar="/images/ghee-cutout.png"
+        turntable="/images/jar-turn.webp"
         breeds={storyBreeds}
         items={storyItems}
         centre={storyCentre}

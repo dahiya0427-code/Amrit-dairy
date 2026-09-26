@@ -53,7 +53,7 @@ function ring(n: number, radius: number, start = -90) {
 /** Space under the sticky header, shared by every scene and the jar layer. */
 const pad = 'pt-[116px] md:pt-[136px]'
 
-export function ScrollStory({ jar, breeds, items, centre, shopHref, whatsappHref }: { jar: string; breeds: Breed[]; items: Item[]; centre: Item; shopHref: string; whatsappHref: string }) {
+export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, whatsappHref }: { jar: string; turntable: string; breeds: Breed[]; items: Item[]; centre: Item; shopHref: string; whatsappHref: string }) {
   const { t } = useI18n()
   const s = t.scroll
   const root = useRef<HTMLElement>(null)
@@ -74,7 +74,7 @@ export function ScrollStory({ jar, breeds, items, centre, shopHref, whatsappHref
   const columns = [items[0], items[1], centre, items[2], items[3]].filter(Boolean)
 
   return (
-    <section ref={root} data-story aria-label={s.label} className="relative -mt-[113px] bg-coal md:-mt-[129px]" style={{ height: `${SCENES * 90}svh` }}>
+    <section ref={root} data-story aria-label={s.label} className="relative -mt-[113px] bg-coal md:-mt-[129px]" style={{ height: `${SCENES * 100}svh` }}>
       <a href="#after-story" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-30 focus:rounded-full focus:bg-gold-500 focus:px-4 focus:py-2 focus:text-ink">
         {s.skip}
       </a>
@@ -255,10 +255,12 @@ export function ScrollStory({ jar, breeds, items, centre, shopHref, whatsappHref
                 className="h-full w-full transition-[transform,opacity] duration-[900ms] ease-[cubic-bezier(0.7,0,0.3,1)] motion-reduce:transition-none"
                 style={{ transform: `translate(calc(-50% + ${j.x}vw), calc(-50% + ${j.y}%)) scale(${j.s})`, opacity: j.o }}
               >
-                <div data-jar-turn className="h-full w-full [perspective:900px]">
-                  <div className="animate-float-wide relative h-full w-full">
-                    <Image src={jar} alt="" fill priority sizes="340px" className="object-contain drop-shadow-[0_30px_35px_rgb(60_35_10/0.3)]" />
-                  </div>
+                <div className="animate-float-wide relative h-full w-full drop-shadow-[0_30px_35px_rgb(60_35_10/0.3)]">
+                  <Image data-jar-still src={jar} alt="" fill priority sizes="340px" className="object-contain transition-opacity duration-300" />
+                  {/* real 360° turntable of the jar, shown once loaded (see scripts/jar-turntable.py) */}
+                  <div data-jar-turn className="absolute left-1/2 top-1/2 aspect-[351/560] h-full -translate-x-1/2 -translate-y-1/2 bg-no-repeat opacity-0" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img data-jar-sprite src={turntable} alt="" hidden />
                 </div>
               </div>
             </div>
