@@ -19,13 +19,13 @@ export function CartPageView({ whatsapp, freeThreshold }: { whatsapp: string; fr
       {!cart.ready ? (
         <p>{t.common.loading}</p>
       ) : cart.items.length === 0 ? (
-        <div className="rounded-3xl bg-malai p-10 text-center">
+        <div className="rounded-lg bg-malai p-10 text-center">
           <p className="text-lg">{t.cart.empty}</p>
           <Link href={href('/shop')} className="btn btn-gold mt-4">{t.cart.emptyCta}</Link>
         </div>
       ) : (
         <div className="grid gap-8 lg:grid-cols-3">
-          <ul className="divide-y divide-line rounded-3xl border border-line bg-white lg:col-span-2">
+          <ul className="divide-y divide-line rounded-lg border border-line bg-white lg:col-span-2">
             {cart.items.map((item) => (
               <li key={item.sku} className="flex gap-4 p-4">
                 <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-malai">
@@ -45,7 +45,7 @@ export function CartPageView({ whatsapp, freeThreshold }: { whatsapp: string; fr
               </li>
             ))}
           </ul>
-          <aside className="h-fit space-y-4 rounded-3xl bg-malai p-6">
+          <aside className="h-fit space-y-4 rounded-lg bg-malai p-6">
             <FreeDeliveryBar subtotal={cart.subtotal} threshold={freeThreshold} />
             {cart.items.some((i) => i.fulfilment === 'local') && <p className="text-sm text-muted">{t.cart.splitNote}</p>}
             <div className="flex justify-between text-lg font-semibold">
@@ -54,7 +54,7 @@ export function CartPageView({ whatsapp, freeThreshold }: { whatsapp: string; fr
             </div>
             <p className="text-sm text-muted">{t.cart.delivery}: {t.cart.deliveryAtCheckout}</p>
             <Link href={href('/checkout')} className="btn btn-gold w-full">{t.cart.checkout}</Link>
-            <a className="block text-center text-sm font-medium text-leaf-600 underline underline-offset-4" href={whatsappLink(whatsapp, cartWhatsappText(cart.items, 'Hi Amrit Dairy, I want to order:'))} target="_blank" rel="noopener">
+            <a className="block text-center text-sm font-medium text-caramel underline underline-offset-4" href={whatsappLink(whatsapp, cartWhatsappText(cart.items, 'Hi Amrit Dairy, I want to order:'))} target="_blank" rel="noopener">
               {t.cart.orWhatsapp}
             </a>
             <Link href={href('/shop')} className="block text-center text-sm underline">{t.cart.continue}</Link>

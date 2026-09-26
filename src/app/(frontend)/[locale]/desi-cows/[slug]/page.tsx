@@ -37,7 +37,7 @@ export default async function BreedPage({ params }: Props) {
     <>
       <Breadcrumbs locale={locale} items={[{ name: t.cows.title, path: '/desi-cows' }, { name: breed.name, path: `/desi-cows/${breed.slug}` }]} />
       <article className="container-x grid gap-10 py-8 md:grid-cols-2">
-        <div className="relative aspect-square rounded-3xl border border-line bg-white">
+        <div className="relative aspect-square rounded-lg border border-line bg-white">
           {mediaUrl(breed.image, 'hero') && <Image src={mediaUrl(breed.image, 'hero') as string} alt={`${breed.name} cow`} fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-contain p-6" />}
         </div>
         <div>

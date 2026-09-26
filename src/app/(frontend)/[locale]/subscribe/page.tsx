@@ -39,9 +39,9 @@ export default async function SubscribePage({ params }: Props) {
             <p className="label">{t.pincode.label}</p>
             <PincodeChecker fulfilment="local" />
           </div>
-          <Link href={localePath(locale, '/delivery')} className="inline-block text-leaf-600 underline underline-offset-4">{t.nav.delivery} →</Link>
+          <Link href={localePath(locale, '/delivery')} className="inline-block text-caramel underline underline-offset-4">{t.nav.delivery} →</Link>
         </div>
-        <div className="rounded-3xl border border-line bg-white p-6 lg:col-span-3">
+        <div className="rounded-lg border border-line bg-white p-6 lg:col-span-3">
           <LeadForm type="subscription" product="Desi Cow Milk" submitLabel={t.home.subscribeCta} />
         </div>
       </section>

@@ -56,7 +56,7 @@ export function PincodeChecker({ fulfilment, onResult, compact = false }: { fulf
         className="flex gap-2"
       >
         <label htmlFor={`pin-${fulfilment ?? 'any'}`} className="sr-only">{t.pincode.label}</label>
-        <span className="hidden items-center text-leaf-600 sm:flex"><Icon name="map" /></span>
+        <span className="hidden items-center text-caramel sm:flex"><Icon name="map" /></span>
         <input
           id={`pin-${fulfilment ?? 'any'}`}
           className="input flex-1"
@@ -83,7 +83,7 @@ export function PincodeChecker({ fulfilment, onResult, compact = false }: { fulf
               <p className="font-semibold text-warning">{t.pincode.comingSoon(soon.map((a) => a.name).join(', '))}</p>
             )}
             {live.length === 0 && soon.length === 0 && fulfilment !== 'ship' && <p className="text-muted">{t.pincode.notLive}</p>}
-            {fulfilment !== 'local' && <p className="text-forest-900">📦 {t.pincode.ships}</p>}
+            {fulfilment !== 'local' && <p className="text-walnut">📦 {t.pincode.ships}</p>}
           </>
         )}
       </div>

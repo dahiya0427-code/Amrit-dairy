@@ -38,7 +38,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
 
   return (
     <section className="container-x max-w-3xl py-12">
-      <div className="rounded-3xl bg-malai p-6 text-center md:p-10">
+      <div className="rounded-lg bg-malai p-6 text-center md:p-10">
         <span className={`mx-auto grid h-16 w-16 place-items-center rounded-full ${paid ? 'bg-success' : 'bg-gold-500'} text-white`}>
           <Icon name={paid ? 'check' : 'whatsapp'} size={32} />
         </span>

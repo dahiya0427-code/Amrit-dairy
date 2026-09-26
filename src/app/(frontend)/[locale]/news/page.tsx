@@ -19,10 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const tone: Record<string, string> = {
   offer: 'bg-clay text-white',
-  area: 'bg-forest-900 text-cream',
+  area: 'bg-walnut text-cream',
   launch: 'bg-gold-500 text-ink',
-  event: 'bg-mint text-forest-900',
-  notice: 'bg-white text-forest-900 border border-line',
+  event: 'bg-latte text-walnut',
+  notice: 'bg-white text-walnut border border-line',
 }
 
 export default async function NewsPage({ params }: Props) {

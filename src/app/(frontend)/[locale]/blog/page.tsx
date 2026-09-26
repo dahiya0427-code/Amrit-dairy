@@ -41,7 +41,7 @@ export default async function BlogPage({ params }: Props) {
                   </span>
                   <span className="block p-5">
                     <span className="eyebrow">{t.blog.categories[post.category]}</span>
-                    <span className="mt-1 block font-serif text-xl font-semibold text-forest-900 group-hover:underline">{post.title}</span>
+                    <span className="mt-1 block font-serif text-xl font-semibold text-walnut group-hover:underline">{post.title}</span>
                     <span className="mt-2 block text-muted">{post.excerpt}</span>
                     <span className="mt-3 block text-sm text-muted">{formatDate(post.publishedAt, locale)}</span>
                   </span>

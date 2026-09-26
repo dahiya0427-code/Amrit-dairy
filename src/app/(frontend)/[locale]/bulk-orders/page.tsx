@@ -24,7 +24,7 @@ export default async function BulkPage({ params }: Props) {
       <PageHero title={t.bulk.title} intro={t.bulk.intro} />
       <Breadcrumbs locale={locale} items={[{ name: t.bulk.title, path: '/bulk-orders' }]} />
       <section className="container-x max-w-3xl py-10">
-        <div className="rounded-3xl border border-line bg-white p-6">
+        <div className="rounded-lg border border-line bg-white p-6">
           <LeadForm type="bulk" submitLabel={t.common.requestBulk} />
         </div>
       </section>

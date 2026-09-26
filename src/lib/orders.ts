@@ -84,16 +84,16 @@ function orderEmailHtml(order: Order, heading: string) {
     .join('')
   return `<!doctype html><html><body style="margin:0;background:#FFFDF7;font-family:Arial,sans-serif;color:#1E1C19">
   <div style="max-width:560px;margin:0 auto;padding:24px">
-    <div style="background:#24401D;color:#E7A93A;padding:16px 20px;border-radius:16px 16px 0 0;font:600 22px Georgia,serif">Amrit Dairy · अमृत डेयरी</div>
+    <div style="background:#4A2E1C;color:#C8962E;padding:16px 20px;border-radius:16px 16px 0 0;font:600 22px Georgia,serif">Amrit Dairy · अमृत डेयरी</div>
     <div style="background:#fff;padding:20px;border-radius:0 0 16px 16px;border:1px solid #E6DCC6">
-      <h1 style="font:600 20px Georgia,serif;color:#24401D;margin:0 0 8px">${esc(heading)}</h1>
+      <h1 style="font:600 20px Georgia,serif;color:#4A2E1C;margin:0 0 8px">${esc(heading)}</h1>
       <p style="margin:0 0 16px">Order <strong>${order.orderNumber}</strong></p>
       <table style="width:100%;border-collapse:collapse;font-size:14px">${rows}
         <tr><td style="padding:6px 0;border-top:1px solid #E6DCC6">Delivery</td><td style="padding:6px 0;border-top:1px solid #E6DCC6;text-align:right">${order.deliveryFee ? formatINR(order.deliveryFee) : 'Free'}</td></tr>
         <tr><td style="padding:6px 0;font-weight:700">Total</td><td style="padding:6px 0;text-align:right;font-weight:700">${formatINR(order.total)}</td></tr>
       </table>
       <p style="font-size:14px;margin:16px 0 0">Deliver to: ${esc(order.customer.name)}, ${esc(order.customer.address)}, ${esc(order.customer.city)} ${esc(order.customer.pincode)} · ${esc(order.customer.phone)}</p>
-      <p style="margin:20px 0 0"><a href="${orderUrl(order)}" style="background:#E7A93A;color:#1E1C19;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:700">View your order</a></p>
+      <p style="margin:20px 0 0"><a href="${orderUrl(order)}" style="background:#C8962E;color:#1E1C19;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:700">View your order</a></p>
       <p style="font-size:13px;color:#5A554D;margin:20px 0 0">Questions? WhatsApp us: ${whatsappLink('+91 77000 04877')}</p>
     </div>
   </div></body></html>`

@@ -64,7 +64,7 @@ export function LeadForm({ type, product, compact = false, submitLabel }: { type
 
   if (state === 'done') {
     return (
-      <p role="status" className="rounded-2xl bg-mint p-5 font-semibold text-forest-900">
+      <p role="status" className="rounded-2xl bg-latte p-5 font-semibold text-walnut">
         {type === 'notify' || type === 'waitlist' ? f.notifySuccess : f.success}
       </p>
     )
@@ -113,8 +113,8 @@ export function LeadForm({ type, product, compact = false, submitLabel }: { type
           <fieldset>
             <legend className="label">{f.buySell}</legend>
             <div className="flex gap-4 pt-2">
-              <label className="flex items-center gap-2"><input type="radio" name="buySell" value="buy" defaultChecked className="h-5 w-5 accent-forest-900" /> {f.buy}</label>
-              <label className="flex items-center gap-2"><input type="radio" name="buySell" value="sell" className="h-5 w-5 accent-forest-900" /> {f.sell}</label>
+              <label className="flex items-center gap-2"><input type="radio" name="buySell" value="buy" defaultChecked className="h-5 w-5 accent-walnut" /> {f.buy}</label>
+              <label className="flex items-center gap-2"><input type="radio" name="buySell" value="sell" className="h-5 w-5 accent-walnut" /> {f.sell}</label>
             </div>
           </fieldset>
         )}
@@ -157,7 +157,7 @@ export function LeadForm({ type, product, compact = false, submitLabel }: { type
       </div>
       {type !== 'notify' && type !== 'waitlist' && (
         <label className="flex items-start gap-2 text-sm text-muted">
-          <input type="checkbox" required className="mt-1 h-4 w-4 accent-forest-900" /> {f.consent}
+          <input type="checkbox" required className="mt-1 h-4 w-4 accent-walnut" /> {f.consent}
         </label>
       )}
       {state === 'error' && <p role="alert" className="font-medium text-error">{error}</p>}

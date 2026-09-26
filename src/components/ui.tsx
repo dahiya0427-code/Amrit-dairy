@@ -27,7 +27,7 @@ export function Breadcrumbs({ locale, items }: { locale: Locale; items: { name: 
             <li key={i} className="flex items-center gap-1.5">
               {i > 0 && <span aria-hidden="true">/</span>}
               {i < all.length - 1 ? (
-                <Link href={localePath(locale, item.path)} className="hover:text-forest-900 hover:underline">{item.name}</Link>
+                <Link href={localePath(locale, item.path)} className="hover:text-walnut hover:underline">{item.name}</Link>
               ) : (
                 <span aria-current={i === all.length - 1 ? 'page' : undefined} className="text-ink">{item.name}</span>
               )}
@@ -48,7 +48,7 @@ export function FAQ({ locale, faqs, title }: { locale: Locale; faqs: { question:
       <div className="mx-auto max-w-3xl">
         <p className="eyebrow mb-2 text-center">{t.common.faqEyebrow}</p>
         <h2 id="faq-title" className="mb-6 text-center text-3xl md:text-4xl">{title ?? t.common.faqTitle}</h2>
-        <div className="divide-y divide-line rounded-2xl border border-line bg-white">
+        <div className="divide-y divide-line rounded-md border border-line bg-cream">
           {faqs.map((f, i) => (
             <details key={i} className="group px-5 py-1">
               <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 font-semibold [&::-webkit-details-marker]:hidden">
@@ -67,12 +67,13 @@ export function FAQ({ locale, faqs, title }: { locale: Locale; faqs: { question:
 
 export function PageHero({ title, intro, eyebrow, secondary }: { title: string; intro?: string | null; eyebrow?: string; secondary?: string }) {
   return (
-    <section className="bg-forest-900 text-cream">
-      <div className="container-x py-12 md:py-16">
-        {eyebrow && <p className="eyebrow mb-2 !text-gold-500">{eyebrow}</p>}
-        <h1 className="text-4xl !text-cream md:text-5xl">{title}</h1>
-        {secondary && <p className="mt-2 font-serif text-xl text-gold-500">{secondary}</p>}
-        {intro && <p className="mt-4 max-w-3xl text-lg text-cream/85">{intro}</p>}
+    <section className="bg-[radial-gradient(ellipse_at_50%_0%,#7a5234,#4a2e1c_55%,#2b1a10)] text-cream">
+      <div className="container-x flex flex-col items-center py-14 text-center md:py-20">
+        {eyebrow && <p className="eyebrow mb-3 !text-gold-500">{eyebrow}</p>}
+        <h1 className="text-4xl !text-cream md:text-6xl">{title}</h1>
+        {secondary && <p className="mt-3 font-serif text-2xl italic text-gold-500">{secondary}</p>}
+        <span className="mt-5 h-px w-20 bg-gold-500/70" aria-hidden="true" />
+        {intro && <p className="mt-5 max-w-2xl text-lg text-cream/85">{intro}</p>}
       </div>
     </section>
   )
@@ -81,10 +82,10 @@ export function PageHero({ title, intro, eyebrow, secondary }: { title: string; 
 export function Badge({ tone, children }: { tone: 'bestseller' | 'new' | 'soon' | 'ship' | 'local'; children: React.ReactNode }) {
   const tones = {
     bestseller: 'bg-clay text-white',
-    new: 'bg-forest-900 text-cream',
+    new: 'bg-walnut text-cream',
     soon: 'bg-butter text-gold-700',
-    ship: 'bg-mint text-forest-900',
-    local: 'bg-white text-forest-900 border border-line',
+    ship: 'bg-latte text-walnut',
+    local: 'bg-white text-walnut border border-line',
   }
   return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold ${tones[tone]}`}>{children}</span>
 }
@@ -94,7 +95,7 @@ export function CheckList({ items }: { items: string[] }) {
     <ul className="space-y-2.5">
       {items.map((text, i) => (
         <li key={i} className="flex gap-3">
-          <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-mint text-leaf-600"><Icon name="check" size={16} /></span>
+          <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-latte text-caramel"><Icon name="check" size={16} /></span>
           <span>{text}</span>
         </li>
       ))}

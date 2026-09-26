@@ -39,7 +39,7 @@ export default async function AreaPage({ params }: Props) {
       <Breadcrumbs locale={locale} items={[{ name: t.delivery.title, path: '/delivery' }, { name: area.name, path: `/delivery/${area.slug}` }]} />
       <section className="container-x py-8">
         <h1 className="text-4xl md:text-5xl">{t.delivery.areaTitle(`${area.name}, ${area.city}`)}</h1>
-        <p className={`mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 font-semibold ${live ? 'bg-mint text-success' : 'bg-butter text-gold-700'}`}>
+        <p className={`mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 font-semibold ${live ? 'bg-latte text-success' : 'bg-butter text-gold-700'}`}>
           <Icon name={live ? 'check' : 'calendar'} /> {live ? t.delivery.live : t.delivery.comingSoon}
           {area.slot ? ` · ${area.slot}` : ''}
         </p>
@@ -64,7 +64,7 @@ export default async function AreaPage({ params }: Props) {
         )
       ) : (
         <section className="container-x py-8">
-          <div className="max-w-xl rounded-3xl bg-malai p-6">
+          <div className="max-w-xl rounded-lg bg-malai p-6">
             <h2 className="text-2xl">{t.delivery.waitlistTitle}</h2>
             <p className="mb-4 mt-2 text-muted">{t.delivery.waitlistText}</p>
             <LeadForm type="waitlist" compact />

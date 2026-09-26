@@ -96,7 +96,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
         description: `Order ${data.orderNumber}`,
         prefill: { name: data.customer.name, email: data.customer.email, contact: data.customer.phone },
         notes: { orderNumber: data.orderNumber },
-        theme: { color: '#24401D' },
+        theme: { color: '#4A2E1C' },
         handler: async (resp: RazorpayResponse) => {
           const v = await fetch('/api/checkout/verify', {
             method: 'POST',
@@ -144,8 +144,8 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
       <h1 className="mb-6 text-4xl">{c.title}</h1>
       <form onSubmit={onSubmit} className="grid gap-8 lg:grid-cols-5">
         <div className="space-y-5 lg:col-span-3">
-          <fieldset className="space-y-4 rounded-3xl border border-line bg-white p-5 md:p-6">
-            <legend className="px-2 font-serif text-xl font-semibold text-forest-900">1 · {c.contact}</legend>
+          <fieldset className="space-y-4 rounded-lg border border-line bg-white p-5 md:p-6">
+            <legend className="px-2 font-serif text-xl font-semibold text-walnut">1 · {c.contact}</legend>
             <div className="grid gap-4 sm:grid-cols-2">
               {field('name', c.name, { required: true, autoComplete: 'name', maxLength: 100 })}
               {field('phone', c.phone, { required: true, type: 'tel', inputMode: 'tel', autoComplete: 'tel', pattern: '^(\\+?91[\\s-]?)?[6-9][0-9]{4}[\\s-]?[0-9]{5}$' })}
@@ -177,12 +177,12 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
             </div>
           </fieldset>
 
-          <div className={`rounded-2xl p-4 text-sm ${onlinePayments ? 'bg-mint' : 'bg-butter'}`}>
-            <p className="flex items-start gap-2"><Icon name="shield" className="shrink-0 text-leaf-600" /> {onlinePayments ? c.secure : c.whatsappMode}</p>
+          <div className={`rounded-2xl p-4 text-sm ${onlinePayments ? 'bg-latte' : 'bg-butter'}`}>
+            <p className="flex items-start gap-2"><Icon name="shield" className="shrink-0 text-caramel" /> {onlinePayments ? c.secure : c.whatsappMode}</p>
           </div>
         </div>
 
-        <aside className="h-fit space-y-4 rounded-3xl bg-malai p-5 md:p-6 lg:sticky lg:top-40 lg:col-span-2">
+        <aside className="h-fit space-y-4 rounded-lg bg-malai p-5 md:p-6 lg:sticky lg:top-40 lg:col-span-2">
           <h2 className="text-2xl">{c.summary}</h2>
           <ul className="space-y-3">
             {cart.items.map((i) => (
@@ -205,7 +205,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
             <p className="text-xs text-muted">{t.common.inclTaxes}</p>
           </dl>
           <label className="flex items-start gap-2 text-sm">
-            <input type="checkbox" required className="mt-1 h-4 w-4 accent-forest-900" />
+            <input type="checkbox" required className="mt-1 h-4 w-4 accent-walnut" />
             <span>
               {c.consent}{' '}
               <Link href={href('/legal/terms-of-service')} className="underline" target="_blank">↗</Link>
@@ -215,7 +215,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
           <button type="submit" className="btn btn-gold w-full text-lg" disabled={busy || !cart.ready || freshBlocked}>
             {busy ? c.processing : onlinePayments ? c.pay(formatINR(total)) : c.placeOrder}
           </button>
-          <a className="block text-center text-sm font-medium text-leaf-600 underline underline-offset-4" href={whatsappLink(whatsapp, cartWhatsappText(cart.items, 'Hi Amrit Dairy, I want to order:'))} target="_blank" rel="noopener">
+          <a className="block text-center text-sm font-medium text-caramel underline underline-offset-4" href={whatsappLink(whatsapp, cartWhatsappText(cart.items, 'Hi Amrit Dairy, I want to order:'))} target="_blank" rel="noopener">
             {t.cart.orWhatsapp}
           </a>
         </aside>

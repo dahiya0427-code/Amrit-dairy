@@ -19,12 +19,12 @@ export function FreeDeliveryBar({ subtotal, threshold }: { subtotal: number; thr
   if (!threshold) return null
   const pct = Math.min(100, Math.round((subtotal / threshold) * 100))
   return (
-    <div className="rounded-xl bg-mint p-3 text-sm">
-      <p className="font-medium text-forest-900">
+    <div className="rounded-xl bg-latte p-3 text-sm">
+      <p className="font-medium text-walnut">
         {subtotal >= threshold ? t.cart.freeDeliveryDone : t.cart.freeDeliveryNudge(formatINR(threshold - subtotal))}
       </p>
       <div className="mt-2 h-2 overflow-hidden rounded-full bg-white" aria-hidden="true">
-        <div className="h-full rounded-full bg-leaf-500 transition-all" style={{ width: `${pct}%` }} />
+        <div className="h-full rounded-full bg-caramel transition-all" style={{ width: `${pct}%` }} />
       </div>
     </div>
   )
@@ -94,7 +94,7 @@ export function CartDrawer({ whatsapp, freeThreshold }: { whatsapp: string; free
               <p className="text-sm text-muted">{t.cart.delivery}: {t.cart.deliveryAtCheckout}</p>
               <Link href={href('/checkout')} className="btn btn-gold w-full" onClick={() => cart.setOpen(false)}>{t.cart.checkout}</Link>
               <a
-                className="block text-center text-sm font-medium text-leaf-600 underline underline-offset-4"
+                className="block text-center text-sm font-medium text-caramel underline underline-offset-4"
                 href={whatsappLink(whatsapp, cartWhatsappText(cart.items, 'Hi Amrit Dairy, I want to order:'))}
                 target="_blank"
                 rel="noopener"

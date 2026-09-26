@@ -57,7 +57,7 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
               )}
             </span>
             {/* Back: second photo, or a details card */}
-            <span className="flip-face flip-back block overflow-hidden bg-forest-900 text-cream">
+            <span className="flip-face flip-back block overflow-hidden bg-walnut text-cream">
               {hoverSrc ? (
                 <Image src={hoverSrc} alt="" fill sizes="(max-width: 640px) 50vw, 25vw" className="object-cover" />
               ) : (
@@ -91,14 +91,14 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
         </span>
         <FlipToggle label={t.pdp.flipHint} />
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
-        <h3 className="font-sans text-base font-semibold leading-snug text-ink sm:text-[17px]">
+      <div className="flex flex-1 flex-col gap-1 p-3 text-center sm:p-5">
+        <h3 className="font-serif text-lg font-semibold leading-snug text-walnut sm:text-xl">
           <Link href={url} className="hover:underline">{product.title}</Link>
         </h3>
         {product.secondaryName && <p className="text-sm text-muted">{product.secondaryName}</p>}
         <div className="mt-auto pt-2">
           {price ? (
-            <p className="mb-3 text-lg font-bold tabular-nums">
+            <p className="mb-3 text-lg font-semibold tabular-nums text-gold-700">
               {hasMultiplePrices(product) && <span className="text-sm font-normal text-muted">{t.common.from} </span>}
               {formatINR(price)}
               {variants.length === 1 && <span className="ml-1 text-sm font-normal text-muted">· {variants[0].label}</span>}

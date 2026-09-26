@@ -26,7 +26,7 @@ export function MobileMenu({ groups, buttonClassName = 'text-cream hover:bg-whit
       </button>
       {open && (
         <div className="fixed inset-0 z-[70] overflow-y-auto bg-cream" role="dialog" aria-modal="true" aria-label={t.nav.menu}>
-          <div className="flex items-center justify-between bg-forest-900 px-4 py-3 text-cream">
+          <div className="flex items-center justify-between bg-walnut px-4 py-3 text-cream">
             <span className="font-serif text-xl">{t.nav.menu}</span>
             <div className="flex items-center gap-2">
               <LanguageToggle className="text-cream" />

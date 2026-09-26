@@ -30,23 +30,23 @@ export function ShopView({
   const base = active ? `/shop/${active.slug}` : '/shop'
   const bannerSrc = mediaUrl(active?.bannerImage, 'card') ?? '/images/ghee-cutout.png'
   const chip = (on: boolean) =>
-    `inline-flex min-h-10 items-center rounded-full border px-4 text-sm font-semibold transition ${on ? 'border-forest-900 bg-forest-900 text-cream' : 'border-line bg-white hover:border-forest-900'}`
+    `inline-flex min-h-10 items-center rounded-full border px-4 text-sm font-semibold transition ${on ? 'border-walnut bg-walnut text-cream' : 'border-line bg-white hover:border-walnut'}`
 
   return (
     <>
       <Breadcrumbs locale={locale} items={active ? [{ name: t.nav.shop, path: '/shop' }, { name: active.title, path: base }] : [{ name: t.nav.shop, path: '/shop' }]} />
       {/* Collection banner: tagline, pills and a floating product */}
       <section className="container-x pt-4">
-        <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(120deg,#fbebc7,#f6efdd_45%,#eaf1e4)]">
+        <div className="relative overflow-hidden rounded-lg bg-[linear-gradient(120deg,#f3e5c4,#f5efe3_45%,#efe5d3)]">
           <div className="grid items-center gap-4 p-6 md:grid-cols-[1.3fr_1fr] md:p-10">
             <div className="relative z-10">
               <p className="eyebrow">{active?.secondaryTitle ?? t.nav.shop}</p>
               <h1 className="mt-1 text-4xl md:text-6xl">{active?.title ?? t.shop.title}</h1>
-              {active?.tagline && <p className="mt-2 font-serif text-2xl text-leaf-600 md:text-3xl">{active.tagline}</p>}
+              {active?.tagline && <p className="mt-2 font-serif text-2xl text-caramel md:text-3xl">{active.tagline}</p>}
               <p className="mt-3 max-w-xl text-lg text-muted">{active?.intro ?? t.shop.intro}</p>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {(active?.pills?.length ? active.pills.map((p) => p.text) : t.heroPills).map((pill) => (
-                  <li key={pill} className="rounded-full bg-forest-900 px-3.5 py-1.5 text-sm font-semibold text-cream">{pill}</li>
+                  <li key={pill} className="rounded-full bg-walnut px-3.5 py-1.5 text-sm font-semibold text-cream">{pill}</li>
                 ))}
               </ul>
             </div>
@@ -59,8 +59,8 @@ export function ShopView({
             </div>
           </div>
           <svg className="absolute inset-x-0 bottom-0 h-10 w-full md:h-14" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0 40 C 200 10, 380 55, 620 32 S 1000 12, 1200 36 V60 H0 Z" fill="#4a7d3b" opacity="0.35" />
-            <path d="M0 48 C 260 28, 460 62, 720 44 S 1080 30, 1200 50 V60 H0 Z" fill="#3d6b30" opacity="0.5" />
+            <path d="M0 40 C 200 10, 380 55, 620 32 S 1000 12, 1200 36 V60 H0 Z" fill="#c8962e" opacity="0.25" />
+            <path d="M0 48 C 260 28, 460 62, 720 44 S 1080 30, 1200 50 V60 H0 Z" fill="#4a2e1c" opacity="0.35" />
           </svg>
         </div>
       </section>
@@ -94,9 +94,9 @@ export function ShopView({
           <p className="py-10 text-center text-muted">{t.shop.empty}</p>
         )}
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-3xl bg-mint p-6 sm:flex-row sm:items-center">
+        <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-lg bg-latte p-6 sm:flex-row sm:items-center">
           <div>
-            <p className="font-serif text-xl font-semibold text-forest-900">{t.shop.helpTitle}</p>
+            <p className="font-serif text-xl font-semibold text-walnut">{t.shop.helpTitle}</p>
             <p className="text-muted">{t.shop.helpText}</p>
           </div>
           <a href={whatsappLink(whatsapp, 'Hi Amrit Dairy, please help me choose products.')} target="_blank" rel="noopener" className="btn btn-whatsapp">

@@ -53,13 +53,13 @@ export default async function PostPage({ params }: Props) {
           {post.author?.role ? `, ${post.author.role}` : ''} · {formatDate(post.publishedAt, locale)} · {t.blog.minRead(readingMinutes(post.content))}
         </p>
         {mediaUrl(post.cover, 'hero') && (
-          <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-3xl bg-malai">
+          <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-lg bg-malai">
             <Image src={mediaUrl(post.cover, 'hero') as string} alt="" fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
           </div>
         )}
         {post.tldr && post.tldr.length > 0 && (
           <aside className="mt-8 rounded-2xl border-l-4 border-gold-500 bg-malai p-5" aria-label={t.blog.tldr}>
-            <p className="mb-2 font-semibold text-forest-900">{t.blog.tldr}</p>
+            <p className="mb-2 font-semibold text-walnut">{t.blog.tldr}</p>
             <ul className="list-disc space-y-1 pl-5">
               {post.tldr.map((x) => <li key={x.id}>{x.text}</li>)}
             </ul>
@@ -67,7 +67,7 @@ export default async function PostPage({ params }: Props) {
         )}
         <RichText data={post.content} className="mt-8" />
         {post.keyTakeaways && post.keyTakeaways.length > 0 && (
-          <section className="mt-10 rounded-2xl bg-mint p-6">
+          <section className="mt-10 rounded-2xl bg-latte p-6">
             <h2 className="mb-4 text-2xl">{t.blog.takeaways}</h2>
             <CheckList items={post.keyTakeaways.map((k) => k.text)} />
           </section>

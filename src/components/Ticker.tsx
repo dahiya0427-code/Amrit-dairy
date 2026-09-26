@@ -28,7 +28,7 @@ export function Ticker({ items }: { items: Item[] }) {
     ))
 
   return (
-    <div className={`bg-forest-950 text-cream ${paused ? 'ticker-paused' : ''}`}>
+    <div className={`bg-espresso text-cream ${paused ? 'ticker-paused' : ''}`}>
       <div className="container-x flex h-9 items-center gap-2 text-sm">
         <div className="ticker-track relative flex-1 overflow-hidden" role="region" aria-label="Announcements">
           <div className="animate-ticker flex w-max whitespace-nowrap motion-reduce:w-auto">

@@ -32,12 +32,12 @@ export default async function DepartmentsPage({ params }: Props) {
             <li key={d.id}>
               <Link href={localePath(locale, `/departments/${d.slug}`)} className="card flex h-full flex-col p-6 transition hover:shadow-lift">
                 <span className="flex items-center justify-between">
-                  <span className="grid h-12 w-12 place-items-center rounded-full bg-forest-900 text-gold-500"><Icon name={d.icon ?? 'leaf'} /></span>
+                  <span className="grid h-12 w-12 place-items-center rounded-full bg-walnut text-gold-500"><Icon name={d.icon ?? 'leaf'} /></span>
                   <span className="font-serif text-2xl text-gold-700" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 </span>
-                <span className="mt-4 block font-serif text-xl font-semibold text-forest-900">{d.title}</span>
+                <span className="mt-4 block font-serif text-xl font-semibold text-walnut">{d.title}</span>
                 <span className="mt-2 block flex-1 text-muted">{d.summary}</span>
-                <span className="mt-4 inline-flex items-center gap-1 font-semibold text-leaf-600">{t.common.learnMore} <Icon name="arrow" size={16} /></span>
+                <span className="mt-4 inline-flex items-center gap-1 font-semibold text-caramel">{t.common.learnMore} <Icon name="arrow" size={16} /></span>
               </Link>
             </li>
           ))}

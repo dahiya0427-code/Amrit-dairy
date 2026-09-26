@@ -54,7 +54,7 @@ const badgeIcons: Record<string, string> = {
 function Accordion({ title, children, open = false }: { title: string; children: React.ReactNode; open?: boolean }) {
   return (
     <details className="group border-b border-line" open={open}>
-      <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 text-sm font-bold uppercase tracking-wider text-forest-900 [&::-webkit-details-marker]:hidden">
+      <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 text-sm font-bold uppercase tracking-wider text-walnut [&::-webkit-details-marker]:hidden">
         {title}
         <Icon name="plus" className="shrink-0 text-gold-700 transition group-open:rotate-45" />
       </summary>
@@ -87,7 +87,7 @@ export default async function ProductPage({ params }: Props) {
       key: `photo-${m.id}-${i}`,
       thumb: <Image src={mediaUrl(m, 'thumb') as string} alt="" fill sizes="80px" className="object-contain p-1" />,
       node: (
-        <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-malai">
+        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-malai">
           <Image src={mediaUrl(m, 'hero') as string} alt={m.alt || product.title} fill priority={i === 0} sizes="(max-width: 1024px) 100vw, 50vw" className="object-contain p-6" />
           {i === 0 && (
             <span className="absolute left-4 top-4 flex gap-2">
@@ -101,7 +101,7 @@ export default async function ProductPage({ params }: Props) {
     ...storySlides({ product, image: packshot, cutout: mediaUrl(product.cutout, 'card'), locale, fssai: settings.fssai }).map((s) => ({
       key: `story-${s.key}`,
       thumb: (
-        <span className="grid h-full w-full place-items-center bg-forest-900 p-1 text-center text-[9px] font-semibold leading-tight text-gold-500 lg:text-[10px]">
+        <span className="grid h-full w-full place-items-center bg-walnut p-1 text-center text-[9px] font-semibold leading-tight text-gold-500 lg:text-[10px]">
           {s.label}
         </span>
       ),
@@ -146,10 +146,10 @@ export default async function ProductPage({ params }: Props) {
             <ul className="mt-5 grid grid-cols-4 gap-2">
               {product.badges.slice(0, 4).map((b) => (
                 <li key={b} className="flex flex-col items-center gap-1.5 text-center">
-                  <span className="grid h-14 w-14 place-items-center rounded-full border-2 border-forest-900 text-forest-900 sm:h-16 sm:w-16">
+                  <span className="grid h-14 w-14 place-items-center rounded-full border-2 border-walnut text-walnut sm:h-16 sm:w-16">
                     <Icon name={badgeIcons[b] ?? 'leaf'} size={28} />
                   </span>
-                  <span className="text-[11px] font-bold uppercase leading-tight tracking-wide text-forest-900">{t.badges[b]}</span>
+                  <span className="text-[11px] font-bold uppercase leading-tight tracking-wide text-walnut">{t.badges[b]}</span>
                 </li>
               ))}
             </ul>
@@ -169,10 +169,10 @@ export default async function ProductPage({ params }: Props) {
             />
           </div>
 
-          <ul className="mt-6 grid grid-cols-2 gap-4 border-t border-line pt-5 text-center text-xs font-semibold text-forest-900 sm:grid-cols-4">
+          <ul className="mt-6 grid grid-cols-2 gap-4 border-t border-line pt-5 text-center text-xs font-semibold text-walnut sm:grid-cols-4">
             {t.pdp.trust.map((item) => (
               <li key={item.label} className="flex flex-col items-center gap-2">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-mint text-leaf-600"><Icon name={item.icon} size={24} /></span>
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-latte text-caramel"><Icon name={item.icon} size={24} /></span>
                 {item.label.replace('{amount}', threshold)}
               </li>
             ))}
@@ -215,9 +215,9 @@ export default async function ProductPage({ params }: Props) {
             <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {product.process.map((s, i) => (
                 <li key={s.id ?? i} className="flex gap-4 rounded-2xl bg-cream p-5 shadow-card">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-forest-900 font-serif font-semibold text-gold-500">{i + 1}</span>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-walnut font-serif font-semibold text-gold-500">{i + 1}</span>
                   <span>
-                    <span className="block font-semibold text-forest-900">{s.title}</span>
+                    <span className="block font-semibold text-walnut">{s.title}</span>
                     {s.text && <span className="mt-1 block text-muted">{s.text}</span>}
                   </span>
                 </li>

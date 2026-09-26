@@ -12,7 +12,7 @@ export function CardAddButton({ item, slug, mode }: Props) {
   const cart = useCart()
   if (mode !== 'add' || !item) {
     return (
-      <Link href={href(`/products/${slug}`)} className="btn btn-outline w-full !min-h-11 text-sm">
+      <Link href={href(`/products/${slug}`)} className="btn btn-outline w-full !min-h-11 !px-2 !text-[11px] !tracking-[0.08em] sm:!text-xs sm:!tracking-[0.14em]">
         {mode === 'notify' ? t.common.notifyMe : t.common.shopNow}
       </Link>
     )
@@ -26,7 +26,7 @@ export function CardAddButton({ item, slug, mode }: Props) {
     )
   }
   return (
-    <button type="button" className="btn btn-gold w-full !min-h-11 text-sm" onClick={() => cart.add(item)}>
+    <button type="button" className="btn btn-primary w-full !min-h-11 !px-2 !text-[11px] !tracking-[0.08em] sm:!text-xs sm:!tracking-[0.14em]" onClick={() => cart.add(item)}>
       {t.common.addToCart}
     </button>
   )

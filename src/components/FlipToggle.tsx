@@ -16,7 +16,7 @@ export function FlipToggle({ label }: { label: string }) {
         card?.classList.toggle('is-flipped')
         setOn((v) => !v)
       }}
-      className="absolute bottom-2 right-2 z-10 grid h-9 w-9 place-items-center rounded-full bg-cream/90 text-forest-900 shadow-card [@media(hover:hover)]:hidden"
+      className="absolute bottom-2 right-2 z-10 grid h-9 w-9 place-items-center rounded-full bg-cream/90 text-walnut shadow-card [@media(hover:hover)]:hidden"
     >
       <Icon name={on ? 'close' : 'plus'} size={18} />
     </button>

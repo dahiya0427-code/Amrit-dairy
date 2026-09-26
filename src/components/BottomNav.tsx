@@ -16,7 +16,7 @@ export function BottomNav({ whatsapp }: { whatsapp: string }) {
       <div className="flex">
         <Link href={href('/')} className={item}><Icon name="home" />{t.bottomNav.home}</Link>
         <Link href={href('/shop')} className={item}><Icon name="shop" />{t.bottomNav.shop}</Link>
-        <a href={whatsappLink(whatsapp, 'Hi Amrit Dairy!')} target="_blank" rel="noopener" className={`${item} text-leaf-600`}><Icon name="whatsapp" />{t.bottomNav.whatsapp}</a>
+        <a href={whatsappLink(whatsapp, 'Hi Amrit Dairy!')} target="_blank" rel="noopener" className={`${item} text-caramel`}><Icon name="whatsapp" />{t.bottomNav.whatsapp}</a>
         <button type="button" onClick={() => setOpen(true)} className={`${item} relative`}>
           <Icon name="cart" />
           {t.bottomNav.cart}

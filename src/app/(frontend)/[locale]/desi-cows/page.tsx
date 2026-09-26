@@ -35,11 +35,11 @@ export default async function DesiCowsPage({ params }: Props) {
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {sorted.map((b) => (
             <li key={b.id}>
-              <Link href={localePath(locale, `/desi-cows/${b.slug}`)} className="group block rounded-3xl border border-line bg-white p-3 text-center transition hover:shadow-lift">
+              <Link href={localePath(locale, `/desi-cows/${b.slug}`)} className="group block rounded-lg border border-line bg-white p-3 text-center transition hover:shadow-lift">
                 <span className="relative block aspect-square">
                   {mediaUrl(b.image, 'card') && <Image src={mediaUrl(b.image, 'card') as string} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 25vw" className="object-contain transition group-hover:scale-105" />}
                 </span>
-                <span className="mt-2 block font-semibold text-forest-900">{b.name}</span>
+                <span className="mt-2 block font-semibold text-walnut">{b.name}</span>
                 {b.onFarm && <span className="mt-1 inline-block"><Badge tone="ship">{t.cows.onFarm}</Badge></span>}
               </Link>
             </li>
@@ -47,7 +47,7 @@ export default async function DesiCowsPage({ params }: Props) {
         </ul>
       </section>
       <section id="enquiry" className="container-x py-10">
-        <div className="grid gap-8 rounded-3xl bg-malai p-6 md:grid-cols-2 md:p-10">
+        <div className="grid gap-8 rounded-lg bg-malai p-6 md:grid-cols-2 md:p-10">
           <div>
             <SectionHeading title={t.cows.enquiryTitle} intro={t.cows.enquiryText} />
             <a href={telLink(settings.cowPhone)} className="btn btn-primary">{settings.cowPhone}</a>

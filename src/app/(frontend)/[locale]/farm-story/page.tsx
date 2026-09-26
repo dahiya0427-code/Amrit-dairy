@@ -48,7 +48,7 @@ export default async function FarmStoryPage({ params }: Props) {
                 <span className="relative block aspect-square rounded-xl bg-white">
                   {mediaUrl(b.image, 'card') && <Image src={mediaUrl(b.image, 'card') as string} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 20vw" className="object-contain" />}
                 </span>
-                <span className="mt-2 block font-semibold text-forest-900">{b.name}</span>
+                <span className="mt-2 block font-semibold text-walnut">{b.name}</span>
                 {b.origin && <span className="block text-sm text-muted">{b.origin}</span>}
               </Link>
             </li>
@@ -59,7 +59,7 @@ export default async function FarmStoryPage({ params }: Props) {
       <section className="container-x py-12">
         <ul className="grid gap-4 sm:grid-cols-3">
           {t.farm.stats.map((s) => (
-            <li key={s.label} className="rounded-3xl bg-forest-900 p-6 text-center text-cream">
+            <li key={s.label} className="rounded-lg bg-walnut p-6 text-center text-cream">
               <span className="block font-serif text-5xl font-semibold text-gold-500">{s.value}</span>
               <span className="mt-2 block">{s.label}</span>
             </li>
@@ -73,8 +73,8 @@ export default async function FarmStoryPage({ params }: Props) {
           <ol className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
             {t.farm.journey.map((step, i) => (
               <li key={step} className="relative rounded-2xl bg-cream p-5 text-center shadow-card">
-                <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-mint text-leaf-600"><Icon name={journeyIcons[i]} /></span>
-                <span className="mt-3 block font-semibold text-forest-900">{step}</span>
+                <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-latte text-caramel"><Icon name={journeyIcons[i]} /></span>
+                <span className="mt-3 block font-semibold text-walnut">{step}</span>
                 {i < t.farm.journey.length - 1 && <span className="absolute -right-3 top-1/2 hidden -translate-y-1/2 text-gold-700 lg:block" aria-hidden="true">→</span>}
               </li>
             ))}
@@ -83,7 +83,7 @@ export default async function FarmStoryPage({ params }: Props) {
       </section>
 
       <section className="container-x py-14">
-        <div className="rounded-3xl bg-forest-800 p-8 text-cream md:p-12">
+        <div className="rounded-lg bg-cocoa p-8 text-cream md:p-12">
           <h2 className="text-3xl !text-cream">{t.farm.familyTitle}</h2>
           <p className="mt-3 max-w-2xl text-cream/85">{t.farm.familyText}</p>
           <div className="mt-6 flex flex-wrap gap-3">

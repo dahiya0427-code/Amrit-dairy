@@ -64,7 +64,7 @@ export default async function AboutPage({ params }: Props) {
         <dl className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-white">
           {facts.map(([k, v]) => (
             <div key={k} className="grid gap-1 p-4 sm:grid-cols-3">
-              <dt className="font-semibold text-forest-900">{k}</dt>
+              <dt className="font-semibold text-walnut">{k}</dt>
               <dd className="sm:col-span-2">{v}</dd>
             </div>
           ))}

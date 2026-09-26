@@ -30,11 +30,11 @@ function FloatingPack({ image, cutout, className = '' }: { image: string | null;
 function Frame({ tone, children }: { tone: 'warm' | 'forest' | 'cream'; children: React.ReactNode }) {
   const bg = {
     warm: 'bg-[radial-gradient(circle_at_30%_20%,#fbebc7,#e8c27a_55%,#b77b2c)] text-ink',
-    forest: 'bg-[radial-gradient(circle_at_70%_10%,#3d6b30,#24401d_60%,#1f3419)] text-cream',
+    forest: 'bg-[radial-gradient(circle_at_70%_10%,#7a5234,#4a2e1c_60%,#2b1a10)] text-cream',
     cream: 'bg-[linear-gradient(160deg,#fffdf7,#f6efdd)] text-ink',
   }[tone]
   return (
-    <div className={`@container relative aspect-square w-full overflow-hidden rounded-3xl ${bg}`}>
+    <div className={`@container relative aspect-square w-full overflow-hidden rounded-lg ${bg}`}>
       <div className="absolute inset-0 flex flex-col px-[9%] pb-[6%] pt-[7%]">{children}</div>
     </div>
   )
@@ -70,7 +70,7 @@ export function storySlides({ product, image, cutout, locale, fssai }: Props): {
         label: s.bilonaTitle,
         node: (
           <Frame tone="warm">
-            <p className={`${title} text-forest-950`}>{s.bilonaTitle}</p>
+            <p className={`${title} text-espresso`}>{s.bilonaTitle}</p>
             <p className="mx-auto mt-[2cqw] max-w-[85%] text-center text-[3.4cqw] leading-snug text-ink/80">{s.bilonaSub}</p>
             <div className="mt-auto flex items-end justify-center gap-[6%]">
               <div className="h-[42cqw] w-[36cqw]"><BilonaArt /></div>
@@ -109,9 +109,9 @@ export function storySlides({ product, image, cutout, locale, fssai }: Props): {
         label: s.compareTitle,
         node: (
           <Frame tone="cream">
-            <p className={`${title} text-forest-900`}>{s.compareTitle}</p>
+            <p className={`${title} text-walnut`}>{s.compareTitle}</p>
             <div className="mt-[4cqw] grid flex-1 grid-cols-2 gap-[3cqw]">
-              <div className="rounded-[3cqw] bg-forest-900 p-[3.5cqw] text-cream">
+              <div className="rounded-[3cqw] bg-walnut p-[3.5cqw] text-cream">
                 <p className="flex items-center gap-[1.5cqw] font-serif text-[4.6cqw] font-semibold text-gold-500">
                   <span className="grid h-[4.5cqw] w-[4.5cqw] place-items-center rounded-full bg-success text-white"><Icon name="check" size={12} /></span>
                   {s.compareOurs}
@@ -137,13 +137,13 @@ export function storySlides({ product, image, cutout, locale, fssai }: Props): {
     if (kind === 'uses' && product.usage?.length) {
       const uses = product.usage.slice(0, 6)
       const half = Math.ceil(uses.length / 2)
-      const chip = 'rounded-[2.5cqw] bg-cream/90 px-[2.5cqw] py-[1.8cqw] text-center text-[3cqw] font-semibold leading-tight text-forest-900 shadow-card'
+      const chip = 'rounded-[2.5cqw] bg-cream/90 px-[2.5cqw] py-[1.8cqw] text-center text-[3cqw] font-semibold leading-tight text-walnut shadow-card'
       out.push({
         key: kind,
         label: s.usesTitle,
         node: (
           <Frame tone="warm">
-            <p className={`${title} text-forest-950`}>{s.usesTitle}</p>
+            <p className={`${title} text-espresso`}>{s.usesTitle}</p>
             <div className="mt-auto grid grid-cols-[1fr_auto_1fr] items-center gap-[3cqw]">
               <ul className="flex flex-col gap-[3cqw]">{uses.slice(0, half).map((u) => <li key={u.id} className={chip}>{u.text}</li>)}</ul>
               <FloatingPack image={image} cutout={cutout} className="h-[46cqw] w-[26cqw]" />

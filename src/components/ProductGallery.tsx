@@ -42,7 +42,7 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
                 aria-label={t.story.slideLabel(i + 1, slides.length)}
                 aria-current={i === index}
                 className={`relative block h-16 w-16 overflow-hidden rounded-xl border-2 bg-malai transition lg:h-20 lg:w-20 ${
-                  i === index ? 'border-forest-900' : 'border-transparent opacity-70 hover:opacity-100'
+                  i === index ? 'border-walnut' : 'border-transparent opacity-70 hover:opacity-100'
                 }`}
               >
                 {s.thumb}
@@ -52,7 +52,7 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
         </ul>
       )}
       <div className="relative min-w-0 flex-1">
-        <div ref={track} className="slider-track rounded-3xl" tabIndex={0} aria-roledescription="carousel">
+        <div ref={track} className="slider-track rounded-lg" tabIndex={0} aria-roledescription="carousel">
           {slides.map((s, i) => (
             <div key={s.key} role="group" aria-roledescription="slide" aria-label={t.story.slideLabel(i + 1, slides.length)} aria-hidden={i !== index}>
               {s.node}
@@ -61,15 +61,15 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
         </div>
         {slides.length > 1 && (
           <>
-            <button type="button" onClick={() => go(index - 1)} aria-label={t.story.prev} className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-gold-700 text-cream shadow-lift hover:bg-forest-900">
+            <button type="button" onClick={() => go(index - 1)} aria-label={t.story.prev} className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-gold-700 text-cream shadow-lift hover:bg-walnut">
               <Icon name="arrow" className="rotate-180" />
             </button>
-            <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-cream text-forest-900 shadow-lift hover:bg-white">
+            <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-cream text-walnut shadow-lift hover:bg-white">
               <Icon name="arrow" />
             </button>
             <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5" aria-hidden="true">
               {slides.map((s, i) => (
-                <span key={s.key} className={`h-1.5 rounded-full transition-all ${i === index ? 'w-6 bg-forest-900' : 'w-1.5 bg-forest-900/30'}`} />
+                <span key={s.key} className={`h-1.5 rounded-full transition-all ${i === index ? 'w-6 bg-walnut' : 'w-1.5 bg-walnut/30'}`} />
               ))}
             </div>
           </>

@@ -105,18 +105,18 @@ export function ProductBuyBox(p: Props) {
                   onClick={() => setIdx(i)}
                   aria-pressed={selected}
                   className={`relative flex min-h-24 flex-col items-center justify-center rounded-2xl border-2 px-3 py-3 text-center transition ${
-                    selected ? 'border-forest-900 bg-mint shadow-lift' : 'border-line bg-white hover:border-forest-900'
+                    selected ? 'border-walnut bg-latte shadow-lift' : 'border-line bg-white hover:border-walnut'
                   }`}
                 >
                   {i === 0 && p.status === 'active' && !variant.onDemand && (
-                    <span className="absolute -top-2.5 rounded-full bg-forest-900 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-cream">{t.common.bestseller}</span>
+                    <span className="absolute -top-2.5 rounded-full bg-walnut px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-cream">{t.common.bestseller}</span>
                   )}
                   <span className="text-sm font-bold text-ink">{variant.label}</span>
                   {variant.onDemand ? (
                     <span className="mt-1 text-sm font-semibold text-gold-700">{t.common.onDemand}</span>
                   ) : variant.price && p.status === 'active' ? (
                     <>
-                      <span className="mt-1 text-lg font-bold tabular-nums text-forest-900">{formatINR(variant.price)}</span>
+                      <span className="mt-1 text-lg font-bold tabular-nums text-walnut">{formatINR(variant.price)}</span>
                       {per100 && <span className="text-xs text-muted">({formatINR(per100)} {t.pdp.perUnit})</span>}
                     </>
                   ) : null}
@@ -176,9 +176,9 @@ export function ProductBuyBox(p: Props) {
       </div>
 
       {p.subscribable && (
-        <p className="rounded-xl bg-mint px-4 py-3 text-sm">
+        <p className="rounded-xl bg-latte px-4 py-3 text-sm">
           {t.product.subscribeHint}{' '}
-          <Link href={href('/subscribe')} className="font-semibold text-leaf-600 underline underline-offset-4">{t.product.subscribeLink}</Link>
+          <Link href={href('/subscribe')} className="font-semibold text-caramel underline underline-offset-4">{t.product.subscribeLink}</Link>
         </p>
       )}
 

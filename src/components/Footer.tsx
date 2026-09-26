@@ -4,9 +4,8 @@ import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
 import type { Category, LegalPage, ServiceArea, SiteSetting } from '@/payload-types'
 import { telLink, whatsappLink } from '@/lib/site'
-import { FarmHills } from './FarmScene'
 import { Icon } from './Icon'
-import { Logo } from './Logo'
+import { LogoMark, Wordmark } from './Logo'
 
 export function Footer({
   locale,
@@ -29,18 +28,24 @@ export function Footer({
     { name: 'youtube', url: settings.youtube },
   ].filter((s) => s.url)
 
-  const heading = 'mb-3 font-serif text-xl font-bold text-sun'
+  const heading = 'mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gold-500'
   const link = 'hover:text-gold-500 hover:underline underline-offset-4'
 
   return (
-    <footer className="text-cream/90">
-      <FarmHills className="-mb-px block h-28 w-full md:h-40" ground="#1f3a1a" />
-      <div className="bg-leaf-900 pb-24 md:pb-0">
+    <footer className="bg-walnut text-cream/85">
+      <div className="pb-24 md:pb-0">
+      <div className="border-b border-cream/15">
+        <div className="container-x flex flex-col items-center py-12 text-center">
+          <LogoMark size={56} />
+          <Wordmark light className="mt-3" />
+          <p className="mt-4 max-w-xl font-serif text-2xl italic text-cream">{t.footer.tagline}</p>
+          <span className="mt-5 h-px w-24 bg-gold-500/60" aria-hidden="true" />
+        </div>
+      </div>
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Logo light />
-          <p className="mt-4 font-serif text-xl text-cream">{t.footer.tagline}</p>
-          <p className="mt-2 text-sm">{t.footer.about}</p>
+          <h2 className={heading}>Amrit Dairy</h2>
+          <p className="text-sm leading-relaxed">{t.footer.about}</p>
           <p className="mt-3 text-sm">{settings.address}</p>
           {socials.length > 0 && (
             <ul className="mt-4 flex gap-2">
