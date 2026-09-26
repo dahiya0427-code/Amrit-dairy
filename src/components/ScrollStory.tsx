@@ -2,9 +2,10 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { FarmSketch } from './FarmSketch'
 import { useI18n } from './I18nProvider'
+import { attachStoryDriver } from './scroll-story-driver'
 import { Icon } from './Icon'
 
 /**
@@ -51,44 +52,13 @@ export function ScrollStory({ jar, breeds, items, shopHref, whatsappHref }: { ja
   const { t } = useI18n()
   const s = t.scroll
   const root = useRef<HTMLElement>(null)
-  const [active, setActive] = useState(0)
-  const [mobile, setMobile] = useState(false)
+  // Rendered in its first-scene state; the driver takes over on the client
+  // (and the same driver runs in the static preview).
+  const active: number = 0
 
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)')
-    const onMq = () => setMobile(mq.matches)
-    onMq()
-    mq.addEventListener('change', onMq)
-    let frame = 0
-    const onScroll = () => {
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => {
-        const el = root.current
-        if (!el) return
-        const total = el.offsetHeight - window.innerHeight
-        const progress = Math.min(1, Math.max(0, -el.getBoundingClientRect().top / total))
-        setActive(Math.min(SCENES - 1, Math.floor(progress * SCENES)))
-      })
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      cancelAnimationFrame(frame)
-      mq.removeEventListener('change', onMq)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [])
+  useEffect(() => (root.current ? attachStoryDriver(root.current) : undefined), [])
 
-  const goTo = useCallback((i: number) => {
-    const el = root.current
-    if (!el) return
-    const total = el.offsetHeight - window.innerHeight
-    window.scrollTo({ top: el.offsetTop + (total / SCENES) * i + 2, behavior: 'smooth' })
-  }, [])
-
-  const j = (mobile ? jarMobile : jarDesktop)[active]
+  const j = jarDesktop[0]
   const scene = (i: number) => ({
     'data-scene': i,
     inert: active !== i,
@@ -96,8 +66,8 @@ export function ScrollStory({ jar, breeds, items, shopHref, whatsappHref }: { ja
     className: `absolute inset-0 transition-all duration-700 ease-out ${active === i ? 'opacity-100 translate-y-0' : `pointer-events-none opacity-0 ${active > i ? '-translate-y-6' : 'translate-y-6'}`}`,
   })
   const title = 'font-serif text-3xl leading-[0.95] md:text-5xl lg:text-6xl'
-  const benefitPos = ring(6, mobile ? 36 : 40)
-  const nutrientPos = ring(6, mobile ? 41 : 40)
+  const benefitPos = ring(6, 40)
+  const nutrientPos = ring(6, 40)
 
   return (
     <section ref={root} data-story aria-label={s.label} className="relative bg-coal" style={{ height: `${SCENES * 90}svh` }}>
@@ -165,9 +135,9 @@ export function ScrollStory({ jar, breeds, items, shopHref, whatsappHref }: { ja
                     { left: '85%', top: '80%' },
                   ][i]
                   return (
-                    <li key={step} className="flex flex-col items-center text-center md:absolute md:w-40 md:-translate-x-1/2 md:-translate-y-1/2" style={mobile ? undefined : pos}>
+                    <li key={step} className="flex flex-col items-center text-center md:absolute md:left-[var(--l)] md:top-[var(--t)] md:w-40 md:-translate-x-1/2 md:-translate-y-1/2" style={{ '--l': pos.left, '--t': pos.top } as React.CSSProperties}>
                       <span className="relative grid h-11 w-11 place-items-center rounded-full border border-gold-500 bg-char text-gold-700 shadow-card md:h-16 md:w-16">
-                        <Icon name={stepIcons[i]} size={mobile ? 20 : 28} />
+                        <Icon name={stepIcons[i]} size={24} />
                         <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-gold-500 text-[10px] font-bold text-ink md:h-6 md:w-6 md:text-xs">{i + 1}</span>
                       </span>
                       <span className="mt-2 text-[11px] font-semibold leading-tight md:text-base">{step}</span>
@@ -187,7 +157,7 @@ export function ScrollStory({ jar, breeds, items, shopHref, whatsappHref }: { ja
                   {s.s4.points.map((p, i) => (
                     <li key={p} data-reveal={3} data-o className="absolute flex w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center transition duration-500 md:w-36" style={{ ...benefitPos[i], transitionDelay: `${0.08 * i}s`, opacity: active === 3 ? 1 : 0 }}>
                       <span className="grid h-11 w-11 place-items-center rounded-full border border-gold-500 bg-char text-gold-700 shadow-card md:h-14 md:w-14">
-                        <Icon name={pointIcons[i]} size={mobile ? 20 : 26} />
+                        <Icon name={pointIcons[i]} size={24} />
                       </span>
                       <span className="mt-1.5 text-[11px] font-semibold leading-tight md:text-sm">{p}</span>
                     </li>
@@ -247,8 +217,8 @@ export function ScrollStory({ jar, breeds, items, shopHref, whatsappHref }: { ja
                 data-jar
                 data-desktop={JSON.stringify(jarDesktop)}
                 data-mobile={JSON.stringify(jarMobile)}
-                className="h-full w-full transition-all duration-[900ms] ease-[cubic-bezier(0.2,0.7,0.2,1)]"
-                style={{ transform: `translate(calc(-50% + ${mobile ? 0 : j.x}vw), calc(-50% + ${j.y}%)) scale(${j.s}) rotate(${j.r}deg)`, opacity: j.o }}
+                className="h-full w-full transition-[transform,opacity] duration-150 ease-out will-change-transform"
+                style={{ transform: `translate(calc(-50% + ${j.x}vw), calc(-50% + ${j.y}%)) scale(${j.s}) rotate(${j.r}deg)`, opacity: j.o }}
               >
                 <div className="animate-float-wide relative h-full w-full">
                   <Image src={jar} alt="" fill sizes="340px" className="object-contain drop-shadow-[0_30px_35px_rgb(60_35_10/0.3)]" />
@@ -262,7 +232,7 @@ export function ScrollStory({ jar, breeds, items, shopHref, whatsappHref }: { ja
         <ol className="absolute right-3 top-1/2 z-20 hidden -translate-y-1/2 flex-col gap-2.5 md:flex" aria-label={s.label}>
           {Array.from({ length: SCENES }, (_, i) => (
             <li key={i}>
-              <button type="button" data-dot={i} onClick={() => goTo(i)} aria-label={t.story.slideLabel(i + 1, SCENES)} aria-current={active === i} className={`block w-2.5 rounded-full transition-all ${active === i ? 'h-8 bg-gold-500' : 'h-2.5 bg-ink/20 hover:bg-ink/50'}`} />
+              <button type="button" data-dot={i} aria-label={t.story.slideLabel(i + 1, SCENES)} aria-current={active === i} className={`block w-2.5 rounded-full transition-all ${active === i ? 'h-8 bg-gold-500' : 'h-2.5 bg-ink/20 hover:bg-ink/50'}`} />
             </li>
           ))}
         </ol>
