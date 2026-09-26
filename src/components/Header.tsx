@@ -1,9 +1,9 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Locale } from '@/i18n/config'
 import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
 import { CartButton } from './CartButton'
+import { Icon } from './Icon'
 import { LanguageToggle } from './LanguageToggle'
 import { BrandLogo } from './Logo'
 import { MobileMenu } from './MobileMenu'
@@ -11,20 +11,18 @@ import { Ticker } from './Ticker'
 
 type TickerItem = { id: number; text: string; link?: string | null }
 
-/** Premium header: menu left, centred wordmark, language + cart right. */
+/** Clean header: logo left, icon-and-label links right (Mr Dairy style). */
 export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[] }) {
   const t = getDictionary(locale)
   const href = (p: string) => localePath(locale, p)
 
-  const left = [
-    { label: t.nav.shop, href: '/shop' },
-    { label: t.nav.ghee, href: '/shop/ghee' },
-    { label: t.nav.dairy, href: '/shop/dairy' },
-    { label: t.nav.achar, href: '/shop/achar' },
-  ]
-  const right = [
-    { label: t.nav.desiCows, href: '/desi-cows' },
-    { label: t.nav.journal, href: '/blog' },
+  const nav = [
+    { label: t.nav.shop, href: '/shop', icon: 'shop' },
+    { label: t.nav.ghee, href: '/shop/ghee', icon: 'ghee' },
+    { label: t.nav.dairy, href: '/shop/dairy', icon: 'milk' },
+    { label: t.nav.achar, href: '/shop/achar', icon: 'jar' },
+    { label: t.nav.farmStory, href: '/farm-story', icon: 'cow' },
+    { label: t.nav.journal, href: '/blog', icon: 'leaf' },
   ]
 
   const menuGroups = [
@@ -51,65 +49,33 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
     },
   ]
 
-  const navLink = 'whitespace-nowrap px-2 py-2 text-[12px] font-medium uppercase tracking-[0.12em] xl:text-[13px] text-cream transition hover:text-gold-700 xl:px-3'
-
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-coal/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-line bg-char/95 backdrop-blur">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-[80] focus:rounded-full focus:bg-gold-500 focus:px-4 focus:py-2 focus:text-ink">
         {t.nav.skipToContent}
       </a>
       <Ticker items={ticker} />
-      <div className="container-x grid h-[80px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[100px]">
-        <nav aria-label="Main" className="flex items-center">
-          <span className="lg:hidden"><MobileMenu groups={menuGroups} buttonClassName="text-cream hover:bg-latte" /></span>
-          <ul className="hidden items-center lg:flex">
-            {left.map((l) => (
-              <li key={l.href}><Link href={href(l.href)} className={navLink}>{l.label}</Link></li>
-            ))}
-          </ul>
-        </nav>
-
-        <Link href={href('/')} className="flex items-center" aria-label="Amrit Dairy home">
-          <BrandLogo height={84} priority className="h-16 w-auto md:h-[84px]" />
+      <div className="container-x flex h-[76px] items-center justify-between gap-4 md:h-[92px]">
+        <Link href={href('/')} className="flex shrink-0 items-center" aria-label="Amrit Dairy home">
+          <BrandLogo height={80} priority className="h-14 w-auto md:h-[76px]" />
         </Link>
 
-        <div className="flex items-center justify-end gap-1">
+        <nav aria-label="Main" className="flex items-center gap-1">
           <ul className="hidden items-center lg:flex">
-            {/* Our Story mega menu (opens on hover or keyboard focus) */}
-            <li className="group/mega relative">
-              <Link href={href('/farm-story')} className={`${navLink} inline-flex items-center gap-1`} aria-haspopup="true">
-                {t.nav.farmStory} <span aria-hidden="true" className="text-[10px]">▾</span>
-              </Link>
-              <div className="invisible absolute right-0 top-full z-50 w-[720px] pt-5 opacity-0 transition duration-200 group-focus-within/mega:visible group-focus-within/mega:opacity-100 group-hover/mega:visible group-hover/mega:opacity-100">
-                <div className="grid grid-cols-[1.2fr_1fr_0.9fr] gap-6 overflow-hidden border border-line bg-char p-8 text-cream shadow-float">
-                  <div>
-                    <p className="eyebrow mb-4">{t.mega.title}</p>
-                    <ul className="space-y-2">
-                      {t.mega.big.map((l) => (
-                        <li key={l.href}>
-                          <Link href={href(l.href)} className="font-serif text-2xl font-semibold text-cream hover:text-gold-700">{l.label}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <ul className="grid content-start gap-2.5 pt-8 text-sm uppercase tracking-[0.12em]">
-                    {t.mega.small.map((l) => (
-                      <li key={l.href}><Link href={href(l.href)} className="text-cocoa hover:text-gold-700">{l.label}</Link></li>
-                    ))}
-                  </ul>
-                  <div className="relative min-h-52 overflow-hidden bg-gold-500">
-                    <Image src="/images/cat-cow.jpg" alt="" fill sizes="240px" className="object-cover" />
-                  </div>
-                </div>
-              </div>
-            </li>
-            {right.map((l) => (
-              <li key={l.href}><Link href={href(l.href)} className={navLink}>{l.label}</Link></li>
+            {nav.map((l) => (
+              <li key={l.href}>
+                <Link href={href(l.href)} className="group flex w-[78px] flex-col items-center gap-1 rounded-xl px-1 py-2 text-center text-ink transition hover:bg-smoke xl:w-[88px]">
+                  <Icon name={l.icon} size={22} className="text-gold-700 transition group-hover:-translate-y-0.5" />
+                  <span className="text-[10.5px] font-semibold uppercase leading-tight tracking-[0.1em]">{l.label}</span>
+                </Link>
+              </li>
             ))}
           </ul>
-          <span className="hidden sm:block"><LanguageToggle className="border-cream/30 text-cream hover:bg-latte" /></span>
+          <span className="mx-1 hidden h-10 w-px bg-line lg:block" aria-hidden="true" />
+          <span className="hidden sm:block"><LanguageToggle className="border-line text-ink hover:bg-smoke" /></span>
           <CartButton />
-        </div>
+          <span className="lg:hidden"><MobileMenu groups={menuGroups} buttonClassName="text-ink hover:bg-smoke" /></span>
+        </nav>
       </div>
     </header>
   )

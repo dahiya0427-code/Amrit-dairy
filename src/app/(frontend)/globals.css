@@ -4,39 +4,39 @@
 @theme {
   /* Three colours only, taken from the logo: ivory, gold and deep brown.
      Contrast-checked for WCAG AA. */
-  --color-coal: #fffaf2;
+  --color-coal: #ffffff;
   --color-char: #ffffff;
-  --color-smoke: #f8efdc;
-  --color-paper: #fffaf2;
+  --color-smoke: #f8f4ec;
+  --color-paper: #ffffff;
   --color-snow: #fffaf2;
-  --color-espresso: #f8efdc;
+  --color-espresso: #f8f4ec;
   --color-walnut: #c9a24a;
-  --color-cocoa: #f3e6c9;
+  --color-cocoa: #f4ecdb;
   --color-caramel: #7a5a16;
   --color-taupe: #66584b;
-  --color-latte: #f8efdc;
+  --color-latte: #f8f4ec;
   --color-gold-500: #c9a24a;
   --color-gold-600: #b58d36;
   --color-gold-700: #7a5a16;
-  --color-butter: #f3e6c9;
+  --color-butter: #f4ecdb;
   --color-cream: #2b1b10;
-  --color-malai: #f8efdc;
-  --color-parchment: #fffaf2;
+  --color-malai: #f8f4ec;
+  --color-parchment: #ffffff;
   --color-clay: #2b1b10;
   --color-ink: #2b1b10;
   --color-muted: #66584b;
-  --color-line: #ecdfc4;
+  --color-line: #ece3d2;
   --color-success: #1d7a44;
   --color-warning: #7a5a16;
   --color-error: #b3261e;
   --color-whatsapp: #25d366;
   /* former product-family colours, now all the same soft gold (champagne) */
-  --color-ghee: #f3e6c9;
-  --color-milk: #f3e6c9;
-  --color-chilli: #f3e6c9;
-  --color-honey: #f3e6c9;
-  --color-leaf: #f3e6c9;
-  --color-berry: #f3e6c9;
+  --color-ghee: #f4ecdb;
+  --color-milk: #f4ecdb;
+  --color-chilli: #f4ecdb;
+  --color-honey: #f4ecdb;
+  --color-leaf: #f4ecdb;
+  --color-berry: #f4ecdb;
   --color-ghee-ink: #7a5a16;
   --color-milk-ink: #7a5a16;
   --color-chilli-ink: #7a5a16;
@@ -48,11 +48,11 @@
   --color-hill-2: #f8efdc;
   --color-hill-3: #f3e6c9;
 
-  --font-serif: var(--font-display), var(--font-noto-serif-dev), Georgia, serif;
+  --font-serif: var(--font-display), var(--font-mukta), system-ui, sans-serif;
   --font-sans: var(--font-jost), var(--font-mukta), system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-hand: var(--font-display), var(--font-noto-serif-dev), Georgia, serif;
+  --font-hand: var(--font-display), var(--font-mukta), system-ui, sans-serif;
 
-  --radius-card: 24px;
+  --radius-card: 16px;
   --shadow-card: 0 1px 2px rgb(60 35 10 / 0.05), 0 8px 24px rgb(60 35 10 / 0.06);
   --shadow-lift: 0 18px 40px rgb(60 35 10 / 0.12), 0 0 0 1px rgb(201 162 74 / 0.7);
   --shadow-float: 0 24px 60px rgb(60 35 10 / 0.18);
@@ -72,10 +72,13 @@
   }
   h1, h2, h3 {
     font-family: var(--font-serif);
-    line-height: 1.08;
+    line-height: 1.04;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
     color: var(--color-cream);
+  }
+  h1, h2 {
+    text-transform: uppercase;
   }
   :focus-visible {
     outline: 3px solid var(--color-gold-500);

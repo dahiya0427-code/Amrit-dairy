@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Jost, Mukta, Noto_Serif_Devanagari, Playfair_Display } from 'next/font/google'
+import { Barlow_Semi_Condensed, Jost, Mukta } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import '../globals.css'
 
@@ -22,15 +22,14 @@ export async function generateStaticParams() {
   return []
 }
 
-const display = Playfair_Display({ subsets: ['latin'], weight: ['500', '600', '700'], style: ['normal', 'italic'], variable: '--font-display', display: 'swap' })
-const notoSerifDev = Noto_Serif_Devanagari({ subsets: ['devanagari'], weight: ['500', '600', '700'], variable: '--font-noto-serif-dev', display: 'swap' })
+const display = Barlow_Semi_Condensed({ subsets: ['latin'], weight: ['500', '600', '700'], variable: '--font-display', display: 'swap' })
 const jost = Jost({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-jost', display: 'swap' })
 const mukta = Mukta({ subsets: ['latin', 'devanagari'], weight: ['400', '500', '600', '700'], variable: '--font-mukta', display: 'swap' })
 
 // Pages are rendered on first request and cached (ISR); CMS edits purge the cache.
 export const revalidate = 300
 
-export const viewport: Viewport = { themeColor: '#FFFAF2', width: 'device-width', initialScale: 1 }
+export const viewport: Viewport = { themeColor: '#FFFFFF', width: 'device-width', initialScale: 1 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
@@ -53,7 +52,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   ])
 
   return (
-    <html lang={htmlLang[locale]} className={`${display.variable} ${notoSerifDev.variable} ${jost.variable} ${mukta.variable}`}>
+    <html lang={htmlLang[locale]} className={`${display.variable} ${jost.variable} ${mukta.variable}`}>
       <body className="min-h-screen antialiased">
         <I18nProvider locale={locale}>
           <CartProvider>

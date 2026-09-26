@@ -4,6 +4,7 @@ import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
 import { breadcrumbJsonLd, faqJsonLd } from '@/lib/seo'
 import { JsonLd } from './JsonLd'
+import { FarmSketch } from './FarmSketch'
 import { Icon } from './Icon'
 
 export function SectionHeading({ eyebrow, title, intro, align = 'left', as: Tag = 'h2', light = false }: { eyebrow?: string; title: string; intro?: string | null; align?: 'left' | 'center'; as?: 'h1' | 'h2'; light?: boolean }) {
@@ -67,17 +68,14 @@ export function FAQ({ locale, faqs, title }: { locale: Locale; faqs: { question:
 
 export function PageHero({ title, intro, eyebrow, secondary }: { title: string; intro?: string | null; eyebrow?: string; secondary?: string }) {
   return (
-    <section className="relative overflow-hidden border-b border-line bg-coal">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <span className="absolute -right-16 -top-20 h-48 w-48 rounded-full bg-ghee md:-right-24 md:-top-28 md:h-[26rem] md:w-[26rem]" />
-        <span className="absolute -right-24 -top-28 hidden h-[30rem] w-[30rem] rounded-full border border-gold-500/50 md:block" />
+    <section className="relative overflow-hidden border-b border-line bg-char">
+      <div className="container-x relative pb-36 pt-14 text-center md:pb-52 md:pt-20">
+        {eyebrow && <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-gold-700">{eyebrow}</p>}
+        <h1 className="mx-auto max-w-4xl text-5xl leading-[0.95] md:text-7xl">{title}</h1>
+        {secondary && <p className="mt-3 text-xl font-semibold text-gold-700">{secondary}</p>}
+        {intro && <p className="mx-auto mt-4 max-w-2xl text-lg text-muted">{intro}</p>}
       </div>
-      <div className="container-x relative py-16 md:py-24">
-        {eyebrow && <p className="mb-4 inline-flex rounded-full bg-gold-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-gold-700">{eyebrow}</p>}
-        <h1 className="max-w-3xl text-5xl leading-[0.95] md:text-7xl">{title}</h1>
-        {secondary && <p className="mt-4 font-serif text-2xl italic text-gold-700">{secondary}</p>}
-        {intro && <p className="mt-5 max-w-2xl text-lg text-muted">{intro}</p>}
-      </div>
+      <FarmSketch className="absolute inset-x-0 bottom-0 h-32 md:h-48" count={3} />
     </section>
   )
 }

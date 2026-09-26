@@ -4,6 +4,7 @@ import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
 import type { Category, LegalPage, ServiceArea, SiteSetting } from '@/payload-types'
 import { telLink, whatsappLink } from '@/lib/site'
+import { FarmSketch } from './FarmSketch'
 import { Icon } from './Icon'
 import { BrandLogo } from './Logo'
 
@@ -33,7 +34,7 @@ export function Footer({
 
   return (
     <footer className="bg-espresso text-cream/85">
-      <div className="h-px bg-gold-500" aria-hidden="true" />
+      <FarmSketch className="h-28 bg-char md:h-40" count={4} />
       <div className="pb-24 md:pb-0">
       <div className="border-b border-cream/15">
         <div className="container-x flex flex-col items-center py-12 text-center">

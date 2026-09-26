@@ -493,6 +493,19 @@ export const en = {
     shopNow: 'Shop now',
     discover: 'Discover',
   },
+  scroll: {
+    label: 'The Amrit ghee story',
+    skip: 'Skip the story',
+    hint: 'Scroll',
+    s1: { eyebrow: 'From our farm in Sonipat', title: 'Pure Bilona Ghee', text: 'Made from the milk of our own desi cows, the slow and traditional way. Nothing added, nothing taken away.' },
+    s2: { title: 'Wondering what A2 is?', text: 'Indian desi cow breeds like Gir, Sahiwal and Tharparkar naturally give A2 milk. It is the only milk we use.' },
+    s3: { title: 'Made the Bilona way', steps: ['Fresh A2 milk', 'Set into curd', 'Churned in a bilona', 'Makkhan collected', 'Slow-cooked into ghee'] },
+    s4: { title: 'Why families love Amrit', points: ['Our own desi cows', 'Hand-churned from curd', 'No preservatives', 'Packed in glass', 'Small batches', 'FSSAI licensed'] },
+    s5: { title: 'From our farm to your kitchen', cta: 'View' },
+    s6: { title: 'Every spoon of Bilona ghee has', points: ['Vitamin A', 'Vitamin D', 'Vitamin E', 'Vitamin K', 'Omega-3', 'CLA', 'Butyric acid', 'Good fats'] },
+    s8: { title: 'Made for your kitchen' },
+    s7: { title: 'Bring Amrit home', text: 'Order online or on WhatsApp. Fresh delivery in Sonipat, and ghee, achar and honey ship across India.', cta: 'Shop Ghee', cta2: 'Order on WhatsApp' },
+  },
   bottomNav: { home: 'Home', shop: 'Shop', whatsapp: 'WhatsApp', cart: 'Cart', contact: 'Contact' },
 }
 
