@@ -9,7 +9,7 @@ import { Icon } from './Icon'
 export function SectionHeading({ eyebrow, title, intro, align = 'left', as: Tag = 'h2', light = false }: { eyebrow?: string; title: string; intro?: string | null; align?: 'left' | 'center'; as?: 'h1' | 'h2'; light?: boolean }) {
   return (
     <div className={`mb-8 ${align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-3xl'}`}>
-      {eyebrow && <p className={`eyebrow mb-2 ${light ? '!text-gold-500' : ''}`}>{eyebrow}</p>}
+      {eyebrow && <p className={`eyebrow mb-2 ${light ? '!text-gold-700' : ''}`}>{eyebrow}</p>}
       <Tag className={`${Tag === 'h1' ? 'text-4xl md:text-5xl' : 'text-3xl md:text-4xl'} ${light ? '!text-cream' : ''}`}>{title}</Tag>
       {intro && <p className={`mt-3 text-lg ${light ? 'text-cream/85' : 'text-muted'}`}>{intro}</p>}
     </div>
@@ -46,7 +46,7 @@ export function FAQ({ locale, faqs, title }: { locale: Locale; faqs: { question:
   return (
     <section className="container-x py-12" aria-labelledby="faq-title">
       <div className="mx-auto max-w-3xl">
-        <p className="mb-3 text-center"><span className="inline-flex rounded-full bg-gold-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-gold-500">{t.common.faqEyebrow}</span></p>
+        <p className="mb-3 text-center"><span className="inline-flex rounded-full bg-gold-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-gold-700">{t.common.faqEyebrow}</span></p>
         <h2 id="faq-title" className="mb-8 text-center text-4xl md:text-6xl">{title ?? t.common.faqTitle}</h2>
         <div className="space-y-3">
           {faqs.map((f, i) => (
@@ -75,9 +75,9 @@ export function PageHero({ title, intro, eyebrow, secondary }: { title: string; 
         <span className="absolute -bottom-10 left-[38%] h-20 w-20 rounded-full border-2 border-dashed border-leaf/60" />
       </div>
       <div className="container-x relative py-16 md:py-24">
-        {eyebrow && <p className="mb-4 inline-flex rounded-full bg-gold-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-gold-500">{eyebrow}</p>}
+        {eyebrow && <p className="mb-4 inline-flex rounded-full bg-gold-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-gold-700">{eyebrow}</p>}
         <h1 className="max-w-3xl text-5xl leading-[0.95] md:text-7xl">{title}</h1>
-        {secondary && <p className="mt-4 font-serif text-2xl italic text-gold-500">{secondary}</p>}
+        {secondary && <p className="mt-4 font-serif text-2xl italic text-gold-700">{secondary}</p>}
         {intro && <p className="mt-5 max-w-2xl text-lg text-muted">{intro}</p>}
       </div>
     </section>
@@ -88,8 +88,8 @@ export function Badge({ tone, children }: { tone: 'bestseller' | 'new' | 'soon' 
   const tones = {
     bestseller: 'bg-ink text-gold-500',
     new: 'bg-leaf text-ink',
-    soon: 'bg-ink/85 text-cream',
-    ship: 'bg-ink/85 text-cream',
+    soon: 'bg-ink/85 text-snow',
+    ship: 'bg-ink/85 text-snow',
     local: 'bg-char text-cream border border-line',
   }
   return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold ${tones[tone]}`}>{children}</span>

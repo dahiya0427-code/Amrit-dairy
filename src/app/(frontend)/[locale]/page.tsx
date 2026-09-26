@@ -48,7 +48,7 @@ function Heading({ eyebrow, title, tone = 'ghee', dark = false }: { eyebrow: str
 function Stage({ tone, children }: { tone: Tone; children: React.ReactNode }) {
   return (
     <div className="relative min-h-[680px] overflow-hidden bg-coal md:min-h-[620px]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgb(255_255_255/0.06),transparent_40%)]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgb(255_198_43/0.12),transparent_45%)]" aria-hidden="true" />
       {children}
     </div>
   )
@@ -59,11 +59,11 @@ function Disc({ tone }: { tone: Tone }) {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
       <div className={`absolute aspect-square w-[88%] max-w-[520px] rounded-full border-2 border-dashed opacity-40 ${tones[tone].border}`} />
-      <div className={`absolute aspect-square w-[72%] max-w-[430px] rounded-full ${tones[tone].bg} shadow-[0_0_120px_rgb(0_0_0/0.4)]`}>
+      <div className={`absolute aspect-square w-[72%] max-w-[430px] rounded-full ${tones[tone].bg} shadow-[0_30px_80px_rgb(60_35_10/0.18)]`}>
         <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgb(255_255_255/0.45),transparent_55%)]" />
       </div>
       <span className={`absolute right-[8%] top-[10%] h-6 w-6 rounded-full ${tones[tone].bg} animate-float`} />
-      <span className="absolute bottom-[16%] left-[6%] h-3 w-3 rounded-full bg-cream/70 animate-float [animation-delay:-2s]" />
+      <span className="absolute bottom-[16%] left-[6%] h-3 w-3 rounded-full bg-chilli animate-float [animation-delay:-2s]" />
     </div>
   )
 }
@@ -234,7 +234,7 @@ export default async function HomePage({ params }: Props) {
       <section className="px-3 sm:px-6">
         <div className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[40px] bg-ghee py-16 text-ink md:py-20">
           <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-honey/60" aria-hidden="true" />
-          <div className="absolute -bottom-20 left-10 h-48 w-48 rounded-full bg-cream/40" aria-hidden="true" />
+          <div className="absolute -bottom-20 left-10 h-48 w-48 rounded-full bg-snow/50" aria-hidden="true" />
           <div className="container-x relative grid items-center gap-10 lg:grid-cols-[1.4fr_0.6fr]">
             <div>
               <Heading eyebrow={p.artEyebrow} title={p.artTitle} dark />
@@ -243,7 +243,7 @@ export default async function HomePage({ params }: Props) {
                   <li key={step} className="flex flex-col items-center text-center">
                     <span className="relative grid h-20 w-20 place-items-center rounded-full bg-ink text-ghee">
                       <Icon name={artIcons[i]} size={34} />
-                      <span className="absolute -right-1 -top-1 grid h-7 w-7 place-items-center rounded-full bg-cream text-xs font-bold text-ink">{i + 1}</span>
+                      <span className="absolute -right-1 -top-1 grid h-7 w-7 place-items-center rounded-full bg-snow text-xs font-bold text-ink">{i + 1}</span>
                     </span>
                     <span className="mt-3 max-w-[12rem] font-serif text-xl font-semibold leading-tight">{step}</span>
                   </li>
@@ -251,7 +251,7 @@ export default async function HomePage({ params }: Props) {
               </ol>
             </div>
             <div className="relative mx-auto h-80 w-60 lg:h-[440px] lg:w-72" aria-hidden="true">
-              <div className="absolute inset-[8%] rounded-full bg-cream/50 blur-2xl" />
+              <div className="absolute inset-[8%] rounded-full bg-snow/60 blur-2xl" />
               <div className="animate-float-wide relative h-full w-full">
                 <Image src="/images/ghee-cutout.png" alt="" fill sizes="300px" className="object-contain drop-shadow-[0_24px_30px_rgb(0_0_0/0.35)]" />
               </div>
@@ -278,7 +278,7 @@ export default async function HomePage({ params }: Props) {
                       <Image src={cut} alt="" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-contain drop-shadow-[0_18px_22px_rgb(0_0_0/0.3)] transition duration-500 group-hover:-rotate-3 group-hover:scale-110" />
                     </span>
                   )}
-                  <span className="relative mt-2 inline-flex items-center gap-2 self-start rounded-full bg-ink px-4 py-2 text-sm font-semibold text-cream">
+                  <span className="relative mt-2 inline-flex items-center gap-2 self-start rounded-full bg-ink px-4 py-2 text-sm font-semibold text-snow">
                     {p.shopNow} <Icon name="arrow" size={16} />
                   </span>
                 </Link>
@@ -295,11 +295,11 @@ export default async function HomePage({ params }: Props) {
           <div className="grid gap-5 md:grid-cols-2">
             <div className="relative overflow-hidden rounded-[32px] border-2 border-ghee bg-char p-7 md:p-10">
               <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-ghee/20 blur-2xl" aria-hidden="true" />
-              <p className="relative flex items-center gap-3 font-serif text-3xl font-bold text-ghee">
+              <p className="relative flex items-center gap-3 font-serif text-3xl font-bold text-ghee-ink">
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-leaf text-ink"><Icon name="check" size={20} /></span> {p.ours}
               </p>
               <div className="relative mt-6 grid grid-cols-[1fr_auto] items-end gap-4">
-                <ul className="space-y-3 text-lg">{comparison.map((c) => <li key={c.id} className="flex gap-2"><Icon name="check" size={20} className="mt-1 shrink-0 text-leaf" />{c.ours}</li>)}</ul>
+                <ul className="space-y-3 text-lg">{comparison.map((c) => <li key={c.id} className="flex gap-2"><Icon name="check" size={20} className="mt-1 shrink-0 text-leaf-ink" />{c.ours}</li>)}</ul>
                 <div className="relative h-44 w-32 md:h-56 md:w-40" aria-hidden="true">
                   <div className="animate-float-wide relative h-full w-full">
                     <Image src="/images/ghee-cutout.png" alt="" fill sizes="160px" className="object-contain drop-shadow-2xl" />
@@ -309,7 +309,7 @@ export default async function HomePage({ params }: Props) {
             </div>
             <div className="rounded-[32px] border border-line bg-char/60 p-7 text-muted md:p-10">
               <p className="flex items-center gap-3 font-serif text-3xl font-bold">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-error text-ink"><Icon name="close" size={20} /></span> {p.regular}
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-chilli text-ink"><Icon name="close" size={20} /></span> {p.regular}
               </p>
               <div className="mt-6 grid grid-cols-[1fr_auto] items-end gap-4">
                 <ul className="space-y-3 text-lg">{comparison.map((c) => <li key={c.id} className="flex gap-2"><Icon name="close" size={20} className="mt-1 shrink-0 text-error" />{c.regular}</li>)}</ul>
@@ -356,7 +356,7 @@ export default async function HomePage({ params }: Props) {
           <ul className="grid gap-5 md:grid-cols-3">
             {reviews.slice(0, 6).map((r) => (
               <li key={r.id} className="rounded-[28px] border border-line bg-char p-8">
-                <p className="text-gold-500" aria-label={`${r.rating} / 5`}>{'★'.repeat(r.rating ?? 5)}</p>
+                <p className="text-gold-700" aria-label={`${r.rating} / 5`}>{'★'.repeat(r.rating ?? 5)}</p>
                 <blockquote className="mt-3 font-serif text-xl">“{r.quote}”</blockquote>
                 <p className="mt-4 text-sm font-semibold text-muted">{r.name}{r.locality ? ` · ${r.locality}` : ''}</p>
               </li>
@@ -368,7 +368,7 @@ export default async function HomePage({ params }: Props) {
       {/* Delivery: a sky-blue block */}
       <section className="px-3 py-20 sm:px-6">
         <div className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[40px] bg-milk py-14 text-ink md:py-16">
-          <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-cream/35" aria-hidden="true" />
+          <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-snow/40" aria-hidden="true" />
           <div className="container-x relative grid items-center gap-10 md:grid-cols-2">
             <div>
               <p className="inline-flex rounded-full bg-ink/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em]">{t.nav.delivery}</p>
@@ -377,7 +377,7 @@ export default async function HomePage({ params }: Props) {
               <ul className="mt-6 flex flex-wrap gap-2">
                 {liveAreas.map((a) => (
                   <li key={a.id}>
-                    <Link href={href(`/delivery/${a.slug}`)} className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-cream hover:bg-ink/85">
+                    <Link href={href(`/delivery/${a.slug}`)} className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-snow hover:bg-ink/85">
                       <Icon name="map" size={16} className="text-milk" /> {a.name}
                     </Link>
                   </li>
@@ -404,8 +404,8 @@ export default async function HomePage({ params }: Props) {
                     {mediaUrl(post.cover, 'card') && <Image src={mediaUrl(post.cover, 'card') as string} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-700 group-hover:scale-105" />}
                   </span>
                   <span className="block p-6">
-                    <span className="block text-xs font-bold uppercase tracking-[0.16em] text-honey">{t.blog.categories[post.category]} · {formatDate(post.publishedAt, locale)}</span>
-                    <span className="mt-2 block font-serif text-2xl font-bold leading-snug group-hover:text-gold-500">{post.title}</span>
+                    <span className="block text-xs font-bold uppercase tracking-[0.16em] text-honey-ink">{t.blog.categories[post.category]} · {formatDate(post.publishedAt, locale)}</span>
+                    <span className="mt-2 block font-serif text-2xl font-bold leading-snug group-hover:text-gold-700">{post.title}</span>
                   </span>
                 </Link>
               </li>
@@ -419,11 +419,11 @@ export default async function HomePage({ params }: Props) {
       {/* WhatsApp: a green block */}
       <section className="px-3 pb-16 sm:px-6">
         <div className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[40px] bg-leaf px-4 py-14 text-center text-ink">
-          <div className="absolute -right-16 -bottom-16 h-56 w-56 rounded-full bg-cream/30" aria-hidden="true" />
+          <div className="absolute -right-16 -bottom-16 h-56 w-56 rounded-full bg-snow/35" aria-hidden="true" />
           <h2 className="relative mx-auto max-w-3xl text-4xl leading-[1.02] !text-ink md:text-6xl">{t.home.whatsappTitle}</h2>
           <p className="relative mx-auto mt-4 max-w-2xl text-lg text-ink/80">{t.home.whatsappText}</p>
           <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href={whatsappLink(settings.ordersPhone, 'Hi Amrit Dairy, I want to place an order.')} target="_blank" rel="noopener" className="btn bg-ink !px-8 text-cream hover:bg-ink/85">
+            <a href={whatsappLink(settings.ordersPhone, 'Hi Amrit Dairy, I want to place an order.')} target="_blank" rel="noopener" className="btn bg-ink !px-8 text-snow hover:bg-ink/85">
               <Icon name="whatsapp" /> {t.common.whatsappUs}
             </a>
             <a href={telLink(settings.ordersPhone)} className="btn border-2 border-ink !px-8 text-ink hover:bg-ink/10">

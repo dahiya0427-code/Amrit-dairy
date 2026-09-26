@@ -69,7 +69,7 @@ export default async function FacilityPage({ params }: Props) {
           )}
           {dept && (
             <Link href={localePath(locale, `/departments/${dept.slug}`)} className="card flex items-center gap-3 p-5 hover:shadow-lift">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-walnut text-gold-500"><Icon name={dept.icon ?? 'leaf'} /></span>
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-gold-500 text-ink"><Icon name={dept.icon ?? 'leaf'} /></span>
               <span>
                 <span className="block text-sm text-muted">{t.facilities.managedBy}</span>
                 <span className="block font-semibold text-cream">{dept.title}</span>
@@ -86,7 +86,7 @@ export default async function FacilityPage({ params }: Props) {
             <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {f.steps.map((s, i) => (
                 <li key={s.id ?? i} className="rounded-2xl bg-char p-5 shadow-card">
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-walnut font-serif font-semibold text-gold-500">{i + 1}</span>
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-gold-500 font-serif font-semibold text-ink">{i + 1}</span>
                   <span className="mt-3 block font-semibold text-cream">{s.title}</span>
                   {s.text && <span className="mt-1 block text-muted">{s.text}</span>}
                 </li>

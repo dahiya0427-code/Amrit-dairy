@@ -5,11 +5,11 @@
 export type Tone = 'ghee' | 'milk' | 'chilli' | 'honey' | 'leaf'
 
 export const tones: Record<Tone, { bg: string; text: string; soft: string; ring: string; border: string }> = {
-  ghee: { bg: 'bg-ghee', text: 'text-ghee', soft: 'bg-ghee/15', ring: 'ring-ghee', border: 'border-ghee' },
-  milk: { bg: 'bg-milk', text: 'text-milk', soft: 'bg-milk/15', ring: 'ring-milk', border: 'border-milk' },
-  chilli: { bg: 'bg-chilli', text: 'text-chilli', soft: 'bg-chilli/15', ring: 'ring-chilli', border: 'border-chilli' },
-  honey: { bg: 'bg-honey', text: 'text-honey', soft: 'bg-honey/15', ring: 'ring-honey', border: 'border-honey' },
-  leaf: { bg: 'bg-leaf', text: 'text-leaf', soft: 'bg-leaf/15', ring: 'ring-leaf', border: 'border-leaf' },
+  ghee: { bg: 'bg-ghee', text: 'text-ghee-ink', soft: 'bg-ghee/15', ring: 'ring-ghee', border: 'border-ghee' },
+  milk: { bg: 'bg-milk', text: 'text-milk-ink', soft: 'bg-milk/15', ring: 'ring-milk', border: 'border-milk' },
+  chilli: { bg: 'bg-chilli', text: 'text-chilli-ink', soft: 'bg-chilli/15', ring: 'ring-chilli', border: 'border-chilli' },
+  honey: { bg: 'bg-honey', text: 'text-honey-ink', soft: 'bg-honey/15', ring: 'ring-honey', border: 'border-honey' },
+  leaf: { bg: 'bg-leaf', text: 'text-leaf-ink', soft: 'bg-leaf/15', ring: 'ring-leaf', border: 'border-leaf' },
 }
 
 const byCategory: Record<string, Tone> = { ghee: 'ghee', dairy: 'milk', achar: 'chilli', pantry: 'honey' }

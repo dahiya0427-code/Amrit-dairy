@@ -59,8 +59,8 @@ export default async function FarmStoryPage({ params }: Props) {
       <section className="container-x py-12">
         <ul className="grid gap-4 sm:grid-cols-3">
           {t.farm.stats.map((s) => (
-            <li key={s.label} className="rounded-lg bg-walnut p-6 text-center text-cream">
-              <span className="block font-serif text-5xl font-semibold text-gold-500">{s.value}</span>
+            <li key={s.label} className="rounded-lg bg-gold-500 p-6 text-center text-ink">
+              <span className="block font-serif text-5xl font-semibold text-gold-700">{s.value}</span>
               <span className="mt-2 block">{s.label}</span>
             </li>
           ))}
@@ -83,7 +83,7 @@ export default async function FarmStoryPage({ params }: Props) {
       </section>
 
       <section className="container-x py-14">
-        <div className="rounded-lg bg-cocoa p-8 text-cream md:p-12">
+        <div className="rounded-lg bg-milk p-8 text-ink md:p-12">
           <h2 className="text-3xl !text-cream">{t.farm.familyTitle}</h2>
           <p className="mt-3 max-w-2xl text-cream/85">{t.farm.familyText}</p>
           <div className="mt-6 flex flex-wrap gap-3">

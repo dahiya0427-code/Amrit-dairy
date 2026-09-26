@@ -15,7 +15,7 @@ export function Wordmark({ light = false, className = '' }: { light?: boolean; c
   return (
     <span className={`flex flex-col items-center leading-none ${className}`}>
       <span className={`font-serif text-[28px] font-semibold tracking-[0.28em] ${light ? 'text-cream' : 'text-cream'}`}>AMRIT</span>
-      <span className={`mt-1 text-[9px] font-medium tracking-[0.42em] ${light ? 'text-gold-500' : 'text-gold-700'}`}>DAIRY · SONIPAT</span>
+      <span className={`mt-1 text-[9px] font-medium tracking-[0.42em] ${light ? 'text-gold-700' : 'text-gold-700'}`}>DAIRY · SONIPAT</span>
     </span>
   )
 }

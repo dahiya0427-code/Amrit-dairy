@@ -2,32 +2,33 @@
 
 /* Brand tokens (Doc 03 §2). Contrast-checked for WCAG 2.2 AA. */
 @theme {
-  /* Dark & vibrant: warm near-black base, gold luxury accents and one bold
-     colour per product family. Contrast-checked for WCAG AA on coal/char. */
-  --color-coal: #0f0c0a;
-  --color-char: #1a1613;
-  --color-smoke: #26201c;
-  --color-paper: #f5eee2;
-  --color-espresso: #0b0907;
-  --color-walnut: #1f1a16;
-  --color-cocoa: #2e2621;
-  --color-caramel: #ffa24c;
-  --color-taupe: #c9b8a2;
-  --color-latte: #26201c;
+  /* Bright & vibrant: warm off-white base, deep-brown text and one bold
+     colour per product family. Contrast-checked for WCAG AA. */
+  --color-coal: #fff8ec;
+  --color-char: #ffffff;
+  --color-smoke: #fbf0dc;
+  --color-paper: #fff8ec;
+  --color-snow: #fffaf0;
+  --color-espresso: #fbf0dc;
+  --color-walnut: #ffc62b;
+  --color-cocoa: #62c9ff;
+  --color-caramel: #a8480f;
+  --color-taupe: #6b5d50;
+  --color-latte: #fbf0dc;
   --color-gold-500: #ffc62b;
   --color-gold-600: #f0b30f;
-  --color-gold-700: #ffd25e;
-  --color-butter: #3a2f14;
-  --color-cream: #fbf3e4;
-  --color-malai: #26201c;
-  --color-parchment: #0f0c0a;
-  --color-clay: #ff6a4d;
-  --color-ink: #140f0b;
-  --color-muted: #c4b7a5;
-  --color-line: #3a312a;
-  --color-success: #3ddc84;
-  --color-warning: #ffb23e;
-  --color-error: #ff6b5c;
+  --color-gold-700: #875b00;
+  --color-butter: #fff1c7;
+  --color-cream: #2b1b10;
+  --color-malai: #fbf0dc;
+  --color-parchment: #fff8ec;
+  --color-clay: #c2321a;
+  --color-ink: #2b1b10;
+  --color-muted: #66584b;
+  --color-line: #efe2cb;
+  --color-success: #1d7a44;
+  --color-warning: #9a5800;
+  --color-error: #c2321a;
   --color-whatsapp: #25d366;
   /* product-family colours */
   --color-ghee: #ffc62b;
@@ -36,6 +37,12 @@
   --color-leaf: #43d17c;
   --color-honey: #ff9f1c;
   --color-berry: #ff5fa8;
+  /* darker versions of the family colours, for text on light backgrounds */
+  --color-ghee-ink: #875b00;
+  --color-milk-ink: #0a6698;
+  --color-chilli-ink: #b8301a;
+  --color-honey-ink: #9a4f00;
+  --color-leaf-ink: #16733c;
   /* legacy names kept so older markup still renders in the new palette */
   --color-sky: #0f0c0a;
   --color-sun: #ffc62b;
@@ -47,9 +54,9 @@
   --font-hand: var(--font-display), var(--font-noto-serif-dev), Georgia, serif;
 
   --radius-card: 24px;
-  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px rgb(0 0 0 / 0.35);
-  --shadow-lift: 0 18px 40px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 198 43 / 0.25);
-  --shadow-float: 0 24px 60px rgb(0 0 0 / 0.6);
+  --shadow-card: 0 1px 2px rgb(60 35 10 / 0.05), 0 8px 24px rgb(60 35 10 / 0.06);
+  --shadow-lift: 0 18px 40px rgb(60 35 10 / 0.14), 0 0 0 2px rgb(255 198 43 / 0.6);
+  --shadow-float: 0 24px 60px rgb(60 35 10 / 0.18);
 }
 
 @layer base {
@@ -127,11 +134,12 @@
     cursor: not-allowed;
   }
   .btn-primary {
-    background: var(--color-cream);
-    color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-snow);
   }
   .btn-primary:hover {
     background: var(--color-gold-500);
+    color: var(--color-ink);
   }
   /* Gold always carries dark text (Doc 03 §2.4). */
   .btn-gold {
@@ -142,13 +150,13 @@
     background: var(--color-gold-600);
   }
   .btn-outline {
-    border: 1.5px solid rgb(251 243 228 / 0.55);
-    color: var(--color-cream);
-    background: transparent;
+    border: 1.5px solid rgb(43 27 16 / 0.35);
+    color: var(--color-ink);
+    background: var(--color-char);
   }
   .btn-outline:hover {
-    border-color: var(--color-gold-500);
-    color: var(--color-gold-500);
+    border-color: var(--color-ink);
+    background: var(--color-gold-500);
   }
   .btn-outline-light {
     border: 1.5px solid var(--color-cream);
@@ -171,7 +179,7 @@
     color: var(--color-cream);
   }
   .input::placeholder {
-    color: rgb(196 183 165 / 0.8);
+    color: rgb(102 88 75 / 0.75);
   }
   .input:focus {
     outline: 2px solid var(--color-gold-500);

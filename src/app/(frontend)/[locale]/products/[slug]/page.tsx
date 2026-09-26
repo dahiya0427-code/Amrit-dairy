@@ -101,7 +101,7 @@ export default async function ProductPage({ params }: Props) {
     ...storySlides({ product, image: packshot, cutout: mediaUrl(product.cutout, 'card'), locale, fssai: settings.fssai }).map((s) => ({
       key: `story-${s.key}`,
       thumb: (
-        <span className="grid h-full w-full place-items-center bg-walnut p-1 text-center text-[9px] font-semibold leading-tight text-gold-500 lg:text-[10px]">
+        <span className="grid h-full w-full place-items-center bg-gold-500 p-1 text-center text-[9px] font-semibold leading-tight text-ink lg:text-[10px]">
           {s.label}
         </span>
       ),
@@ -215,7 +215,7 @@ export default async function ProductPage({ params }: Props) {
             <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {product.process.map((s, i) => (
                 <li key={s.id ?? i} className="flex gap-4 rounded-2xl bg-char p-5 shadow-card">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-walnut font-serif font-semibold text-gold-500">{i + 1}</span>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold-500 font-serif font-semibold text-ink">{i + 1}</span>
                   <span>
                     <span className="block font-semibold text-cream">{s.title}</span>
                     {s.text && <span className="mt-1 block text-muted">{s.text}</span>}

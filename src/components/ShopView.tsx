@@ -50,12 +50,12 @@ export function ShopView({
               <p className="mt-3 max-w-xl text-lg text-ink/80">{active?.intro ?? t.shop.intro}</p>
               <ul className="mt-5 flex flex-wrap gap-2">
                 {(active?.pills?.length ? active.pills.map((p) => p.text) : t.heroPills).map((pill) => (
-                  <li key={pill} className="rounded-full bg-ink px-4 py-1.5 text-sm font-semibold text-cream">{pill}</li>
+                  <li key={pill} className="rounded-full bg-ink px-4 py-1.5 text-sm font-semibold text-snow">{pill}</li>
                 ))}
               </ul>
             </div>
             <div className="relative mx-auto h-56 w-full max-w-xs md:h-72" aria-hidden="true">
-              <div className="absolute inset-[6%] rounded-full bg-cream/40" />
+              <div className="absolute inset-[6%] rounded-full bg-snow/55" />
               <div className="animate-float relative h-full w-full">
                 <Image src={bannerSrc} alt="" fill sizes="320px" className="object-contain drop-shadow-[0_20px_25px_rgb(0_0_0/0.35)]" priority />
               </div>

@@ -39,7 +39,7 @@ export default async function ContactPage({ params }: Props) {
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {cards.map((c) => (
             <li key={c.title} className="card flex flex-col p-5">
-              <span className="grid h-11 w-11 place-items-center rounded-full bg-walnut text-gold-500"><Icon name={c.icon} /></span>
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-gold-500 text-ink"><Icon name={c.icon} /></span>
               <h2 className="mt-3 font-sans text-base font-semibold text-muted">{c.title}</h2>
               <p className="mt-1 flex-1 font-semibold text-cream">{c.value}{c.note ? <span className="block text-sm font-normal text-muted">{c.note}</span> : null}</p>
               <div className="mt-4 flex flex-wrap gap-2">

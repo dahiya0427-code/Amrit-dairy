@@ -84,12 +84,12 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
                       <Image src={(cutoutSrc || src) as string} alt="" fill sizes="120px" className={cutoutSrc ? 'object-contain drop-shadow-lg' : 'object-contain p-2'} />
                     </span>
                   )}
-                  <span className="font-serif text-sm font-semibold text-gold-500 sm:text-lg">{product.secondaryName || product.title}</span>
+                  <span className="font-serif text-sm font-semibold text-gold-700 sm:text-lg">{product.secondaryName || product.title}</span>
                   {points.length > 0 && (
                     <span className="flex flex-col gap-1 text-left text-[11px] leading-snug sm:text-sm">
                       {points.map((p) => (
                         <span key={p} className="flex items-start gap-1.5">
-                          <Icon name="check" size={14} className="mt-0.5 shrink-0 text-gold-500" />
+                          <Icon name="check" size={14} className="mt-0.5 shrink-0 text-gold-700" />
                           {p}
                         </span>
                       ))}
@@ -115,7 +115,7 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
         {product.secondaryName && <p className="text-sm text-muted">{product.secondaryName}</p>}
         <div className="mt-auto pt-2">
           {price ? (
-            <p className="mb-3 text-xl font-bold tabular-nums text-gold-500">
+            <p className="mb-3 text-xl font-bold tabular-nums text-gold-700">
               {hasMultiplePrices(product) && <span className="text-sm font-normal text-muted">{t.common.from} </span>}
               {formatINR(price)}
               {variants.length === 1 && <span className="ml-1 text-sm font-normal text-muted">· {variants[0].label}</span>}

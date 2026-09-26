@@ -109,7 +109,7 @@ export function ProductBuyBox(p: Props) {
                   }`}
                 >
                   {i === 0 && p.status === 'active' && !variant.onDemand && (
-                    <span className="absolute -top-2.5 rounded-full bg-walnut px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-cream">{t.common.bestseller}</span>
+                    <span className="absolute -top-2.5 rounded-full bg-gold-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink">{t.common.bestseller}</span>
                   )}
                   <span className="text-sm font-bold text-cream">{variant.label}</span>
                   {variant.onDemand ? (

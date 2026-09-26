@@ -98,7 +98,7 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
                       <li key={l.href}><Link href={href(l.href)} className="text-cocoa hover:text-gold-700">{l.label}</Link></li>
                     ))}
                   </ul>
-                  <div className="relative min-h-52 overflow-hidden bg-walnut">
+                  <div className="relative min-h-52 overflow-hidden bg-gold-500">
                     <Image src="/images/cat-cow.jpg" alt="" fill sizes="240px" className="object-cover" />
                   </div>
                 </div>

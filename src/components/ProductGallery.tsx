@@ -61,7 +61,7 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
         </div>
         {slides.length > 1 && (
           <>
-            <button type="button" onClick={() => go(index - 1)} aria-label={t.story.prev} className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-gold-700 text-cream shadow-lift hover:bg-walnut">
+            <button type="button" onClick={() => go(index - 1)} aria-label={t.story.prev} className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-gold-700 text-ink shadow-lift hover:bg-gold-500">
               <Icon name="arrow" className="rotate-180" />
             </button>
             <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-char text-cream shadow-lift hover:bg-char">
@@ -69,7 +69,7 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
             </button>
             <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5" aria-hidden="true">
               {slides.map((s, i) => (
-                <span key={s.key} className={`h-1.5 rounded-full transition-all ${i === index ? 'w-6 bg-walnut' : 'w-1.5 bg-walnut/30'}`} />
+                <span key={s.key} className={`h-1.5 rounded-full transition-all ${i === index ? 'w-6 bg-ink' : 'w-1.5 bg-ink/25'}`} />
               ))}
             </div>
           </>

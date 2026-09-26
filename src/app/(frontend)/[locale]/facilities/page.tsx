@@ -34,7 +34,7 @@ export default async function FacilitiesPage({ params }: Props) {
           {facilities.map((f) => (
             <li key={f.id}>
               <Link href={localePath(locale, `/facilities/${f.slug}`)} className="card group block h-full overflow-hidden hover:shadow-lift">
-                <span className="relative flex aspect-[16/10] items-center justify-center bg-walnut text-gold-500">
+                <span className="relative flex aspect-[16/10] items-center justify-center bg-gold-500 text-ink">
                   {mediaUrl(f.image, 'card') ? (
                     <Image src={mediaUrl(f.image, 'card') as string} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition group-hover:scale-105" />
                   ) : (

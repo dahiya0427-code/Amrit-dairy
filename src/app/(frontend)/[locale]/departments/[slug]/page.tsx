@@ -84,7 +84,7 @@ export default async function DepartmentPage({ params }: Props) {
             {facilities.map((f) => (
               <li key={f.id}>
                 <Link href={localePath(locale, `/facilities/${f.slug}`)} className="card block h-full p-5 hover:shadow-lift">
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-walnut text-gold-500"><Icon name={f.icon ?? 'leaf'} /></span>
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-gold-500 text-ink"><Icon name={f.icon ?? 'leaf'} /></span>
                   <span className="mt-3 block font-semibold text-cream">{f.title}</span>
                   <span className="mt-1 block text-sm text-muted">{f.summary}</span>
                 </Link>

@@ -28,8 +28,8 @@ export function Footer({
     { name: 'youtube', url: settings.youtube },
   ].filter((s) => s.url)
 
-  const heading = 'mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gold-500'
-  const link = 'hover:text-gold-500 hover:underline underline-offset-4'
+  const heading = 'mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700'
+  const link = 'hover:text-gold-700 hover:underline underline-offset-4'
 
   return (
     <footer className="bg-espresso text-cream/85">
@@ -110,7 +110,7 @@ export function Footer({
       {areas.length > 0 && (
         <div className="border-t border-cream/15">
           <div className="container-x flex flex-wrap items-center gap-x-4 gap-y-2 py-4 text-sm">
-            <span className="font-semibold text-gold-500">{t.footer.areas}:</span>
+            <span className="font-semibold text-gold-700">{t.footer.areas}:</span>
             {areas.map((a) => (
               <Link key={a.id} className={link} href={href(`/delivery/${a.slug}`)}>{a.name}, {a.city}</Link>
             ))}
