@@ -9,6 +9,8 @@ import { mediaOf, mediaUrl } from '@/lib/media'
 import { buyableVariants, hasMultiplePrices, minPrice } from '@/lib/product'
 import { Badge } from './ui'
 import { CardAddButton } from './CardAddButton'
+import { FlipToggle } from './FlipToggle'
+import { Icon } from './Icon'
 
 export function ProductCard({ product, locale, priority = false }: { product: Product; locale: Locale; priority?: boolean }) {
   const t = getDictionary(locale)
@@ -32,27 +34,63 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
         }
       : null
   const url = localePath(locale, `/products/${product.slug}`)
+  const hoverSrc = mediaUrl(product.hoverImage, 'card')
+  const cutoutSrc = mediaUrl(product.cutout, 'card')
+  const points = (product.cardPoints ?? []).map((p) => p.text).slice(0, 3)
 
   return (
-    <article className="card group flex flex-col overflow-hidden transition hover:shadow-lift">
-      <Link href={url} className="relative block aspect-square bg-malai" tabIndex={-1} aria-hidden="true">
-        {src && (
-          <Image
-            src={src}
-            alt={mediaOf(img)?.alt ?? product.title}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-contain p-3 transition duration-300 group-hover:scale-[1.03]"
-            priority={priority}
-          />
-        )}
-        <span className="absolute left-3 top-3 flex flex-col items-start gap-1">
+    <article className="card group flex flex-col overflow-hidden transition hover:shadow-lift [&.is-flipped_.flip-inner]:[transform:rotateY(180deg)]">
+      <div className="relative aspect-square">
+        <Link href={url} className="flip absolute inset-0 block" tabIndex={-1} aria-hidden="true">
+          <span className="flip-inner block">
+            {/* Front: packshot */}
+            <span className="flip-face block bg-malai">
+              {src && (
+                <Image
+                  src={src}
+                  alt={mediaOf(img)?.alt ?? product.title}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="object-contain p-3"
+                  priority={priority}
+                />
+              )}
+            </span>
+            {/* Back: second photo, or a details card */}
+            <span className="flip-face flip-back block overflow-hidden bg-forest-900 text-cream">
+              {hoverSrc ? (
+                <Image src={hoverSrc} alt="" fill sizes="(max-width: 640px) 50vw, 25vw" className="object-cover" />
+              ) : (
+                <span className="flex h-full flex-col items-center justify-center gap-2 p-3 text-center sm:gap-3 sm:p-5">
+                  {(cutoutSrc || src) && (
+                    <span className={`relative block h-[38%] w-[38%] ${cutoutSrc ? '' : 'overflow-hidden rounded-full bg-malai'}`}>
+                      <Image src={(cutoutSrc || src) as string} alt="" fill sizes="120px" className={cutoutSrc ? 'object-contain drop-shadow-lg' : 'object-contain p-2'} />
+                    </span>
+                  )}
+                  <span className="font-serif text-sm font-semibold text-gold-500 sm:text-lg">{product.secondaryName || product.title}</span>
+                  {points.length > 0 && (
+                    <span className="flex flex-col gap-1 text-left text-[11px] leading-snug sm:text-sm">
+                      {points.map((p) => (
+                        <span key={p} className="flex items-start gap-1.5">
+                          <Icon name="check" size={14} className="mt-0.5 shrink-0 text-gold-500" />
+                          {p}
+                        </span>
+                      ))}
+                    </span>
+                  )}
+                </span>
+              )}
+            </span>
+          </span>
+        </Link>
+        <span className="pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-start gap-1">
           {product.badge === 'bestseller' && <Badge tone="bestseller">{t.common.bestseller}</Badge>}
           {product.badge === 'new' && <Badge tone="new">{t.common.new}</Badge>}
           {product.status === 'coming_soon' && <Badge tone="soon">{t.common.comingSoon}</Badge>}
           {product.status === 'out_of_stock' && <Badge tone="soon">{t.common.outOfStock}</Badge>}
         </span>
-      </Link>
+        <FlipToggle label={t.pdp.flipHint} />
+      </div>
       <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
         <h3 className="font-sans text-base font-semibold leading-snug text-ink sm:text-[17px]">
           <Link href={url} className="hover:underline">{product.title}</Link>

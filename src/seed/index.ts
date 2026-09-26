@@ -13,6 +13,7 @@ import { categories, products } from './data/products'
 import { breeds } from './data/breeds'
 import { departments, facilities, deptBody, facBody } from './data/farm'
 import { areas, faqs, legal, posts, ticker } from './data/content'
+import { categoryExtras, extraFor } from './data/extras'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const MEDIA_DIR = path.resolve(dirname, '../../seed-media')
@@ -62,8 +63,14 @@ async function media(file: string, alt: { en: string; hi: string }) {
 const categoryIds: Record<string, number> = {}
 for (const c of categories) {
   const image = await media(c.image, { en: c.en.title, hi: c.hi.title })
-  const doc = await payload.create({ collection: 'categories', locale: 'en', data: { slug: c.slug, order: c.order, image, ...c.en } })
-  await payload.update({ collection: 'categories', id: doc.id, locale: 'hi', data: c.hi })
+  const cx = categoryExtras[c.slug]
+  const bannerImage = cx ? await media(`cutouts/${cx.banner}`, { en: c.en.title, hi: c.hi.title }) : undefined
+  const doc = await payload.create({
+    collection: 'categories',
+    locale: 'en',
+    data: { slug: c.slug, order: c.order, image, bannerImage, ...c.en, tagline: cx?.en.tagline, pills: cx?.en.pills.map((text) => ({ text })) },
+  })
+  await payload.update({ collection: 'categories', id: doc.id, locale: 'hi', data: { ...c.hi, tagline: cx?.hi.tagline, pills: cx?.hi.pills.map((text) => ({ text })) } })
   categoryIds[c.slug] = doc.id
 }
 log(`Categories: ${categories.length}`)
@@ -74,6 +81,14 @@ for (const p of products) {
   const image = await media(p.image, {
     en: p.image.startsWith('placeholder') ? `${p.en.title} (photo coming soon)` : p.en.title,
     hi: p.image.startsWith('placeholder') ? `${p.hi.title} (फोटो जल्द)` : p.hi.title,
+  })
+  const ex = extraFor(p.slug, p.category)
+  const cutout = ex?.cutout ? await media(`cutouts/${ex.cutout}`, { en: p.en.title, hi: p.hi.title }) : undefined
+  const exLoc = (l?: NonNullable<typeof ex>['en']) => ({
+    cardPoints: l?.cardPoints.map((text) => ({ text })),
+    usage: l?.usage?.map((text) => ({ text })),
+    benefits: l?.benefits?.map((text) => ({ text })),
+    comparison: l?.comparison?.map(([ours, regular]) => ({ ours, regular })),
   })
   const mapLoc = (l: typeof p.en) => ({
     title: l.title,
@@ -99,6 +114,10 @@ for (const p of products) {
       featured: Boolean(p.featured),
       subscribable: Boolean(p.subscribable),
       order: p.order,
+      cutout,
+      badges: (ex?.badges ?? []) as never,
+      storySlides: (ex?.storySlides ?? []) as never,
+      ...exLoc(ex?.en),
       variants: p.variants.map((v) => ({
         sku: v.sku,
         label: v.label.en,
@@ -118,6 +137,7 @@ for (const p of products) {
     data: {
       variants: (doc.variants ?? []).map((v, i) => ({ ...v, label: p.variants[i].label.hi, unitPriceLabel: p.variants[i].unit?.hi })),
       ...mapLoc(p.hi),
+      ...exLoc(ex?.hi),
     },
   })
   productIds[p.slug] = doc.id

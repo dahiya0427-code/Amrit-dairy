@@ -233,3 +233,35 @@
     animation: none;
   }
 }
+
+/* ── Motion: floating product (hero, banners) ─────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-14px) rotate(1deg); }
+}
+@keyframes float-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 0.35; }
+  50% { transform: scaleX(0.8); opacity: 0.2; }
+}
+.animate-float { animation: float 4.5s ease-in-out infinite; }
+.animate-float-shadow { animation: float-shadow 4.5s ease-in-out infinite; }
+
+/* ── Flip product card (front photo → back details) ─────────────────── */
+.flip { perspective: 1200px; }
+.flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); transform-style: preserve-3d; }
+.flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-back { transform: rotateY(180deg); }
+@media (hover: hover) {
+  .group:hover .flip-inner, .group:focus-within .flip-inner { transform: rotateY(180deg); }
+}
+
+/* ── Gallery slider ───────────────────────────────────────────────── */
+.slider-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; }
+.slider-track::-webkit-scrollbar { display: none; }
+.slider-track > * { flex: 0 0 100%; scroll-snap-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float, .animate-float-shadow { animation: none; }
+  .flip-inner { transition: none; }
+}
+.is-flipped .flip-inner { transform: rotateY(180deg); }

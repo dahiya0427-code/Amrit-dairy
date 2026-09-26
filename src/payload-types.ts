@@ -213,6 +213,51 @@ export interface Product {
    * Offer daily subscription (milk, curd, buttermilk).
    */
   subscribable?: boolean | null;
+  /**
+   * Product with no background. Used for the floating product on banners and story slides.
+   */
+  cutout?: (number | null) | Media;
+  /**
+   * Optional second photo shown when a shopper hovers the product card. If empty, a details card is shown instead.
+   */
+  hoverImage?: (number | null) | Media;
+  /**
+   * Short points on the back of the product card, e.g. "Hand-churned Bilona".
+   */
+  cardPoints?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Round icon badges shown under the product name.
+   */
+  badges?:
+    | (
+        | 'bilona'
+        | 'desi-cow'
+        | 'makkhan'
+        | 'glass'
+        | 'clay'
+        | 'small-batch'
+        | 'no-additives'
+        | 'fresh'
+        | 'ships'
+        | 'rajasthani'
+      )[]
+    | null;
+  /**
+   * Designed slides added to the product picture slider.
+   */
+  storySlides?: ('bilona' | 'process' | 'compare' | 'source' | 'uses')[] | null;
+  comparison?:
+    | {
+        ours: string;
+        regular: string;
+        id?: string | null;
+      }[]
+    | null;
   highlights?:
     | {
         text: string;
@@ -229,6 +274,21 @@ export interface Product {
   ingredients?: string | null;
   shelfLife?: string | null;
   storage?: string | null;
+  usage?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Keep these factual (taste, process, packing). Avoid medical claims.
+   */
+  benefits?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Shown as an accordion and as FAQPage structured data.
    */
@@ -329,6 +389,23 @@ export interface Category {
    */
   secondaryTitle?: string | null;
   intro?: string | null;
+  /**
+   * Big line on the collection banner, e.g. "Churned from curd. Cooked slow."
+   */
+  tagline?: string | null;
+  /**
+   * Short feature pills on the banner.
+   */
+  pills?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Transparent product image (PNG) that floats on the banner.
+   */
+  bannerImage?: (number | null) | Media;
   image?: (number | null) | Media;
   order?: number | null;
   /**
@@ -1018,6 +1095,23 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   subscribable?: T;
+  cutout?: T;
+  hoverImage?: T;
+  cardPoints?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  badges?: T;
+  storySlides?: T;
+  comparison?:
+    | T
+    | {
+        ours?: T;
+        regular?: T;
+        id?: T;
+      };
   highlights?:
     | T
     | {
@@ -1034,6 +1128,18 @@ export interface ProductsSelect<T extends boolean = true> {
   ingredients?: T;
   shelfLife?: T;
   storage?: T;
+  usage?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  benefits?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
   faqs?:
     | T
     | {
@@ -1066,6 +1172,14 @@ export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
   secondaryTitle?: T;
   intro?: T;
+  tagline?: T;
+  pills?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  bannerImage?: T;
   image?: T;
   order?: T;
   faqs?:

@@ -17,6 +17,9 @@ export type SeedProduct = {
   subscribable?: boolean
   order: number
   variants: SeedVariant[]
+  cutout?: string
+  badges?: string[]
+  storySlides?: string[]
   en: LocalizedProduct
   hi: LocalizedProduct
 }
@@ -30,6 +33,10 @@ type LocalizedProduct = {
   ingredients?: string
   storage?: string
   faqs?: { question: string; answer: string }[]
+  cardPoints?: string[]
+  usage?: string[]
+  benefits?: string[]
+  comparison?: [string, string][]
 }
 
 const bilonaEn = [

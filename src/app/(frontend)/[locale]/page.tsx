@@ -55,10 +55,15 @@ export default async function HomePage({ params }: Props) {
         <div className="absolute inset-0 opacity-25" aria-hidden="true">
           <Image src="/images/hero-ghee.jpg" alt="" fill priority sizes="100vw" className="scale-110 object-cover blur-md" />
         </div>
-        <div className="container-x relative grid items-center gap-8 py-10 md:grid-cols-2 md:py-16">
+        <div className="container-x relative grid items-center gap-8 pb-4 pt-10 md:grid-cols-2 md:pb-6 md:pt-16">
           <div className="order-2 md:order-1">
             <h1 lang="hi" className="text-4xl font-bold leading-tight !text-cream md:text-6xl">{t.home.heroHindi}</h1>
             <p className="mt-4 text-lg font-medium text-cream/90 md:text-xl">{t.home.heroSub}</p>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {t.heroPills.map((pill) => (
+                <li key={pill} className="rounded-full border border-gold-500/60 bg-forest-950/60 px-3.5 py-1.5 text-sm font-semibold text-cream">{pill}</li>
+              ))}
+            </ul>
             <div className="mt-6 rounded-3xl bg-cream p-5 text-ink shadow-float md:p-6">
               <span className="inline-flex rounded-full bg-forest-900 px-3 py-1 text-xs font-bold text-cream">100% {locale === 'hi' ? 'शुद्ध' : 'pure'} · Bilona</span>
               <p className="mt-3 font-serif text-2xl font-semibold text-forest-900">{t.home.heroPriceLabel}</p>
@@ -75,10 +80,32 @@ export default async function HomePage({ params }: Props) {
               </div>
             </div>
           </div>
-          <div className="relative order-1 mx-auto aspect-[4/5] w-full max-w-[260px] sm:max-w-sm md:order-2 md:max-w-md">
-            <Image src="/images/hero-ghee.jpg" alt="Amrit Desi Cow Golden Ghee, Bilona, 1 kg glass jar" fill priority sizes="(max-width: 768px) 80vw, 40vw" className="rounded-[2rem] object-cover shadow-float" />
+          {/* Floating products (like a jar gently bobbing on the farm) */}
+          <div className="relative order-1 mx-auto aspect-[5/4] w-full max-w-[340px] sm:max-w-md md:order-2 md:max-w-lg" aria-hidden="true">
+            <div className="absolute inset-[8%] rounded-full bg-gold-500/25 blur-3xl" />
+            <div className="absolute bottom-[8%] left-[2%] h-[62%] w-[34%]">
+              <div className="animate-float relative h-full w-full [animation-delay:-1.5s]">
+                <Image src="/images/honey-cutout.png" alt="" fill sizes="160px" className="object-contain drop-shadow-2xl" />
+              </div>
+            </div>
+            <div className="absolute bottom-[8%] right-[4%] h-[70%] w-[22%]">
+              <div className="animate-float relative h-full w-full [animation-delay:-3s]">
+                <Image src="/images/milk-cutout.png" alt="" fill sizes="120px" className="object-contain drop-shadow-2xl" />
+              </div>
+            </div>
+            <div className="absolute bottom-[2%] left-1/2 h-[92%] w-[46%] -translate-x-1/2">
+              <div className="animate-float relative h-full w-full">
+                <Image src="/images/ghee-cutout.png" alt="" fill priority sizes="(max-width: 768px) 45vw, 22vw" className="object-contain drop-shadow-2xl" />
+              </div>
+              <div className="animate-float-shadow mx-auto -mt-1 h-4 w-3/4 rounded-full bg-black/50 blur-md" />
+            </div>
           </div>
         </div>
+        {/* Rolling farm hills into the trust strip */}
+        <svg className="relative -mb-px block h-10 w-full md:h-16" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 50 C 240 10, 420 70, 720 40 S 1200 10, 1440 45 V80 H0 Z" fill="#3d6b30" opacity="0.55" />
+          <path d="M0 60 C 300 30, 520 80, 820 55 S 1260 35, 1440 60 V80 H0 Z" fill="#32502c" />
+        </svg>
       </section>
 
       {/* 2 · Trust strip */}

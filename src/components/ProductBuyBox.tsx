@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 import { formatINR } from '@/lib/format'
 import { whatsappLink } from '@/lib/site'
 import { useCart } from './CartProvider'
@@ -18,6 +19,7 @@ export type BuyBoxVariant = {
   price: number | null
   mrp: number | null
   unitPriceLabel: string | null
+  weightGrams: number | null
   onDemand: boolean
   available: boolean
 }
@@ -41,6 +43,17 @@ export function ProductBuyBox(p: Props) {
   const firstAvailable = Math.max(0, p.variants.findIndex((v) => v.available))
   const [idx, setIdx] = useState(firstAvailable)
   const [qty, setQty] = useState(1)
+  const actionsRef = useRef<HTMLDivElement>(null)
+  const [showBar, setShowBar] = useState(false)
+
+  // Show the bottom buy bar once the main buttons have scrolled out of view.
+  useEffect(() => {
+    const el = actionsRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([entry]) => setShowBar(!entry.isIntersecting && entry.boundingClientRect.top < 0))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   const v = p.variants[idx]
   const buyable = p.status === 'active' && v?.available && !v.onDemand && (v.price ?? 0) > 0
 
@@ -81,21 +94,35 @@ export function ProductBuyBox(p: Props) {
       {p.variants.length > 1 && (
         <fieldset>
           <legend className="label">{t.product.variant}</legend>
-          <div className="flex flex-wrap gap-2">
-            {p.variants.map((variant, i) => (
-              <button
-                key={variant.sku}
-                type="button"
-                onClick={() => setIdx(i)}
-                aria-pressed={i === idx}
-                className={`rounded-full border px-4 py-2.5 text-sm font-semibold transition ${
-                  i === idx ? 'border-forest-900 bg-forest-900 text-cream' : 'border-line bg-white text-ink hover:border-forest-900'
-                }`}
-              >
-                {variant.label}
-                {variant.onDemand && <span className="ml-1 font-normal opacity-80">· {t.common.onDemand}</span>}
-              </button>
-            ))}
+          <div className="grid grid-cols-2 gap-3">
+            {p.variants.map((variant, i) => {
+              const per100 = variant.price && variant.weightGrams ? Math.round((variant.price / variant.weightGrams) * 100) : null
+              const selected = i === idx
+              return (
+                <button
+                  key={variant.sku}
+                  type="button"
+                  onClick={() => setIdx(i)}
+                  aria-pressed={selected}
+                  className={`relative flex min-h-24 flex-col items-center justify-center rounded-2xl border-2 px-3 py-3 text-center transition ${
+                    selected ? 'border-forest-900 bg-mint shadow-lift' : 'border-line bg-white hover:border-forest-900'
+                  }`}
+                >
+                  {i === 0 && p.status === 'active' && !variant.onDemand && (
+                    <span className="absolute -top-2.5 rounded-full bg-forest-900 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-cream">{t.common.bestseller}</span>
+                  )}
+                  <span className="text-sm font-bold text-ink">{variant.label}</span>
+                  {variant.onDemand ? (
+                    <span className="mt-1 text-sm font-semibold text-gold-700">{t.common.onDemand}</span>
+                  ) : variant.price && p.status === 'active' ? (
+                    <>
+                      <span className="mt-1 text-lg font-bold tabular-nums text-forest-900">{formatINR(variant.price)}</span>
+                      {per100 && <span className="text-xs text-muted">({formatINR(per100)} {t.pdp.perUnit})</span>}
+                    </>
+                  ) : null}
+                </button>
+              )
+            })}
           </div>
         </fieldset>
       )}
@@ -112,7 +139,7 @@ export function ProductBuyBox(p: Props) {
         </div>
       ) : (
         <>
-          <div className="flex flex-wrap items-center gap-3">
+          <div ref={actionsRef} className="flex flex-wrap items-center gap-3">
             <QtyStepper value={qty} onChange={(q) => setQty(Math.max(1, q))} />
             <button type="button" className="btn btn-gold flex-1" onClick={addToCart} disabled={!buyable}>
               <Icon name="cart" /> {t.common.addToCart}
@@ -155,13 +182,27 @@ export function ProductBuyBox(p: Props) {
         </p>
       )}
 
-      {/* Sticky mobile buy bar (Doc 05 §5.3) */}
+      {/* Sticky buy bar (Doc 05 §5.3): appears after the main buttons scroll away */}
       {buyable && v?.price && (
-        <div className="fixed inset-x-0 bottom-[58px] z-30 flex items-center gap-3 border-t border-line bg-cream px-4 py-2 md:hidden">
-          <span className="font-bold tabular-nums">{formatINR(v.price)}</span>
-          <button type="button" className="btn btn-gold !min-h-11 flex-1" onClick={addToCart}>
-            {t.common.addToCart}
-          </button>
+        <div
+          className={`fixed inset-x-0 bottom-[58px] z-30 border-t border-line bg-cream/95 backdrop-blur transition-transform duration-300 md:bottom-0 ${
+            showBar ? 'translate-y-0' : 'pointer-events-none translate-y-[150%]'
+          }`}
+        >
+          <div className="container-x flex items-center gap-3 py-2">
+            {p.image && (
+              <span className="relative hidden h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-malai sm:block">
+                <Image src={p.image} alt="" fill sizes="48px" className="object-contain" />
+              </span>
+            )}
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-semibold sm:text-base">{p.title}</span>
+              <span className="block text-sm tabular-nums"><strong>{formatINR(v.price)}</strong> <span className="text-muted">· {v.label}</span></span>
+            </span>
+            <button type="button" className="btn btn-gold !min-h-11 shrink-0 sm:!px-10" onClick={addToCart}>
+              {t.common.addToCart}
+            </button>
+          </div>
         </div>
       )}
     </div>
