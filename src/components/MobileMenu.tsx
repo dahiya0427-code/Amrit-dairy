@@ -8,7 +8,7 @@ import { LanguageToggle } from './LanguageToggle'
 
 export type NavLink = { label: string; href: string }
 
-export function MobileMenu({ groups }: { groups: { title: string; links: NavLink[] }[] }) {
+export function MobileMenu({ groups, buttonClassName = 'text-cream hover:bg-white/10' }: { groups: { title: string; links: NavLink[] }[]; buttonClassName?: string }) {
   const { t, href } = useI18n()
   const [open, setOpen] = useState(false)
 
@@ -21,7 +21,7 @@ export function MobileMenu({ groups }: { groups: { title: string; links: NavLink
 
   return (
     <>
-      <button type="button" className="grid h-11 w-11 place-items-center rounded-full text-cream hover:bg-white/10" onClick={() => setOpen(true)} aria-label={t.nav.menu} aria-expanded={open}>
+      <button type="button" className={`grid h-11 w-11 place-items-center rounded-full ${buttonClassName}`} onClick={() => setOpen(true)} aria-label={t.nav.menu} aria-expanded={open}>
         <Icon name="menu" size={24} />
       </button>
       {open && (

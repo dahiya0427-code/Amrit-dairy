@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, Mukta, Noto_Serif_Devanagari } from 'next/font/google'
+import { Baloo_2, Kalam, Mukta } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import '../globals.css'
 
@@ -22,9 +22,9 @@ export async function generateStaticParams() {
   return []
 }
 
-const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-fraunces', display: 'swap' })
+const baloo = Baloo_2({ subsets: ['latin', 'devanagari'], weight: ['500', '600', '700', '800'], variable: '--font-baloo', display: 'swap' })
+const kalam = Kalam({ subsets: ['latin', 'devanagari'], weight: ['400', '700'], variable: '--font-kalam', display: 'swap' })
 const mukta = Mukta({ subsets: ['latin', 'devanagari'], weight: ['400', '500', '600', '700'], variable: '--font-mukta', display: 'swap' })
-const notoSerifDev = Noto_Serif_Devanagari({ subsets: ['devanagari'], weight: ['600', '700'], variable: '--font-noto-serif-dev', display: 'swap' })
 
 // Pages are rendered on first request and cached (ISR); CMS edits purge the cache.
 export const revalidate = 300
@@ -52,7 +52,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   ])
 
   return (
-    <html lang={htmlLang[locale]} className={`${fraunces.variable} ${mukta.variable} ${notoSerifDev.variable}`}>
+    <html lang={htmlLang[locale]} className={`${baloo.variable} ${kalam.variable} ${mukta.variable}`}>
       <body className="min-h-screen antialiased">
         <I18nProvider locale={locale}>
           <CartProvider>

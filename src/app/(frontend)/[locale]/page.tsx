@@ -2,12 +2,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Birds, Cloud, FarmHills, Sun } from '@/components/FarmScene'
 import { HeroParallax } from '@/components/HeroParallax'
 import { Icon } from '@/components/Icon'
 import { MilkSplash } from '@/components/MilkSplash'
 import { PincodeChecker } from '@/components/PincodeChecker'
 import { ProductCard } from '@/components/ProductCard'
-import { FAQ, SectionHeading } from '@/components/ui'
+import { FAQ } from '@/components/ui'
 import { getDictionary } from '@/i18n'
 import { isLocale, localePath, type Locale } from '@/i18n/config'
 import { formatDate, formatINR } from '@/lib/format'
@@ -25,8 +26,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({ locale, path: '/' })
 }
 
-const trustIcons = ['cow', 'ghee', 'jar', 'shield']
+const journeyIcons = ['leaf', 'cow', 'milk', 'lab', 'box', 'home']
 const whyIcons = ['cow', 'truck', 'milk', 'shield', 'search', 'map']
+
+/** Centered section title with a handwritten line above it. */
+function Title({ hand, title, intro }: { hand?: string; title: string; intro?: string }) {
+  return (
+    <div className="mx-auto mb-10 max-w-2xl text-center">
+      {hand && <p className="font-hand text-xl text-gold-700 md:text-2xl">{hand}</p>}
+      <h2 className="text-4xl !text-leaf-900 md:text-5xl">{title}</h2>
+      {intro && <p className="mt-3 text-lg text-muted">{intro}</p>}
+    </div>
+  )
+}
 
 export default async function HomePage({ params }: Props) {
   const { locale: raw } = await params
@@ -49,43 +61,49 @@ export default async function HomePage({ params }: Props) {
   const gheePrice = ghee ? minPrice(ghee) : null
   const farmBreeds = breeds.filter((b) => b.onFarm).slice(0, 5)
   const liveAreas = areas.filter((a) => a.status === 'live')
+  const [heroLine1, heroLine2] = t.home.heroHindi.split(', ')
 
   return (
     <>
-      {/* 1 · Hero */}
-      <section className="relative overflow-hidden bg-forest-900 text-cream">
-        <div className="absolute inset-0 opacity-25" aria-hidden="true">
-          <Image src="/images/hero-ghee.jpg" alt="" fill priority sizes="100vw" className="scale-110 object-cover blur-md" />
-        </div>
-        <div className="container-x relative grid items-center gap-8 pb-4 pt-10 md:grid-cols-2 md:pb-6 md:pt-16">
-          <div className="order-2 md:order-1">
-            <h1 lang="hi" className="text-4xl font-bold leading-tight !text-cream md:text-6xl">{t.home.heroHindi}</h1>
-            <p className="mt-4 text-lg font-medium text-cream/90 md:text-xl">{t.home.heroSub}</p>
+      {/* 1 · Morning on the farm */}
+      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fff7e3_0%,#ffeab4_55%,#fff4d6_100%)]">
+        <Sun className="absolute -top-10 right-[8%] h-56 w-56 md:h-72 md:w-72" />
+        <Cloud className="animate-drift absolute top-10 h-12 w-36 [animation-duration:70s]" />
+        <Cloud className="animate-drift absolute top-28 h-9 w-28 opacity-80 [animation-delay:-35s] [animation-duration:90s]" />
+        <Birds className="animate-birds absolute top-20 h-8 w-24" />
+
+        <div className="container-x relative z-10 grid items-end gap-6 pb-36 pt-10 md:grid-cols-[1.1fr_1fr] md:pb-48 md:pt-16">
+          <div className="pb-4">
+            <p className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-sm font-semibold text-leaf-900 shadow-card">
+              <span className="h-2 w-2 rounded-full bg-hill-2" /> {t.home.heroEyebrow}
+            </p>
+            <h1 lang="hi" className="mt-5 leading-[0.95]">
+              <span className="block text-6xl font-extrabold !text-leaf-900 md:text-8xl">{heroLine1},</span>
+              <span className="mt-2 block font-hand text-5xl font-bold text-gold-700 md:text-7xl">{heroLine2}</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg font-medium text-leaf-900/80 md:text-xl">{t.home.heroSub}</p>
             <ul className="mt-5 flex flex-wrap gap-2">
               {t.heroPills.map((pill) => (
-                <li key={pill} className="rounded-full border border-gold-500/60 bg-forest-950/60 px-3.5 py-1.5 text-sm font-semibold text-cream">{pill}</li>
+                <li key={pill} className="rounded-full bg-leaf-900 px-4 py-2 text-sm font-semibold text-sky">{pill}</li>
               ))}
             </ul>
-            <div className="mt-6 rounded-3xl bg-cream p-5 text-ink shadow-float md:p-6">
-              <span className="inline-flex rounded-full bg-forest-900 px-3 py-1 text-xs font-bold text-cream">100% {locale === 'hi' ? 'शुद्ध' : 'pure'} · Bilona</span>
-              <p className="mt-3 font-serif text-2xl font-semibold text-forest-900">{t.home.heroPriceLabel}</p>
-              <p className="text-muted" lang={locale === 'hi' ? 'en' : 'hi'}>{t.home.heroPriceHindi}</p>
-              <ul className="mt-4 grid grid-cols-2 gap-2 text-sm">
-                {t.home.heroFeatures.map((f) => (
-                  <li key={f} className="flex items-center gap-2"><Icon name="check" size={16} className="text-leaf-600" />{f}</li>
-                ))}
-              </ul>
-              <div className="mt-5 flex flex-wrap items-center gap-3">
-                {gheePrice && <p className="text-2xl font-bold tabular-nums">{formatINR(gheePrice)} <span className="text-base font-normal text-muted">/ kg</span></p>}
-                <Link href={href('/products/desi-cow-golden-ghee')} className="btn btn-gold">{t.common.buyNow}</Link>
-                <Link href={href('/shop')} className="btn btn-outline">{t.home.shopAll}</Link>
-              </div>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Link href={href('/products/desi-cow-golden-ghee')} className="btn btn-gold !px-7 text-lg shadow-lift">
+                {t.common.buyNow} · {t.home.heroPriceLabel}
+              </Link>
+              <Link href={href('/shop')} className="btn btn-outline !border-leaf-900 !text-leaf-900">{t.home.shopAll}</Link>
             </div>
+            {gheePrice && (
+              <p className="mt-4 text-sm text-leaf-900/70">
+                <strong className="font-serif text-2xl text-leaf-900">{formatINR(gheePrice)}</strong> / kg · {t.common.inclTaxes}
+              </p>
+            )}
           </div>
-          {/* Floating bottles: rise in on load, float up and down, and follow the mouse/scroll at different depths */}
-          <HeroParallax className="relative order-1 mx-auto aspect-[5/4] w-full max-w-[340px] sm:max-w-md md:order-2 md:max-w-lg">
+
+          {/* Floating bottles standing on the hill: rise in, float, follow the mouse; the milk splashes */}
+          <HeroParallax className="relative mx-auto aspect-[5/4] w-full max-w-[360px] sm:max-w-md md:max-w-lg">
             <div aria-hidden="true" className="absolute inset-0">
-              <div data-depth="0.3" className="parallax-layer absolute inset-[8%] rounded-full bg-gold-500/25 blur-3xl" />
+              <div data-depth="0.3" className="parallax-layer absolute inset-[6%] rounded-full bg-white/50 blur-3xl" />
               <div data-depth="0.6" className="parallax-layer absolute bottom-[8%] left-[2%] h-[62%] w-[34%]">
                 <div className="animate-rise h-full w-full [animation-delay:0.25s]">
                   <div className="animate-float-wide relative h-full w-full [animation-delay:-1.6s]">
@@ -98,7 +116,6 @@ export default async function HomePage({ params }: Props) {
                   <div className="animate-float-wide relative h-full w-full [animation-delay:-3.2s]">
                     <Image src="/images/milk-cutout.png" alt="" fill sizes="120px" className="object-contain drop-shadow-2xl" />
                   </div>
-                  {/* Milk splash bursts each time the bottle dips */}
                   <MilkSplash delay="-3.2s" className="absolute -bottom-[12%] left-1/2 h-[44%] w-[240%] -translate-x-1/2" />
                 </div>
               </div>
@@ -107,64 +124,58 @@ export default async function HomePage({ params }: Props) {
                   <div className="animate-float-wide relative h-full w-full">
                     <Image src="/images/ghee-cutout.png" alt="Amrit Desi Cow Golden Ghee" fill priority sizes="(max-width: 768px) 45vw, 22vw" className="object-contain drop-shadow-2xl" />
                   </div>
-                  <div className="animate-float-shadow mx-auto -mt-1 h-4 w-3/4 rounded-full bg-black/50 blur-md" />
+                  <div className="animate-float-shadow mx-auto -mt-1 h-4 w-3/4 rounded-full bg-leaf-900/40 blur-md" />
                 </div>
               </div>
             </div>
           </HeroParallax>
         </div>
-        {/* Rolling farm hills into the trust strip */}
-        <svg className="relative -mb-px block h-10 w-full md:h-16" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 50 C 240 10, 420 70, 720 40 S 1200 10, 1440 45 V80 H0 Z" fill="#3d6b30" opacity="0.55" />
-          <path d="M0 60 C 300 30, 520 80, 820 55 S 1260 35, 1440 60 V80 H0 Z" fill="#32502c" />
-        </svg>
+
+        <FarmHills className="absolute inset-x-0 bottom-0 z-0 h-44 w-full md:h-64" ground="#1f3a1a" />
       </section>
 
-      {/* 2 · Trust strip */}
-      <section className="bg-forest-800 text-cream" aria-label="Why Amrit">
-        <ul className="container-x grid grid-cols-2 gap-4 py-6 md:grid-cols-4">
-          {t.home.trust.map((item, i) => (
-            <li key={item.title} className="flex items-center gap-3">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-forest-900 text-gold-500"><Icon name={trustIcons[i]} /></span>
-              <span>
-                <span className="block font-semibold leading-tight">{item.title}</span>
-                <span className="block text-sm text-cream/75">{item.text}</span>
-              </span>
-            </li>
+      {/* 2 · Scrolling product strip */}
+      <section className="overflow-hidden bg-leaf-900 py-4 text-sky" aria-label={t.home.categoriesTitle}>
+        <div className="animate-marquee flex w-max items-center whitespace-nowrap">
+          {[0, 1].map((copy) => (
+            <span key={copy} className="flex items-center" aria-hidden={copy === 1 || undefined}>
+              {t.home.marquee.map((m) => (
+                <span key={m} className="flex items-center font-serif text-2xl font-bold md:text-3xl">
+                  <span className="px-6">{m}</span>
+                  <span className="text-sun" aria-hidden="true">✦</span>
+                </span>
+              ))}
+            </span>
           ))}
-        </ul>
+        </div>
       </section>
 
-      {/* 3 · Categories */}
-      <section className="container-x py-14">
-        <SectionHeading eyebrow={t.home.categoriesEyebrow} title={t.home.categoriesTitle} />
-        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5 lg:gap-4">
+      {/* 3 · Shop by category: round photos */}
+      <section className="container-x py-16">
+        <Title hand={t.home.categoriesEyebrow} title={t.home.categoriesTitle} />
+        <ul className="flex flex-wrap justify-center gap-6 md:gap-10">
           {categories.map((c) => (
             <li key={c.id}>
-              <Link href={href(`/shop/${c.slug}`)} className="group relative block aspect-[4/5] overflow-hidden rounded-3xl bg-forest-900 shadow-lift">
-                {mediaUrl(c.image, 'card') && (
-                  <Image src={mediaUrl(c.image, 'card') as string} alt="" fill sizes="(max-width: 768px) 50vw, 20vw" className="object-cover transition duration-500 group-hover:scale-105" />
-                )}
-                <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 bg-gradient-to-t from-forest-950/95 via-forest-950/70 to-transparent p-4 pt-12 text-cream">
-                  <span>
-                    <span className="block font-serif text-lg font-semibold leading-tight">{c.title}</span>
-                    {c.secondaryTitle && <span className="block text-sm text-cream/80">{c.secondaryTitle}</span>}
-                  </span>
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gold-500 text-ink"><Icon name="arrow" size={16} /></span>
+              <Link href={href(`/shop/${c.slug}`)} className="group flex w-32 flex-col items-center text-center md:w-40">
+                <span className="relative block h-32 w-32 overflow-hidden rounded-full border-4 border-white bg-sky shadow-lift ring-2 ring-sun/60 transition group-hover:-translate-y-1 group-hover:ring-hill-2 md:h-40 md:w-40">
+                  {mediaUrl(c.bannerImage, 'card') ? (
+                    <Image src={mediaUrl(c.bannerImage, 'card') as string} alt="" fill sizes="160px" className="object-contain p-4 transition duration-500 group-hover:scale-110" />
+                  ) : (
+                    mediaUrl(c.image, 'card') && <Image src={mediaUrl(c.image, 'card') as string} alt="" fill sizes="160px" className="object-cover" />
+                  )}
                 </span>
+                <span className="mt-3 font-serif text-xl font-bold text-leaf-900">{c.title}</span>
+                {c.secondaryTitle && <span className="text-sm text-muted">{c.secondaryTitle}</span>}
               </Link>
             </li>
           ))}
           <li>
-            <Link href={href('/desi-cows')} className="group relative block aspect-[4/5] overflow-hidden rounded-3xl bg-forest-900 shadow-lift">
-              <Image src="/images/cat-cow.jpg" alt="" fill sizes="(max-width: 768px) 50vw, 20vw" className="object-cover transition duration-500 group-hover:scale-105" />
-              <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 bg-gradient-to-t from-forest-950/95 via-forest-950/70 to-transparent p-4 pt-12 text-cream">
-                <span>
-                  <span className="block font-serif text-lg font-semibold leading-tight">{t.home.cowTile}</span>
-                  <span className="block text-sm text-cream/80">{t.home.cowTileHindi}</span>
-                </span>
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gold-500 text-ink"><Icon name="arrow" size={16} /></span>
+            <Link href={href('/desi-cows')} className="group flex w-32 flex-col items-center text-center md:w-40">
+              <span className="relative block h-32 w-32 overflow-hidden rounded-full border-4 border-white bg-hill-1 shadow-lift ring-2 ring-sun/60 transition group-hover:-translate-y-1 md:h-40 md:w-40">
+                <Image src="/images/cat-cow.jpg" alt="" fill sizes="160px" className="object-cover" />
               </span>
+              <span className="mt-3 font-serif text-xl font-bold text-leaf-900">{t.home.cowTile}</span>
+              <span className="text-sm text-muted">{t.home.cowTileHindi}</span>
             </Link>
           </li>
         </ul>
@@ -172,99 +183,111 @@ export default async function HomePage({ params }: Props) {
 
       {/* 4 · Bestsellers */}
       {featured.length > 0 && (
-        <section className="bg-malai/60 py-14">
+        <section className="bg-sky py-16">
           <div className="container-x">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <SectionHeading eyebrow={t.home.bestsellersEyebrow} title={t.home.bestsellersTitle} />
-              <Link href={href('/shop')} className="mb-8 font-semibold text-leaf-600 underline underline-offset-4">{t.common.viewAll}</Link>
-            </div>
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
+            <Title hand={t.home.bestsellersEyebrow} title={t.home.bestsellersTitle} />
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
               {featured.map((p) => <ProductCard key={p.id} product={p} locale={locale} />)}
+            </div>
+            <div className="mt-8 text-center">
+              <Link href={href('/shop')} className="btn btn-primary !bg-leaf-900 !px-8">{t.common.viewAll}</Link>
             </div>
           </div>
         </section>
       )}
 
-      {/* 5 · Subscription band */}
-      <section className="bg-forest-800 text-cream">
-        <div className="container-x grid gap-8 py-14 md:grid-cols-2 md:items-center">
-          <div>
-            <h2 className="text-3xl !text-cream md:text-4xl">{t.home.subscribeTitle}</h2>
-            <p className="mt-3 text-lg text-cream/85">{t.home.subscribeText}</p>
-            <ol className="mt-6 grid gap-3 sm:grid-cols-3">
-              {t.home.subscribeSteps.map((s, i) => (
-                <li key={s} className="flex items-center gap-3 rounded-2xl bg-forest-900 p-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold-500 font-bold text-ink">{i + 1}</span>
-                  <span className="font-semibold">{s}</span>
-                </li>
-              ))}
-            </ol>
-            <Link href={href('/subscribe')} className="btn btn-gold mt-6">{t.home.subscribeCta}</Link>
-          </div>
-          <div className="rounded-3xl bg-cream p-5 text-ink">
-            <p className="mb-3 font-serif text-xl font-semibold text-forest-900">{t.home.checkDelivery}</p>
-            <PincodeChecker fulfilment="local" compact />
-          </div>
-        </div>
-      </section>
-
-      {/* 6 · Farm */}
-      <section className="container-x grid items-center gap-10 py-16 md:grid-cols-2">
-        <div className="grid grid-cols-3 gap-3">
-          {farmBreeds.map((b, i) => (
-            <Link key={b.id} href={href(`/desi-cows/${b.slug}`)} className={`group rounded-2xl bg-white p-2 text-center shadow-card ${i === 0 ? 'col-span-2 row-span-2' : ''}`}>
-              <span className="relative block aspect-square">
-                {mediaUrl(b.image, 'card') && <Image src={mediaUrl(b.image, 'card') as string} alt={`${b.name} cow`} fill sizes="(max-width: 768px) 33vw, 20vw" className="object-contain" />}
+      {/* 5 · From our cows to your kitchen */}
+      <section className="container-x py-16">
+        <Title hand={t.home.journeyEyebrow} title={t.home.journeyTitle} intro={t.home.farmText} />
+        <ol className="relative grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+          <svg className="pointer-events-none absolute inset-x-0 top-10 hidden h-6 w-full lg:block" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M20 12 C 160 -4, 300 28, 500 12 S 840 -4, 980 12" stroke="#74b152" strokeWidth="3" strokeDasharray="8 10" fill="none" />
+          </svg>
+          {t.farm.journey.map((step, i) => (
+            <li key={step} className="relative flex flex-col items-center text-center">
+              <span className="relative grid h-20 w-20 place-items-center rounded-full border-4 border-white bg-mint text-hill-3 shadow-lift">
+                <Icon name={journeyIcons[i]} size={34} />
+                <span className="absolute -right-1 -top-1 grid h-7 w-7 place-items-center rounded-full bg-sun font-serif text-sm font-bold text-leaf-900">{i + 1}</span>
               </span>
-              <span className="mt-1 block text-sm font-semibold">{b.name}</span>
-            </Link>
+              <span className="mt-3 font-serif text-lg font-bold text-leaf-900">{step}</span>
+            </li>
           ))}
-          <Link href={href('/desi-cows')} className="grid place-items-center rounded-2xl bg-forest-900 p-2 text-center font-semibold text-cream shadow-card hover:bg-forest-800">
-            <span>
-              <span className="block font-serif text-3xl text-gold-500">18</span>
-              <span className="text-sm">{t.cows.allBreeds} →</span>
-            </span>
-          </Link>
-        </div>
-        <div>
-          <p className="eyebrow mb-2">{t.home.farmEyebrow}</p>
-          <h2 className="text-3xl md:text-4xl">{t.home.farmTitle}</h2>
-          <p className="mt-4 text-lg text-muted">{t.home.farmText}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link href={href('/farm-story')} className="btn btn-primary">{t.home.farmCta}</Link>
-            <Link href={href('/desi-cows')} className="btn btn-outline">{t.nav.desiCows}</Link>
-          </div>
+        </ol>
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <Link href={href('/farm-story')} className="btn btn-primary !bg-leaf-900">{t.home.farmCta}</Link>
+          <Link href={href('/products/desi-cow-golden-ghee')} className="btn btn-gold">{t.home.bilonaCta}</Link>
         </div>
       </section>
 
-      {/* 7 · Bilona process */}
-      <section className="bg-malai/60 py-16">
-        <div className="container-x">
-          <SectionHeading eyebrow={t.home.bilonaEyebrow} title={t.home.bilonaTitle} align="center" />
-          <ol className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-            {t.home.bilonaSteps.map((s, i) => (
-              <li key={s.title} className="relative rounded-2xl bg-cream p-4 text-center shadow-card">
-                <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-forest-900 font-serif text-lg font-semibold text-gold-500">{i + 1}</span>
-                <p className="mt-3 font-semibold text-forest-900">{s.title}</p>
-                <p className="mt-1 text-sm text-muted">{s.text}</p>
+      {/* 6 · Meet the cows (standing on the farm ground) */}
+      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fff4d6,#f3f8e8)] pb-40 pt-16 md:pb-52">
+        <div className="container-x relative z-10">
+          <Title hand={t.cows.onFarm} title={t.home.breedsTitle} />
+          <ul className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2 md:justify-center">
+            {farmBreeds.map((b) => (
+              <li key={b.id} className="snap-start">
+                <Link href={href(`/desi-cows/${b.slug}`)} className="group block w-44 rounded-3xl bg-white p-3 text-center shadow-card transition hover:-translate-y-1 hover:shadow-lift md:w-48">
+                  <span className="relative block aspect-square overflow-hidden rounded-2xl bg-sky">
+                    {mediaUrl(b.image, 'card') && <Image src={mediaUrl(b.image, 'card') as string} alt={`${b.name} cow`} fill sizes="200px" className="object-contain transition group-hover:scale-105" />}
+                  </span>
+                  <span className="mt-2 block font-serif text-lg font-bold text-leaf-900">{b.name}</span>
+                  {b.origin && <span className="block text-xs text-muted">{b.origin}</span>}
+                </Link>
               </li>
             ))}
-          </ol>
-          <div className="mt-8 text-center">
-            <Link href={href('/products/desi-cow-golden-ghee')} className="btn btn-gold">{t.home.bilonaCta}</Link>
+            <li className="snap-start">
+              <Link href={href('/desi-cows')} className="grid h-full w-44 place-items-center rounded-3xl bg-leaf-900 p-4 text-center text-sky shadow-card hover:bg-hill-3 md:w-48">
+                <span>
+                  <span className="block font-serif text-5xl font-extrabold text-sun">18</span>
+                  <span className="font-semibold">{t.home.allBreeds} →</span>
+                </span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <FarmHills className="absolute inset-x-0 bottom-0 h-40 w-full md:h-56" ground="#74b152" />
+      </section>
+
+      {/* 7 · Milk subscription with splash */}
+      <section className="bg-hill-2 pb-16">
+        <div className="container-x">
+          <div className="grid items-center gap-8 overflow-hidden rounded-[2rem] bg-white p-6 shadow-float md:grid-cols-[0.8fr_1.2fr] md:p-10">
+            <div className="relative mx-auto h-72 w-44 md:h-96 md:w-56" aria-hidden="true">
+              <div className="animate-float-wide relative h-full w-full">
+                <Image src="/images/milk-cutout.png" alt="" fill sizes="220px" className="object-contain drop-shadow-2xl" />
+              </div>
+              <MilkSplash className="absolute -bottom-[12%] left-1/2 h-[40%] w-[230%] -translate-x-1/2" />
+            </div>
+            <div>
+              <p className="font-hand text-2xl text-gold-700">{t.nav.subscribe}</p>
+              <h2 className="text-4xl !text-leaf-900 md:text-5xl">{t.home.subscribeTitle}</h2>
+              <p className="mt-3 text-lg text-muted">{t.home.subscribeText}</p>
+              <ol className="mt-6 grid gap-3 sm:grid-cols-3">
+                {t.home.subscribeSteps.map((s, i) => (
+                  <li key={s} className="flex items-center gap-3 rounded-2xl bg-sky p-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-leaf-900 font-serif font-bold text-sun">{i + 1}</span>
+                    <span className="font-semibold text-leaf-900">{s}</span>
+                  </li>
+                ))}
+              </ol>
+              <div className="mt-6 grid gap-4 lg:grid-cols-[auto_1fr] lg:items-center">
+                <Link href={href('/subscribe')} className="btn btn-gold">{t.home.subscribeCta}</Link>
+                <PincodeChecker fulfilment="local" compact />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 8 · Why Amrit */}
+      {/* 8 · Why families choose Amrit */}
       <section className="container-x py-16">
-        <SectionHeading eyebrow={t.home.whyEyebrow} title={t.home.whyTitle} />
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Title hand={t.home.whyEyebrow} title={t.home.whyTitle} />
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {t.home.why.map((w, i) => (
-            <li key={w.title} className="card flex gap-4 p-5">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-mint text-leaf-600"><Icon name={whyIcons[i]} /></span>
+            <li key={w.title} className="flex gap-4 rounded-3xl border border-line bg-white p-6 transition hover:-translate-y-1 hover:shadow-lift">
+              <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-sky text-hill-3"><Icon name={whyIcons[i]} size={28} /></span>
               <span>
-                <span className="block font-semibold text-forest-900">{w.title}</span>
+                <span className="block font-serif text-xl font-bold text-leaf-900">{w.title}</span>
                 <span className="mt-1 block text-muted">{w.text}</span>
               </span>
             </li>
@@ -272,15 +295,15 @@ export default async function HomePage({ params }: Props) {
         </ul>
       </section>
 
-      {/* 9 · Reviews: only real ones, and only once there are at least 3 (Doc 05 §5.1) */}
+      {/* 9 · Reviews: only real ones, and only once there are at least 3 */}
       {reviews.length >= 3 && (
-        <section className="bg-malai/60 py-16">
+        <section className="bg-sky py-16">
           <div className="container-x">
-            <SectionHeading title={t.home.reviewsTitle} />
+            <Title title={t.home.reviewsTitle} />
             <ul className="grid gap-4 md:grid-cols-3">
               {reviews.slice(0, 6).map((r) => (
-                <li key={r.id} className="rounded-2xl bg-cream p-5 shadow-card">
-                  <p className="text-gold-500" aria-label={`${r.rating} / 5`}>{'★'.repeat(r.rating ?? 5)}</p>
+                <li key={r.id} className="rounded-3xl bg-white p-6 shadow-card">
+                  <p className="text-sun" aria-label={`${r.rating} / 5`}>{'★'.repeat(r.rating ?? 5)}</p>
                   <blockquote className="mt-2">“{r.quote}”</blockquote>
                   <p className="mt-3 text-sm font-semibold">{r.name}{r.locality ? ` · ${r.locality}` : ''}</p>
                 </li>
@@ -291,22 +314,23 @@ export default async function HomePage({ params }: Props) {
       )}
 
       {/* 10 · Delivery */}
-      <section className="container-x py-16">
-        <div className="grid gap-8 rounded-3xl bg-mint p-6 md:grid-cols-2 md:p-10">
+      <section className="container-x pb-16">
+        <div className="grid gap-8 rounded-[2rem] bg-leaf-900 p-6 text-sky md:grid-cols-2 md:p-10">
           <div>
-            <h2 className="text-3xl md:text-4xl">{t.home.deliveryTitle}</h2>
-            <p className="mt-3 text-lg text-muted">{t.home.deliveryText}</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
+            <p className="font-hand text-2xl text-sun">{t.nav.delivery}</p>
+            <h2 className="text-4xl !text-sky">{t.home.deliveryTitle}</h2>
+            <p className="mt-3 text-lg text-sky/80">{t.home.deliveryText}</p>
+            <ul className="mt-5 flex flex-wrap gap-2">
               {liveAreas.map((a) => (
                 <li key={a.id}>
-                  <Link href={href(`/delivery/${a.slug}`)} className="inline-flex items-center gap-1.5 rounded-full bg-cream px-3 py-1.5 text-sm font-semibold text-forest-900 hover:underline">
-                    <Icon name="map" size={16} className="text-leaf-600" /> {a.name}
+                  <Link href={href(`/delivery/${a.slug}`)} className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-sm font-semibold hover:bg-white/20">
+                    <Icon name="map" size={16} className="text-sun" /> {a.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="self-center">
+          <div className="self-center rounded-3xl bg-white p-1 text-ink">
             <PincodeChecker />
           </div>
         </div>
@@ -315,20 +339,17 @@ export default async function HomePage({ params }: Props) {
       {/* 11 · Blog */}
       {posts.length > 0 && (
         <section className="container-x pb-4">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <SectionHeading title={t.home.blogTitle} />
-            <Link href={href('/blog')} className="mb-8 font-semibold text-leaf-600 underline underline-offset-4">{t.common.viewAll}</Link>
-          </div>
-          <ul className="grid gap-5 md:grid-cols-3">
+          <Title hand={t.nav.blog} title={t.home.blogTitle} />
+          <ul className="grid gap-6 md:grid-cols-3">
             {posts.map((post) => (
-              <li key={post.id} className="card overflow-hidden">
+              <li key={post.id} className="overflow-hidden rounded-3xl border border-line bg-white transition hover:-translate-y-1 hover:shadow-lift">
                 <Link href={href(`/blog/${post.slug}`)} className="group block">
-                  <span className="relative block aspect-[16/10] bg-malai">
+                  <span className="relative block aspect-[16/10] bg-sky">
                     {mediaUrl(post.cover, 'card') && <Image src={mediaUrl(post.cover, 'card') as string} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />}
                   </span>
                   <span className="block p-5">
                     <span className="eyebrow">{t.blog.categories[post.category]}</span>
-                    <span className="mt-1 block font-serif text-xl font-semibold text-forest-900 group-hover:underline">{post.title}</span>
+                    <span className="mt-1 block font-serif text-xl font-bold text-leaf-900 group-hover:underline">{post.title}</span>
                     <span className="mt-2 block text-sm text-muted">{formatDate(post.publishedAt, locale)}</span>
                   </span>
                 </Link>
@@ -342,15 +363,15 @@ export default async function HomePage({ params }: Props) {
       <FAQ locale={locale} faqs={faqs.map((f) => ({ question: f.question, answer: f.answer }))} />
 
       {/* 13 · WhatsApp band */}
-      <section className="bg-forest-800 text-cream">
-        <div className="container-x py-14 text-center">
-          <h2 className="text-3xl !text-cream md:text-4xl">{t.home.whatsappTitle}</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-cream/85">{t.home.whatsappText}</p>
+      <section className="container-x pb-6">
+        <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(120deg,#ffeab4,#f5b83d)] p-8 text-center md:p-12">
+          <h2 className="text-3xl !text-leaf-900 md:text-5xl">{t.home.whatsappTitle}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-leaf-900/80">{t.home.whatsappText}</p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href={whatsappLink(settings.ordersPhone, 'Hi Amrit Dairy, I want to place an order.')} target="_blank" rel="noopener" className="btn btn-gold">
+            <a href={whatsappLink(settings.ordersPhone, 'Hi Amrit Dairy, I want to place an order.')} target="_blank" rel="noopener" className="btn btn-primary !bg-leaf-900">
               <Icon name="whatsapp" /> {t.common.whatsappUs}
             </a>
-            <a href={telLink(settings.ordersPhone)} className="btn btn-outline-light">
+            <a href={telLink(settings.ordersPhone)} className="btn btn-outline !border-leaf-900 !text-leaf-900">
               <Icon name="phone" /> {t.common.callUs}
             </a>
           </div>

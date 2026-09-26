@@ -4,6 +4,7 @@ import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
 import type { Category, LegalPage, ServiceArea, SiteSetting } from '@/payload-types'
 import { telLink, whatsappLink } from '@/lib/site'
+import { FarmHills } from './FarmScene'
 import { Icon } from './Icon'
 import { Logo } from './Logo'
 
@@ -28,11 +29,13 @@ export function Footer({
     { name: 'youtube', url: settings.youtube },
   ].filter((s) => s.url)
 
-  const heading = 'mb-3 font-serif text-lg font-semibold text-gold-500'
+  const heading = 'mb-3 font-serif text-xl font-bold text-sun'
   const link = 'hover:text-gold-500 hover:underline underline-offset-4'
 
   return (
-    <footer className="bg-forest-900 pb-24 text-cream/90 md:pb-0">
+    <footer className="text-cream/90">
+      <FarmHills className="-mb-px block h-28 w-full md:h-40" ground="#1f3a1a" />
+      <div className="bg-leaf-900 pb-24 md:pb-0">
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Logo light />
@@ -118,6 +121,7 @@ export function Footer({
             ))}
           </ul>
         </div>
+      </div>
       </div>
     </footer>
   )

@@ -23,7 +23,17 @@
   --color-error: #b3261e;
   --color-whatsapp: #25d366;
 
-  --font-serif: var(--font-fraunces), var(--font-noto-serif-dev), Georgia, serif;
+  --font-serif: var(--font-baloo), 'Baloo 2', system-ui, sans-serif;
+  --font-hand: var(--font-kalam), 'Kalam', cursive;
+
+  /* Morning-on-the-farm palette */
+  --color-sky: #fff4d6;
+  --color-sky-2: #ffe7a8;
+  --color-sun: #f5b83d;
+  --color-hill-1: #a8d27a;
+  --color-hill-2: #74b152;
+  --color-hill-3: #3f7f34;
+  --color-leaf-900: #1f3a1a;
   --font-sans: var(--font-mukta), system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --radius-card: 16px;
@@ -46,8 +56,9 @@
   }
   h1, h2, h3 {
     font-family: var(--font-serif);
-    line-height: 1.15;
-    font-weight: 600;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     color: var(--color-forest-900);
   }
   :focus-visible {
@@ -303,4 +314,19 @@
 @media (prefers-reduced-motion: reduce) {
   .milk-crown, .milk-drop { animation: none; }
   .milk-drop { opacity: 0; }
+}
+
+/* ── Farm sky: sun glow, drifting clouds, flying birds ─────────────────── */
+@keyframes drift { from { transform: translateX(-20vw); } to { transform: translateX(110vw); } }
+.animate-drift { animation: drift 60s linear infinite; }
+@keyframes sun-pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.06); opacity: 1; } }
+.animate-sun { animation: sun-pulse 6s ease-in-out infinite; transform-origin: center; }
+@keyframes birds { 0% { transform: translate(-10vw, 0); } 50% { transform: translate(50vw, -20px); } 100% { transform: translate(110vw, 10px); } }
+.animate-birds { animation: birds 38s linear infinite; }
+@keyframes graze { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(4deg); } }
+.animate-graze { animation: graze 3.5s ease-in-out infinite; transform-box: fill-box; transform-origin: 30% 70%; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.animate-marquee { animation: marquee 30s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift, .animate-sun, .animate-birds, .animate-graze, .animate-marquee { animation: none; }
 }
