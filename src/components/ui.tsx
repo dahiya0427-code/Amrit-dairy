@@ -69,13 +69,13 @@ export function FAQ({ locale, faqs, title }: { locale: Locale; faqs: { question:
 export function PageHero({ title, intro, eyebrow, secondary }: { title: string; intro?: string | null; eyebrow?: string; secondary?: string }) {
   return (
     <section className="relative overflow-hidden border-b border-line bg-char">
-      <div className="container-x relative pb-36 pt-14 text-center md:pb-52 md:pt-20">
+      <div className="container-x relative pb-40 pt-14 text-center md:pb-64 md:pt-20">
         {eyebrow && <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-gold-700">{eyebrow}</p>}
         <h1 className="mx-auto max-w-4xl text-5xl leading-[0.95] md:text-7xl">{title}</h1>
         {secondary && <p className="mt-3 text-xl font-semibold text-gold-700">{secondary}</p>}
         {intro && <p className="mx-auto mt-4 max-w-2xl text-lg text-muted">{intro}</p>}
       </div>
-      <FarmSketch className="absolute inset-x-0 bottom-0 h-32 md:h-48" count={3} />
+      <FarmSketch className="absolute inset-x-0 bottom-0 h-36 md:h-64" />
     </section>
   )
 }

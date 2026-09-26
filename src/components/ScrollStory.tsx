@@ -74,7 +74,7 @@ export function ScrollStory({ jar, breeds, items, centre, shopHref, whatsappHref
   const columns = [items[0], items[1], centre, items[2], items[3]].filter(Boolean)
 
   return (
-    <section ref={root} data-story aria-label={s.label} className="relative bg-coal" style={{ height: `${SCENES * 90}svh` }}>
+    <section ref={root} data-story aria-label={s.label} className="relative -mt-[113px] bg-coal md:-mt-[129px]" style={{ height: `${SCENES * 90}svh` }}>
       <a href="#after-story" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-30 focus:rounded-full focus:bg-gold-500 focus:px-4 focus:py-2 focus:text-ink">
         {s.skip}
       </a>
@@ -82,7 +82,7 @@ export function ScrollStory({ jar, breeds, items, centre, shopHref, whatsappHref
         {/* 1 · Pure Bilona Ghee: etched farm */}
         <div {...scene(0)}>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,#f6efe0_0%,rgb(246_239_224/0)_55%)]" aria-hidden="true" />
-          <FarmSketch className="absolute inset-x-0 bottom-0 h-[30%] md:h-[44%]" />
+          <FarmSketch className="absolute inset-x-0 bottom-0 h-[34%] md:h-auto md:aspect-[3000/760]" />
           <div className={inner}>
             <div className="grid content-start gap-6 pt-6 md:grid-cols-[1fr_auto_1fr] md:pt-16">
               <div>

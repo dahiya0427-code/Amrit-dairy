@@ -34,7 +34,7 @@ export function Footer({
 
   return (
     <footer className="bg-espresso text-cream/85">
-      <FarmSketch className="h-28 bg-char md:h-40" count={4} />
+      <FarmSketch className="h-36 bg-char md:h-64" />
       <div className="pb-24 md:pb-0">
       <div className="border-b border-cream/15">
         <div className="container-x flex flex-col items-center py-12 text-center">
