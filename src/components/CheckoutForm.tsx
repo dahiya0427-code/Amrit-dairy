@@ -96,7 +96,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
         description: `Order ${data.orderNumber}`,
         prefill: { name: data.customer.name, email: data.customer.email, contact: data.customer.phone },
         notes: { orderNumber: data.orderNumber },
-        theme: { color: '#4A2E1C' },
+        theme: { color: '#0F0C0A' },
         handler: async (resp: RazorpayResponse) => {
           const v = await fetch('/api/checkout/verify', {
             method: 'POST',
@@ -144,8 +144,8 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
       <h1 className="mb-6 text-4xl">{c.title}</h1>
       <form onSubmit={onSubmit} className="grid gap-8 lg:grid-cols-5">
         <div className="space-y-5 lg:col-span-3">
-          <fieldset className="space-y-4 rounded-lg border border-line bg-white p-5 md:p-6">
-            <legend className="px-2 font-serif text-xl font-semibold text-walnut">1 · {c.contact}</legend>
+          <fieldset className="space-y-4 rounded-lg border border-line bg-char p-5 md:p-6">
+            <legend className="px-2 font-serif text-xl font-semibold text-cream">1 · {c.contact}</legend>
             <div className="grid gap-4 sm:grid-cols-2">
               {field('name', c.name, { required: true, autoComplete: 'name', maxLength: 100 })}
               {field('phone', c.phone, { required: true, type: 'tel', inputMode: 'tel', autoComplete: 'tel', pattern: '^(\\+?91[\\s-]?)?[6-9][0-9]{4}[\\s-]?[0-9]{5}$' })}
@@ -187,7 +187,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
           <ul className="space-y-3">
             {cart.items.map((i) => (
               <li key={i.sku} className="flex items-center gap-3">
-                <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-white">
+                <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-paper">
                   {i.image && <Image src={i.image} alt="" fill sizes="56px" className="object-contain" />}
                 </span>
                 <span className="flex-1 text-sm">
@@ -211,7 +211,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
               <Link href={href('/legal/terms-of-service')} className="underline" target="_blank">↗</Link>
             </span>
           </label>
-          {error && <p role="alert" className="rounded-xl bg-white p-3 text-sm font-medium text-error">{error}</p>}
+          {error && <p role="alert" className="rounded-xl bg-char p-3 text-sm font-medium text-error">{error}</p>}
           <button type="submit" className="btn btn-gold w-full text-lg" disabled={busy || !cart.ready || freshBlocked}>
             {busy ? c.processing : onlinePayments ? c.pay(formatINR(total)) : c.placeOrder}
           </button>

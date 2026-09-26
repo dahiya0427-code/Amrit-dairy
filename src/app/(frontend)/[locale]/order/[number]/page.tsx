@@ -58,7 +58,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
       </div>
 
       <h2 className="mb-3 mt-10 text-2xl">{t.order.items}</h2>
-      <ul className="divide-y divide-line rounded-2xl border border-line bg-white">
+      <ul className="divide-y divide-line rounded-2xl border border-line bg-char">
         {(order.items ?? []).map((i) => (
           <li key={i.id} className="flex justify-between gap-4 p-4">
             <span>

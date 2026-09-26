@@ -36,7 +36,7 @@ export default async function DeliveryPage({ params }: Props) {
             {areas.map((a) => (
               <li key={a.id}>
                 <Link href={localePath(locale, `/delivery/${a.slug}`)} className="card flex items-center justify-between gap-3 p-4 hover:shadow-lift">
-                  <span className="flex items-center gap-2 font-semibold text-walnut"><Icon name="map" className="text-caramel" /> {a.name}, {a.city}</span>
+                  <span className="flex items-center gap-2 font-semibold text-cream"><Icon name="map" className="text-caramel" /> {a.name}, {a.city}</span>
                   <Badge tone={a.status === 'live' ? 'ship' : 'soon'}>{a.status === 'live' ? t.delivery.live : t.delivery.comingSoon}</Badge>
                 </Link>
               </li>

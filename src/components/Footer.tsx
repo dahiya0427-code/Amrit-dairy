@@ -33,6 +33,7 @@ export function Footer({
 
   return (
     <footer className="bg-espresso text-cream/85">
+      <div className="grid h-2 grid-cols-5" aria-hidden="true"><span className="bg-ghee" /><span className="bg-milk" /><span className="bg-chilli" /><span className="bg-honey" /><span className="bg-leaf" /></div>
       <div className="pb-24 md:pb-0">
       <div className="border-b border-cream/15">
         <div className="container-x flex flex-col items-center py-12 text-center">

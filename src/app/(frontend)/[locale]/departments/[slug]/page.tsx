@@ -52,7 +52,7 @@ export default async function DepartmentPage({ params }: Props) {
         {d.head?.name && (
           <aside className="card h-fit p-6">
             <p className="eyebrow">{t.departments.head}</p>
-            <p className="mt-2 font-serif text-xl font-semibold text-walnut">{d.head.name}</p>
+            <p className="mt-2 font-serif text-xl font-semibold text-cream">{d.head.name}</p>
             {d.head.role && <p className="text-muted">{d.head.role}</p>}
           </aside>
         )}
@@ -64,10 +64,10 @@ export default async function DepartmentPage({ params }: Props) {
             <SectionHeading title={t.departments.standards} />
             <ul className="grid gap-4 md:grid-cols-2">
               {d.standards.map((s) => (
-                <li key={s.id} className="flex gap-4 rounded-2xl bg-cream p-5 shadow-card">
+                <li key={s.id} className="flex gap-4 rounded-2xl bg-char p-5 shadow-card">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-latte text-caramel"><Icon name="shield" /></span>
                   <span>
-                    <span className="block font-semibold text-walnut">{s.title}</span>
+                    <span className="block font-semibold text-cream">{s.title}</span>
                     {s.text && <span className="mt-1 block text-muted">{s.text}</span>}
                   </span>
                 </li>
@@ -85,7 +85,7 @@ export default async function DepartmentPage({ params }: Props) {
               <li key={f.id}>
                 <Link href={localePath(locale, `/facilities/${f.slug}`)} className="card block h-full p-5 hover:shadow-lift">
                   <span className="grid h-10 w-10 place-items-center rounded-full bg-walnut text-gold-500"><Icon name={f.icon ?? 'leaf'} /></span>
-                  <span className="mt-3 block font-semibold text-walnut">{f.title}</span>
+                  <span className="mt-3 block font-semibold text-cream">{f.title}</span>
                   <span className="mt-1 block text-sm text-muted">{f.summary}</span>
                 </Link>
               </li>

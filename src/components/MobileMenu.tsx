@@ -25,7 +25,7 @@ export function MobileMenu({ groups, buttonClassName = 'text-cream hover:bg-whit
         <Icon name="menu" size={24} />
       </button>
       {open && (
-        <div className="fixed inset-0 z-[70] overflow-y-auto bg-cream" role="dialog" aria-modal="true" aria-label={t.nav.menu}>
+        <div className="fixed inset-0 z-[70] overflow-y-auto bg-char" role="dialog" aria-modal="true" aria-label={t.nav.menu}>
           <div className="flex items-center justify-between bg-walnut px-4 py-3 text-cream">
             <span className="font-serif text-xl">{t.nav.menu}</span>
             <div className="flex items-center gap-2">
@@ -39,7 +39,7 @@ export function MobileMenu({ groups, buttonClassName = 'text-cream hover:bg-whit
             {groups.map((g) => (
               <div key={g.title}>
                 <p className="eyebrow mb-2">{g.title}</p>
-                <ul className="divide-y divide-line rounded-2xl bg-white">
+                <ul className="divide-y divide-line rounded-2xl bg-char">
                   {g.links.map((l) => (
                     <li key={l.href}>
                       <Link href={href(l.href)} className="flex items-center justify-between px-4 py-3.5 text-lg" onClick={() => setOpen(false)}>

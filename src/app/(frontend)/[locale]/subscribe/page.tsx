@@ -41,7 +41,7 @@ export default async function SubscribePage({ params }: Props) {
           </div>
           <Link href={localePath(locale, '/delivery')} className="inline-block text-caramel underline underline-offset-4">{t.nav.delivery} →</Link>
         </div>
-        <div className="rounded-lg border border-line bg-white p-6 lg:col-span-3">
+        <div className="rounded-lg border border-line bg-char p-6 lg:col-span-3">
           <LeadForm type="subscription" product="Desi Cow Milk" submitLabel={t.home.subscribeCta} />
         </div>
       </section>

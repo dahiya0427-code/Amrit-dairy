@@ -47,7 +47,7 @@ export function PincodeChecker({ fulfilment, onResult, compact = false }: { fulf
   const soon = result?.comingSoon ?? []
 
   return (
-    <div className={compact ? '' : 'rounded-2xl border border-line bg-white p-4'}>
+    <div className={compact ? '' : 'rounded-2xl border border-line bg-char p-4'}>
       <form
         onSubmit={(e) => {
           e.preventDefault()
@@ -83,7 +83,7 @@ export function PincodeChecker({ fulfilment, onResult, compact = false }: { fulf
               <p className="font-semibold text-warning">{t.pincode.comingSoon(soon.map((a) => a.name).join(', '))}</p>
             )}
             {live.length === 0 && soon.length === 0 && fulfilment !== 'ship' && <p className="text-muted">{t.pincode.notLive}</p>}
-            {fulfilment !== 'local' && <p className="text-walnut">📦 {t.pincode.ships}</p>}
+            {fulfilment !== 'local' && <p className="text-cream">📦 {t.pincode.ships}</p>}
           </>
         )}
       </div>

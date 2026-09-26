@@ -72,7 +72,7 @@ export function ProductBuyBox(p: Props) {
       {p.status === 'active' && v?.price ? (
         <div>
           <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="text-3xl font-bold tabular-nums text-ink">{formatINR(v.price)}</span>
+            <span className="text-3xl font-bold tabular-nums text-cream">{formatINR(v.price)}</span>
             {discount > 0 && (
               <>
                 <span className="text-lg text-muted line-through">{t.common.mrp} {formatINR(v.mrp)}</span>
@@ -105,18 +105,18 @@ export function ProductBuyBox(p: Props) {
                   onClick={() => setIdx(i)}
                   aria-pressed={selected}
                   className={`relative flex min-h-24 flex-col items-center justify-center rounded-2xl border-2 px-3 py-3 text-center transition ${
-                    selected ? 'border-walnut bg-latte shadow-lift' : 'border-line bg-white hover:border-walnut'
+                    selected ? 'border-cream bg-latte shadow-lift' : 'border-line bg-char hover:border-cream'
                   }`}
                 >
                   {i === 0 && p.status === 'active' && !variant.onDemand && (
                     <span className="absolute -top-2.5 rounded-full bg-walnut px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-cream">{t.common.bestseller}</span>
                   )}
-                  <span className="text-sm font-bold text-ink">{variant.label}</span>
+                  <span className="text-sm font-bold text-cream">{variant.label}</span>
                   {variant.onDemand ? (
                     <span className="mt-1 text-sm font-semibold text-gold-700">{t.common.onDemand}</span>
                   ) : variant.price && p.status === 'active' ? (
                     <>
-                      <span className="mt-1 text-lg font-bold tabular-nums text-walnut">{formatINR(variant.price)}</span>
+                      <span className="mt-1 text-lg font-bold tabular-nums text-cream">{formatINR(variant.price)}</span>
                       {per100 && <span className="text-xs text-muted">({formatINR(per100)} {t.pdp.perUnit})</span>}
                     </>
                   ) : null}
@@ -185,13 +185,13 @@ export function ProductBuyBox(p: Props) {
       {/* Sticky buy bar (Doc 05 §5.3): appears after the main buttons scroll away */}
       {buyable && v?.price && (
         <div
-          className={`fixed inset-x-0 bottom-[58px] z-30 border-t border-line bg-cream/95 backdrop-blur transition-transform duration-300 md:bottom-0 ${
+          className={`fixed inset-x-0 bottom-[58px] z-30 border-t border-line bg-char/95 backdrop-blur transition-transform duration-300 md:bottom-0 ${
             showBar ? 'translate-y-0' : 'pointer-events-none translate-y-[150%]'
           }`}
         >
           <div className="container-x flex items-center gap-3 py-2">
             {p.image && (
-              <span className="relative hidden h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-malai sm:block">
+              <span className="relative hidden h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-paper sm:block">
                 <Image src={p.image} alt="" fill sizes="48px" className="object-contain" />
               </span>
             )}

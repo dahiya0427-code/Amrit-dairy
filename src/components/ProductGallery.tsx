@@ -41,8 +41,8 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
                 onClick={() => go(i)}
                 aria-label={t.story.slideLabel(i + 1, slides.length)}
                 aria-current={i === index}
-                className={`relative block h-16 w-16 overflow-hidden rounded-xl border-2 bg-malai transition lg:h-20 lg:w-20 ${
-                  i === index ? 'border-walnut' : 'border-transparent opacity-70 hover:opacity-100'
+                className={`relative block h-16 w-16 overflow-hidden rounded-xl border-2 bg-paper transition lg:h-20 lg:w-20 ${
+                  i === index ? 'border-cream' : 'border-transparent opacity-70 hover:opacity-100'
                 }`}
               >
                 {s.thumb}
@@ -64,7 +64,7 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
             <button type="button" onClick={() => go(index - 1)} aria-label={t.story.prev} className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-gold-700 text-cream shadow-lift hover:bg-walnut">
               <Icon name="arrow" className="rotate-180" />
             </button>
-            <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-cream text-walnut shadow-lift hover:bg-white">
+            <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-char text-cream shadow-lift hover:bg-char">
               <Icon name="arrow" />
             </button>
             <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5" aria-hidden="true">

@@ -2,42 +2,54 @@
 
 /* Brand tokens (Doc 03 §2). Contrast-checked for WCAG 2.2 AA. */
 @theme {
-  /* Premium & warm palette (walnut, parchment, ghee gold). Contrast-checked for WCAG AA. */
-  --color-espresso: #2b1a10;
-  --color-walnut: #4a2e1c;
-  --color-cocoa: #6b4a33;
-  --color-caramel: #774d23;
-  --color-taupe: #6b5039;
-  --color-latte: #e8d8bc;
-  --color-gold-500: #c8962e;
-  --color-gold-600: #b3842a;
-  --color-gold-700: #76501a;
-  --color-butter: #efd9a8;
-  --color-cream: #f8f0e1;
-  --color-malai: #ecdfc6;
-  --color-parchment: #eee1c9;
-  --color-clay: #8c3b22;
-  --color-ink: #2a1e16;
-  --color-muted: #5f5245;
-  --color-line: #dbc8a8;
-  --color-success: #2f7d4a;
-  --color-warning: #a8671b;
-  --color-error: #b3261e;
+  /* Dark & vibrant: warm near-black base, gold luxury accents and one bold
+     colour per product family. Contrast-checked for WCAG AA on coal/char. */
+  --color-coal: #0f0c0a;
+  --color-char: #1a1613;
+  --color-smoke: #26201c;
+  --color-paper: #f5eee2;
+  --color-espresso: #0b0907;
+  --color-walnut: #1f1a16;
+  --color-cocoa: #2e2621;
+  --color-caramel: #ffa24c;
+  --color-taupe: #c9b8a2;
+  --color-latte: #26201c;
+  --color-gold-500: #ffc62b;
+  --color-gold-600: #f0b30f;
+  --color-gold-700: #ffd25e;
+  --color-butter: #3a2f14;
+  --color-cream: #fbf3e4;
+  --color-malai: #26201c;
+  --color-parchment: #0f0c0a;
+  --color-clay: #ff6a4d;
+  --color-ink: #140f0b;
+  --color-muted: #c4b7a5;
+  --color-line: #3a312a;
+  --color-success: #3ddc84;
+  --color-warning: #ffb23e;
+  --color-error: #ff6b5c;
   --color-whatsapp: #25d366;
+  /* product-family colours */
+  --color-ghee: #ffc62b;
+  --color-milk: #62c9ff;
+  --color-chilli: #ff5a3c;
+  --color-leaf: #43d17c;
+  --color-honey: #ff9f1c;
+  --color-berry: #ff5fa8;
   /* legacy names kept so older markup still renders in the new palette */
-  --color-sky: #f5efe3;
-  --color-sun: #c8962e;
-  --color-hill-2: #8c6d52;
-  --color-hill-3: #6b4a33;
+  --color-sky: #0f0c0a;
+  --color-sun: #ffc62b;
+  --color-hill-2: #26201c;
+  --color-hill-3: #1a1613;
 
-  --font-serif: var(--font-cormorant), var(--font-noto-serif-dev), Georgia, serif;
+  --font-serif: var(--font-display), var(--font-noto-serif-dev), Georgia, serif;
   --font-sans: var(--font-jost), var(--font-mukta), system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-hand: var(--font-cormorant), var(--font-noto-serif-dev), Georgia, serif;
+  --font-hand: var(--font-display), var(--font-noto-serif-dev), Georgia, serif;
 
-  --radius-card: 6px;
-  --shadow-card: 0 1px 2px rgb(43 26 16 / 0.06);
-  --shadow-lift: 0 10px 28px rgb(74 46 28 / 0.12);
-  --shadow-float: 0 20px 48px rgb(43 26 16 / 0.2);
+  --radius-card: 24px;
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px rgb(0 0 0 / 0.35);
+  --shadow-lift: 0 18px 40px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 198 43 / 0.25);
+  --shadow-float: 0 24px 60px rgb(0 0 0 / 0.6);
 }
 
 @layer base {
@@ -46,8 +58,8 @@
     scroll-behavior: smooth;
   }
   body {
-    background: var(--color-parchment);
-    color: var(--color-ink);
+    background: var(--color-coal);
+    color: var(--color-cream);
     font-family: var(--font-sans);
     line-height: 1.65;
     font-size: 16px;
@@ -55,9 +67,9 @@
   h1, h2, h3 {
     font-family: var(--font-serif);
     line-height: 1.08;
-    font-weight: 600;
-    letter-spacing: 0;
-    color: var(--color-walnut);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-cream);
   }
   :focus-visible {
     outline: 3px solid var(--color-gold-500);
@@ -65,7 +77,8 @@
     border-radius: 6px;
   }
   ::selection {
-    background: var(--color-butter);
+    color: var(--color-ink);
+    background: var(--color-gold-500);
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -98,11 +111,10 @@
     gap: 0.5rem;
     min-height: 48px;
     padding: 0.625rem 1.5rem;
-    border-radius: 4px;
-    font-weight: 500;
-    font-size: 0.875rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.02em;
     line-height: 1.2;
     text-align: center;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
@@ -115,11 +127,11 @@
     cursor: not-allowed;
   }
   .btn-primary {
-    background: var(--color-walnut);
-    color: var(--color-cream);
+    background: var(--color-cream);
+    color: var(--color-ink);
   }
   .btn-primary:hover {
-    background: var(--color-cocoa);
+    background: var(--color-gold-500);
   }
   /* Gold always carries dark text (Doc 03 §2.4). */
   .btn-gold {
@@ -130,12 +142,13 @@
     background: var(--color-gold-600);
   }
   .btn-outline {
-    border: 1.5px solid var(--color-walnut);
-    color: var(--color-walnut);
+    border: 1.5px solid rgb(251 243 228 / 0.55);
+    color: var(--color-cream);
     background: transparent;
   }
   .btn-outline:hover {
-    background: var(--color-latte);
+    border-color: var(--color-gold-500);
+    color: var(--color-gold-500);
   }
   .btn-outline-light {
     border: 1.5px solid var(--color-cream);
@@ -153,12 +166,15 @@
     min-height: 48px;
     border-radius: 10px;
     border: 1px solid var(--color-line);
-    background: #fff;
+    background: var(--color-char);
     padding: 0.625rem 0.875rem;
-    color: var(--color-ink);
+    color: var(--color-cream);
+  }
+  .input::placeholder {
+    color: rgb(196 183 165 / 0.8);
   }
   .input:focus {
-    outline: 2px solid var(--color-walnut);
+    outline: 2px solid var(--color-gold-500);
     outline-offset: 0;
     border-color: transparent;
   }
@@ -167,10 +183,10 @@
     font-weight: 600;
     font-size: 0.9375rem;
     margin-bottom: 0.375rem;
-    color: var(--color-ink);
+    color: var(--color-cream);
   }
   .card {
-    background: var(--color-cream);
+    background: var(--color-char);
     border: 1px solid var(--color-line);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
@@ -183,7 +199,7 @@
     color: var(--color-gold-700);
   }
   .prose-amrit {
-    color: var(--color-ink);
+    color: var(--color-cream);
     font-size: 1.0625rem;
     line-height: 1.75;
   }
@@ -215,7 +231,7 @@
     text-underline-offset: 3px;
   }
   .prose-amrit strong {
-    color: var(--color-walnut);
+    color: var(--color-gold-700);
   }
   .prose-amrit blockquote {
     border-left: 4px solid var(--color-gold-500);

@@ -48,7 +48,7 @@ export default async function AreaPage({ params }: Props) {
           <div className="mt-6">
             <h2 className="mb-2 text-xl">{t.delivery.landmarks}</h2>
             <ul className="flex flex-wrap gap-2">
-              {area.landmarks.map((l) => <li key={l.id} className="rounded-full border border-line bg-white px-3 py-1 text-sm">{l.name}</li>)}
+              {area.landmarks.map((l) => <li key={l.id} className="rounded-full border border-line bg-char px-3 py-1 text-sm">{l.name}</li>)}
             </ul>
           </div>
         )}

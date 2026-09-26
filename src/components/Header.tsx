@@ -51,17 +51,17 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
     },
   ]
 
-  const navLink = 'whitespace-nowrap px-2 py-2 text-[12px] font-medium uppercase tracking-[0.12em] xl:text-[13px] text-walnut transition hover:text-gold-700 xl:px-3'
+  const navLink = 'whitespace-nowrap px-2 py-2 text-[12px] font-medium uppercase tracking-[0.12em] xl:text-[13px] text-cream transition hover:text-gold-700 xl:px-3'
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-cream/95 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-line bg-coal/90 backdrop-blur">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-[80] focus:rounded-full focus:bg-gold-500 focus:px-4 focus:py-2 focus:text-ink">
         {t.nav.skipToContent}
       </a>
       <Ticker items={ticker} />
       <div className="container-x grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[88px]">
         <nav aria-label="Main" className="flex items-center">
-          <span className="lg:hidden"><MobileMenu groups={menuGroups} buttonClassName="text-walnut hover:bg-latte" /></span>
+          <span className="lg:hidden"><MobileMenu groups={menuGroups} buttonClassName="text-cream hover:bg-latte" /></span>
           <ul className="hidden items-center lg:flex">
             {left.map((l) => (
               <li key={l.href}><Link href={href(l.href)} className={navLink}>{l.label}</Link></li>
@@ -82,13 +82,13 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
                 {t.nav.farmStory} <span aria-hidden="true" className="text-[10px]">▾</span>
               </Link>
               <div className="invisible absolute right-0 top-full z-50 w-[720px] pt-5 opacity-0 transition duration-200 group-focus-within/mega:visible group-focus-within/mega:opacity-100 group-hover/mega:visible group-hover/mega:opacity-100">
-                <div className="grid grid-cols-[1.2fr_1fr_0.9fr] gap-6 overflow-hidden border border-line bg-cream p-8 text-ink shadow-float">
+                <div className="grid grid-cols-[1.2fr_1fr_0.9fr] gap-6 overflow-hidden border border-line bg-char p-8 text-cream shadow-float">
                   <div>
                     <p className="eyebrow mb-4">{t.mega.title}</p>
                     <ul className="space-y-2">
                       {t.mega.big.map((l) => (
                         <li key={l.href}>
-                          <Link href={href(l.href)} className="font-serif text-2xl font-semibold text-walnut hover:text-gold-700">{l.label}</Link>
+                          <Link href={href(l.href)} className="font-serif text-2xl font-semibold text-cream hover:text-gold-700">{l.label}</Link>
                         </li>
                       ))}
                     </ul>
@@ -108,7 +108,7 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
               <li key={l.href}><Link href={href(l.href)} className={navLink}>{l.label}</Link></li>
             ))}
           </ul>
-          <span className="hidden sm:block"><LanguageToggle className="border-walnut/30 text-walnut hover:bg-latte" /></span>
+          <span className="hidden sm:block"><LanguageToggle className="border-cream/30 text-cream hover:bg-latte" /></span>
           <CartButton />
         </div>
       </div>

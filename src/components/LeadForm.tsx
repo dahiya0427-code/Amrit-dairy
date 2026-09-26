@@ -64,7 +64,7 @@ export function LeadForm({ type, product, compact = false, submitLabel }: { type
 
   if (state === 'done') {
     return (
-      <p role="status" className="rounded-2xl bg-latte p-5 font-semibold text-walnut">
+      <p role="status" className="rounded-2xl bg-latte p-5 font-semibold text-cream">
         {type === 'notify' || type === 'waitlist' ? f.notifySuccess : f.success}
       </p>
     )

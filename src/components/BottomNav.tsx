@@ -12,7 +12,7 @@ export function BottomNav({ whatsapp }: { whatsapp: string }) {
   const { count, setOpen, ready } = useCart()
   const item = 'flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold'
   return (
-    <nav aria-label="Quick actions" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-cream/95 backdrop-blur md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+    <nav aria-label="Quick actions" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-char/95 backdrop-blur md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <div className="flex">
         <Link href={href('/')} className={item}><Icon name="home" />{t.bottomNav.home}</Link>
         <Link href={href('/shop')} className={item}><Icon name="shop" />{t.bottomNav.shop}</Link>

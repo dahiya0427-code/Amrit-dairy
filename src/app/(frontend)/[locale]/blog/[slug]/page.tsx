@@ -49,7 +49,7 @@ export default async function PostPage({ params }: Props) {
         <p className="eyebrow">{t.blog.categories[post.category]}</p>
         <h1 className="mt-2 text-4xl md:text-5xl">{post.title}</h1>
         <p className="mt-4 text-sm text-muted">
-          {t.blog.by} <strong className="text-ink">{post.author?.name}</strong>
+          {t.blog.by} <strong className="text-cream">{post.author?.name}</strong>
           {post.author?.role ? `, ${post.author.role}` : ''} · {formatDate(post.publishedAt, locale)} · {t.blog.minRead(readingMinutes(post.content))}
         </p>
         {mediaUrl(post.cover, 'hero') && (
@@ -59,7 +59,7 @@ export default async function PostPage({ params }: Props) {
         )}
         {post.tldr && post.tldr.length > 0 && (
           <aside className="mt-8 rounded-2xl border-l-4 border-gold-500 bg-malai p-5" aria-label={t.blog.tldr}>
-            <p className="mb-2 font-semibold text-walnut">{t.blog.tldr}</p>
+            <p className="mb-2 font-semibold text-cream">{t.blog.tldr}</p>
             <ul className="list-disc space-y-1 pl-5">
               {post.tldr.map((x) => <li key={x.id}>{x.text}</li>)}
             </ul>

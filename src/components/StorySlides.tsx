@@ -19,7 +19,7 @@ function FloatingPack({ image, cutout, className = '' }: { image: string | null;
   if (!src) return null
   return (
     <div className={`pointer-events-none relative ${className}`}>
-      <div className={`animate-float relative h-full w-full ${cutout ? '' : 'overflow-hidden rounded-full bg-malai shadow-float'}`}>
+      <div className={`animate-float relative h-full w-full ${cutout ? '' : 'overflow-hidden rounded-full bg-paper shadow-float'}`}>
         <Image src={src} alt="" fill sizes="240px" className={cutout ? 'object-contain drop-shadow-2xl' : 'object-contain p-[12%]'} />
       </div>
       <div className="animate-float-shadow mx-auto -mt-[2cqw] h-[2.5cqw] w-2/3 rounded-full bg-ink/40 blur-md" />
@@ -29,9 +29,9 @@ function FloatingPack({ image, cutout, className = '' }: { image: string | null;
 
 function Frame({ tone, children }: { tone: 'warm' | 'forest' | 'cream'; children: React.ReactNode }) {
   const bg = {
-    warm: 'bg-[radial-gradient(circle_at_30%_20%,#fbebc7,#e8c27a_55%,#b77b2c)] text-ink',
-    forest: 'bg-[radial-gradient(circle_at_70%_10%,#6b4526,#3b2415_60%,#1a0f08)] text-cream',
-    cream: 'bg-[linear-gradient(160deg,#fffdf7,#f6efdd)] text-ink',
+    warm: 'bg-[radial-gradient(circle_at_30%_20%,#ffe38a,#ffc62b_55%,#f0a70f)] text-ink',
+    forest: 'bg-[radial-gradient(circle_at_70%_10%,#2e2621,#1a1613_55%,#0f0c0a)] text-cream',
+    cream: 'bg-[linear-gradient(160deg,#26201c,#0f0c0a)] text-cream',
   }[tone]
   return (
     <div className={`@container relative aspect-square w-full overflow-hidden rounded-lg ${bg}`}>
@@ -109,7 +109,7 @@ export function storySlides({ product, image, cutout, locale, fssai }: Props): {
         label: s.compareTitle,
         node: (
           <Frame tone="cream">
-            <p className={`${title} text-walnut`}>{s.compareTitle}</p>
+            <p className={`${title} text-cream`}>{s.compareTitle}</p>
             <div className="mt-[4cqw] grid flex-1 grid-cols-2 gap-[3cqw]">
               <div className="rounded-[3cqw] bg-walnut p-[3.5cqw] text-cream">
                 <p className="flex items-center gap-[1.5cqw] font-serif text-[4.6cqw] font-semibold text-gold-500">
@@ -137,7 +137,7 @@ export function storySlides({ product, image, cutout, locale, fssai }: Props): {
     if (kind === 'uses' && product.usage?.length) {
       const uses = product.usage.slice(0, 6)
       const half = Math.ceil(uses.length / 2)
-      const chip = 'rounded-[2.5cqw] bg-cream/90 px-[2.5cqw] py-[1.8cqw] text-center text-[3cqw] font-semibold leading-tight text-walnut shadow-card'
+      const chip = 'rounded-[2.5cqw] bg-char/90 px-[2.5cqw] py-[1.8cqw] text-center text-[3cqw] font-semibold leading-tight text-cream shadow-card'
       out.push({
         key: kind,
         label: s.usesTitle,

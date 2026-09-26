@@ -25,10 +25,10 @@ export function CartPageView({ whatsapp, freeThreshold }: { whatsapp: string; fr
         </div>
       ) : (
         <div className="grid gap-8 lg:grid-cols-3">
-          <ul className="divide-y divide-line rounded-lg border border-line bg-white lg:col-span-2">
+          <ul className="divide-y divide-line rounded-lg border border-line bg-char lg:col-span-2">
             {cart.items.map((item) => (
               <li key={item.sku} className="flex gap-4 p-4">
-                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-malai">
+                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-paper">
                   {item.image && <Image src={item.image} alt="" fill sizes="96px" className="object-contain" />}
                 </div>
                 <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

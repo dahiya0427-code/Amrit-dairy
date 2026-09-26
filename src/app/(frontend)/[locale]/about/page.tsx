@@ -61,10 +61,10 @@ export default async function AboutPage({ params }: Props) {
       </section>
       <section className="container-x py-10" aria-labelledby="facts">
         <h2 id="facts" className="mb-4 text-3xl">{t.about.factsTitle}</h2>
-        <dl className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-white">
+        <dl className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-char">
           {facts.map(([k, v]) => (
             <div key={k} className="grid gap-1 p-4 sm:grid-cols-3">
-              <dt className="font-semibold text-walnut">{k}</dt>
+              <dt className="font-semibold text-cream">{k}</dt>
               <dd className="sm:col-span-2">{v}</dd>
             </div>
           ))}

@@ -21,8 +21,8 @@ const tone: Record<string, string> = {
   offer: 'bg-clay text-white',
   area: 'bg-walnut text-cream',
   launch: 'bg-gold-500 text-ink',
-  event: 'bg-latte text-walnut',
-  notice: 'bg-white text-walnut border border-line',
+  event: 'bg-latte text-cream',
+  notice: 'bg-char text-cream border border-line',
 }
 
 export default async function NewsPage({ params }: Props) {

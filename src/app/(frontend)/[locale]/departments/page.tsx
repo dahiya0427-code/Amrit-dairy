@@ -35,7 +35,7 @@ export default async function DepartmentsPage({ params }: Props) {
                   <span className="grid h-12 w-12 place-items-center rounded-full bg-walnut text-gold-500"><Icon name={d.icon ?? 'leaf'} /></span>
                   <span className="font-serif text-2xl text-gold-700" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 </span>
-                <span className="mt-4 block font-serif text-xl font-semibold text-walnut">{d.title}</span>
+                <span className="mt-4 block font-serif text-xl font-semibold text-cream">{d.title}</span>
                 <span className="mt-2 block flex-1 text-muted">{d.summary}</span>
                 <span className="mt-4 inline-flex items-center gap-1 font-semibold text-caramel">{t.common.learnMore} <Icon name="arrow" size={16} /></span>
               </Link>

@@ -6,6 +6,7 @@ import { getDictionary } from '@/i18n'
 import type { Category, Product } from '@/payload-types'
 import { mediaUrl } from '@/lib/media'
 import { whatsappLink } from '@/lib/site'
+import { categoryCutout, toneOf, tones } from '@/lib/tone'
 import { Icon } from './Icon'
 import { MilkSplash } from './MilkSplash'
 import { ProductCard } from './ProductCard'
@@ -28,40 +29,39 @@ export function ShopView({
 }) {
   const t = getDictionary(locale)
   const base = active ? `/shop/${active.slug}` : '/shop'
-  const bannerSrc = mediaUrl(active?.bannerImage, 'card') ?? '/images/ghee-cutout.png'
+  const bannerSrc = (active && categoryCutout[active.slug]) || mediaUrl(active?.bannerImage, 'card') || '/images/ghee-cutout.png'
+  const tone = tones[toneOf(active?.slug)]
   const chip = (on: boolean) =>
-    `inline-flex min-h-10 items-center rounded-full border px-4 text-sm font-semibold transition ${on ? 'border-walnut bg-walnut text-cream' : 'border-line bg-white hover:border-walnut'}`
+    `inline-flex min-h-10 items-center rounded-full border px-4 text-sm font-semibold transition ${on ? 'border-gold-500 bg-gold-500 text-ink' : 'border-line bg-char hover:border-gold-500'}`
 
   return (
     <>
       <Breadcrumbs locale={locale} items={active ? [{ name: t.nav.shop, path: '/shop' }, { name: active.title, path: base }] : [{ name: t.nav.shop, path: '/shop' }]} />
       {/* Collection banner: tagline, pills and a floating product */}
       <section className="container-x pt-4">
-        <div className="relative overflow-hidden rounded-lg bg-[linear-gradient(120deg,#efd9a8,#ead9ba_45%,#dfc9a4)]">
-          <div className="grid items-center gap-4 p-6 md:grid-cols-[1.3fr_1fr] md:p-10">
+        <div className={`relative overflow-hidden rounded-[36px] text-ink ${tone.bg}`}>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_40%,rgb(255_255_255/0.45),transparent_45%)]" aria-hidden="true" />
+          <div className="absolute -left-16 -bottom-24 h-64 w-64 rounded-full bg-ink/10" aria-hidden="true" />
+          <div className="relative grid items-center gap-4 p-7 md:grid-cols-[1.3fr_1fr] md:p-12">
             <div className="relative z-10">
-              <p className="eyebrow">{active?.secondaryTitle ?? t.nav.shop}</p>
-              <h1 className="mt-1 text-4xl md:text-6xl">{active?.title ?? t.shop.title}</h1>
-              {active?.tagline && <p className="mt-2 font-serif text-2xl text-caramel md:text-3xl">{active.tagline}</p>}
-              <p className="mt-3 max-w-xl text-lg text-muted">{active?.intro ?? t.shop.intro}</p>
-              <ul className="mt-4 flex flex-wrap gap-2">
+              <p className="inline-flex rounded-full bg-ink/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em]">{active?.secondaryTitle ?? t.nav.shop}</p>
+              <h1 className="mt-3 text-5xl leading-[0.95] !text-ink md:text-7xl">{active?.title ?? t.shop.title}</h1>
+              {active?.tagline && <p className="mt-3 font-serif text-2xl font-semibold md:text-3xl">{active.tagline}</p>}
+              <p className="mt-3 max-w-xl text-lg text-ink/80">{active?.intro ?? t.shop.intro}</p>
+              <ul className="mt-5 flex flex-wrap gap-2">
                 {(active?.pills?.length ? active.pills.map((p) => p.text) : t.heroPills).map((pill) => (
-                  <li key={pill} className="rounded-full bg-walnut px-3.5 py-1.5 text-sm font-semibold text-cream">{pill}</li>
+                  <li key={pill} className="rounded-full bg-ink px-4 py-1.5 text-sm font-semibold text-cream">{pill}</li>
                 ))}
               </ul>
             </div>
-            <div className="relative mx-auto h-48 w-full max-w-xs md:h-64" aria-hidden="true">
-              <div className="absolute inset-[10%] rounded-full bg-gold-500/30 blur-2xl" />
+            <div className="relative mx-auto h-56 w-full max-w-xs md:h-72" aria-hidden="true">
+              <div className="absolute inset-[6%] rounded-full bg-cream/40" />
               <div className="animate-float relative h-full w-full">
-                <Image src={bannerSrc} alt="" fill sizes="320px" className="object-contain drop-shadow-2xl" priority />
+                <Image src={bannerSrc} alt="" fill sizes="320px" className="object-contain drop-shadow-[0_20px_25px_rgb(0_0_0/0.35)]" priority />
               </div>
               {active?.slug === 'dairy' && <MilkSplash duration="4.5s" className="absolute -bottom-[8%] left-1/2 h-[30%] w-[70%] -translate-x-1/2" />}
             </div>
           </div>
-          <svg className="absolute inset-x-0 bottom-0 h-10 w-full md:h-14" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0 40 C 200 10, 380 55, 620 32 S 1000 12, 1200 36 V60 H0 Z" fill="#c8962e" opacity="0.25" />
-            <path d="M0 48 C 260 28, 460 62, 720 44 S 1080 30, 1200 50 V60 H0 Z" fill="#4a2e1c" opacity="0.35" />
-          </svg>
         </div>
       </section>
 
@@ -96,7 +96,7 @@ export function ShopView({
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-lg bg-latte p-6 sm:flex-row sm:items-center">
           <div>
-            <p className="font-serif text-xl font-semibold text-walnut">{t.shop.helpTitle}</p>
+            <p className="font-serif text-xl font-semibold text-cream">{t.shop.helpTitle}</p>
             <p className="text-muted">{t.shop.helpText}</p>
           </div>
           <a href={whatsappLink(whatsapp, 'Hi Amrit Dairy, please help me choose products.')} target="_blank" rel="noopener" className="btn btn-whatsapp">

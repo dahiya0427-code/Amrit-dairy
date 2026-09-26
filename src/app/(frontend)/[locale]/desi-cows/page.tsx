@@ -35,11 +35,11 @@ export default async function DesiCowsPage({ params }: Props) {
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {sorted.map((b) => (
             <li key={b.id}>
-              <Link href={localePath(locale, `/desi-cows/${b.slug}`)} className="group block rounded-lg border border-line bg-white p-3 text-center transition hover:shadow-lift">
+              <Link href={localePath(locale, `/desi-cows/${b.slug}`)} className="group block rounded-lg border border-line bg-char p-3 text-center transition hover:shadow-lift">
                 <span className="relative block aspect-square">
                   {mediaUrl(b.image, 'card') && <Image src={mediaUrl(b.image, 'card') as string} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 25vw" className="object-contain transition group-hover:scale-105" />}
                 </span>
-                <span className="mt-2 block font-semibold text-walnut">{b.name}</span>
+                <span className="mt-2 block font-semibold text-cream">{b.name}</span>
                 {b.onFarm && <span className="mt-1 inline-block"><Badge tone="ship">{t.cows.onFarm}</Badge></span>}
               </Link>
             </li>

@@ -42,7 +42,7 @@ export default async function FacilitiesPage({ params }: Props) {
                   )}
                 </span>
                 <span className="block p-5">
-                  <span className="block font-serif text-xl font-semibold text-walnut">{f.title}</span>
+                  <span className="block font-serif text-xl font-semibold text-cream">{f.title}</span>
                   <span className="mt-2 block text-muted">{f.summary}</span>
                 </span>
               </Link>

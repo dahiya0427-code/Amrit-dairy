@@ -41,7 +41,7 @@ export default async function ContactPage({ params }: Props) {
             <li key={c.title} className="card flex flex-col p-5">
               <span className="grid h-11 w-11 place-items-center rounded-full bg-walnut text-gold-500"><Icon name={c.icon} /></span>
               <h2 className="mt-3 font-sans text-base font-semibold text-muted">{c.title}</h2>
-              <p className="mt-1 flex-1 font-semibold text-ink">{c.value}{c.note ? <span className="block text-sm font-normal text-muted">{c.note}</span> : null}</p>
+              <p className="mt-1 flex-1 font-semibold text-cream">{c.value}{c.note ? <span className="block text-sm font-normal text-muted">{c.note}</span> : null}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {c.actions.map((a) => (
                   <a key={a.href} href={a.href} target={a.href.startsWith('http') ? '_blank' : undefined} rel="noopener" className={`btn ${a.cls} !min-h-10 !px-4 text-sm`}>{a.label}</a>
@@ -56,13 +56,13 @@ export default async function ContactPage({ params }: Props) {
           <h2 className="text-3xl">{t.contact.howToOrder}</h2>
           <p className="mt-3 text-lg text-muted">{t.contact.howToOrderText}</p>
           <div className="mt-6 rounded-2xl bg-malai p-5 text-sm">
-            <p className="font-semibold text-walnut">{t.footer.registered}</p>
+            <p className="font-semibold text-cream">{t.footer.registered}</p>
             <p className="mt-1">GSTIN: {s.gstin}</p>
             <p>FSSAI Lic. No.: {s.fssai}</p>
             <p>Udyam Reg. No.: {s.udyam}</p>
           </div>
         </div>
-        <div className="rounded-lg border border-line bg-white p-6 lg:col-span-3">
+        <div className="rounded-lg border border-line bg-char p-6 lg:col-span-3">
           <h2 className="mb-4 text-2xl">{t.contact.formTitle}</h2>
           <LeadForm type="contact" />
         </div>

@@ -20,10 +20,10 @@ export function FreeDeliveryBar({ subtotal, threshold }: { subtotal: number; thr
   const pct = Math.min(100, Math.round((subtotal / threshold) * 100))
   return (
     <div className="rounded-xl bg-latte p-3 text-sm">
-      <p className="font-medium text-walnut">
+      <p className="font-medium text-cream">
         {subtotal >= threshold ? t.cart.freeDeliveryDone : t.cart.freeDeliveryNudge(formatINR(threshold - subtotal))}
       </p>
-      <div className="mt-2 h-2 overflow-hidden rounded-full bg-white" aria-hidden="true">
+      <div className="mt-2 h-2 overflow-hidden rounded-full bg-char" aria-hidden="true">
         <div className="h-full rounded-full bg-caramel transition-all" style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -52,7 +52,7 @@ export function CartDrawer({ whatsapp, freeThreshold }: { whatsapp: string; free
   return (
     <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-labelledby="cart-title">
       <button type="button" className="absolute inset-0 bg-ink/40" aria-label={t.nav.close} onClick={() => cart.setOpen(false)} />
-      <aside className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-cream shadow-float">
+      <aside className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-char shadow-float">
         <header className="flex items-center justify-between border-b border-line px-5 py-4">
           <h2 id="cart-title" className="text-2xl">{t.cart.title}</h2>
           <button ref={closeRef} type="button" className="grid h-11 w-11 place-items-center rounded-full hover:bg-malai" onClick={() => cart.setOpen(false)} aria-label={t.nav.close}>
@@ -71,7 +71,7 @@ export function CartDrawer({ whatsapp, freeThreshold }: { whatsapp: string; free
             <ul className="flex-1 space-y-4 overflow-y-auto px-5 py-4">
               {cart.items.map((item) => (
                 <li key={item.sku} className="flex gap-3">
-                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-malai">
+                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-paper">
                     {item.image && <Image src={item.image} alt="" fill sizes="80px" className="object-contain" />}
                   </div>
                   <div className="min-w-0 flex-1">

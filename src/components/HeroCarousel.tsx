@@ -48,7 +48,7 @@ export function HeroCarousel({ slides }: { slides: React.ReactNode[] }) {
           <button type="button" onClick={() => go(index - 1)} aria-label={t.story.prev} className="absolute left-3 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-caramel text-cream shadow-lift transition hover:bg-gold-700 md:grid">
             <Icon name="arrow" className="rotate-180" />
           </button>
-          <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="absolute right-3 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-cream text-walnut shadow-lift transition hover:bg-white md:grid">
+          <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="absolute right-3 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-char text-cream shadow-lift transition hover:bg-char md:grid">
             <Icon name="arrow" />
           </button>
           <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-2">
@@ -59,7 +59,7 @@ export function HeroCarousel({ slides }: { slides: React.ReactNode[] }) {
                 onClick={() => go(i)}
                 aria-label={t.story.slideLabel(i + 1, slides.length)}
                 aria-current={i === index}
-                className={`h-2 rounded-full transition-all ${i === index ? 'w-8 bg-gold-500' : 'w-2 bg-cream/50 hover:bg-cream'}`}
+                className={`h-2 rounded-full transition-all ${i === index ? 'w-8 bg-gold-500' : 'w-2 bg-cream/40 hover:bg-cream'}`}
               />
             ))}
           </div>

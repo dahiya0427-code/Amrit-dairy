@@ -45,10 +45,10 @@ export default async function FarmStoryPage({ params }: Props) {
           {onFarm.map((b) => (
             <li key={b.id}>
               <Link href={href(`/desi-cows/${b.slug}`)} className="card block p-3 text-center hover:shadow-lift">
-                <span className="relative block aspect-square rounded-xl bg-white">
+                <span className="relative block aspect-square rounded-xl bg-paper">
                   {mediaUrl(b.image, 'card') && <Image src={mediaUrl(b.image, 'card') as string} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 20vw" className="object-contain" />}
                 </span>
-                <span className="mt-2 block font-semibold text-walnut">{b.name}</span>
+                <span className="mt-2 block font-semibold text-cream">{b.name}</span>
                 {b.origin && <span className="block text-sm text-muted">{b.origin}</span>}
               </Link>
             </li>
@@ -72,9 +72,9 @@ export default async function FarmStoryPage({ params }: Props) {
           <SectionHeading title={t.farm.journeyTitle} intro={t.farm.bilona} />
           <ol className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
             {t.farm.journey.map((step, i) => (
-              <li key={step} className="relative rounded-2xl bg-cream p-5 text-center shadow-card">
+              <li key={step} className="relative rounded-2xl bg-char p-5 text-center shadow-card">
                 <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-latte text-caramel"><Icon name={journeyIcons[i]} /></span>
-                <span className="mt-3 block font-semibold text-walnut">{step}</span>
+                <span className="mt-3 block font-semibold text-cream">{step}</span>
                 {i < t.farm.journey.length - 1 && <span className="absolute -right-3 top-1/2 hidden -translate-y-1/2 text-gold-700 lg:block" aria-hidden="true">→</span>}
               </li>
             ))}
