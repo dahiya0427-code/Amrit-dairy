@@ -14,31 +14,29 @@ import { Icon } from './Icon'
 type Breed = { name: string; image: string | null }
 type Item = { title: string; price: string | null; image: string; href: string }
 
-const SCENES = 8
+const SCENES = 7
 const stepIcons = ['milk', 'pot', 'churn', 'drop', 'flame']
 const pointIcons = ['cow', 'churn', 'shield', 'jar', 'sparkle', 'check']
-const nutrientMarks = ['A', 'D', 'E', 'K', 'Ω3', 'CLA', 'C4', '♥']
+const nutrientMarks = ['A', 'D', 'E', 'K', 'Ω3', '♥']
 
 /** Jar position per scene: x in vw (desktop only), y in %, scale, rotation, opacity. */
 const jarDesktop = [
   { x: 0, y: 0, s: 1, r: 0, o: 1 },
-  { x: 0, y: 6, s: 0.8, r: -5, o: 1 },
-  { x: 0, y: 8, s: 0.66, r: 0, o: 1 },
-  { x: 0, y: 8, s: 0.62, r: 0, o: 1 },
-  { x: 0, y: 8, s: 0.6, r: -3, o: 1 },
-  { x: 0, y: 30, s: 0.45, r: 0, o: 0 },
-  { x: 0, y: 8, s: 0.56, r: 4, o: 1 },
-  { x: 22, y: 2, s: 0.95, r: 6, o: 1 },
+  { x: 0, y: 0, s: 0.78, r: 0, o: 1 },
+  { x: 0, y: 0, s: 0.6, r: 0, o: 1 },
+  { x: 0, y: 0, s: 0.52, r: 0, o: 1 },
+  { x: 0, y: 20, s: 0.45, r: 0, o: 0 },
+  { x: 0, y: 0, s: 0.52, r: 0, o: 1 },
+  { x: 26, y: 0, s: 0.95, r: 0, o: 1 },
 ]
 const jarMobile = [
-  { x: 0, y: 36, s: 0.6, r: 0, o: 1 },
-  { x: 0, y: 22, s: 0.56, r: -5, o: 1 },
-  { x: 0, y: 10, s: 0.48, r: 0, o: 1 },
-  { x: 0, y: 10, s: 0.46, r: 0, o: 1 },
-  { x: 0, y: 10, s: 0.44, r: -3, o: 1 },
-  { x: 0, y: 40, s: 0.4, r: 0, o: 0 },
-  { x: 0, y: 10, s: 0.3, r: 4, o: 1 },
-  { x: 0, y: 30, s: 0.72, r: 6, o: 1 },
+  { x: 0, y: 30, s: 0.62, r: 0, o: 1 },
+  { x: 0, y: 0, s: 0.5, r: 0, o: 1 },
+  { x: 0, y: 0, s: 0.46, r: 0, o: 1 },
+  { x: 0, y: 0, s: 0.36, r: 0, o: 1 },
+  { x: 0, y: 20, s: 0.4, r: 0, o: 0 },
+  { x: 0, y: 0, s: 0.36, r: 0, o: 1 },
+  { x: 0, y: 30, s: 0.72, r: 0, o: 1 },
 ]
 
 /** Points evenly spaced on a circle, as % positions inside a square box. */
@@ -49,7 +47,7 @@ function ring(n: number, radius: number, start = -90) {
   })
 }
 
-export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }: { jar: string; breeds: Breed[]; items: Item[]; uses: string[]; shopHref: string; whatsappHref: string }) {
+export function ScrollStory({ jar, breeds, items, shopHref, whatsappHref }: { jar: string; breeds: Breed[]; items: Item[]; shopHref: string; whatsappHref: string }) {
   const { t } = useI18n()
   const s = t.scroll
   const root = useRef<HTMLElement>(null)
@@ -97,10 +95,9 @@ export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }
     'aria-hidden': active !== i,
     className: `absolute inset-0 transition-all duration-700 ease-out ${active === i ? 'opacity-100 translate-y-0' : `pointer-events-none opacity-0 ${active > i ? '-translate-y-6' : 'translate-y-6'}`}`,
   })
-  const title = 'font-serif text-4xl leading-[0.95] md:text-6xl'
+  const title = 'font-serif text-3xl leading-[0.95] md:text-5xl lg:text-6xl'
   const benefitPos = ring(6, mobile ? 36 : 40)
-  const nutrientPos = ring(8, mobile ? 36 : 41, -90)
-  const usePos = ring(Math.max(uses.length, 1), mobile ? 34 : 42, -60)
+  const nutrientPos = ring(6, mobile ? 41 : 40)
 
   return (
     <section ref={root} data-story aria-label={s.label} className="relative bg-coal" style={{ height: `${SCENES * 90}svh` }}>
@@ -119,7 +116,7 @@ export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }
               <div className="grid h-full content-start gap-6 pt-6 md:grid-cols-[1fr_auto_1fr] md:pt-16">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold-700">{s.s1.eyebrow}</p>
-                  <h1 className={`${title} mt-3 md:text-8xl`}>{s.s1.title}</h1>
+                  <h1 className={`${title} mt-3 md:!text-7xl lg:!text-8xl`}>{s.s1.title}</h1>
                 </div>
                 <div className="hidden w-[min(30vw,340px)] md:block" />
                 <p className="max-w-sm text-lg text-muted md:justify-self-end">{s.s1.text}</p>
@@ -149,11 +146,11 @@ export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }
               <h2 className={`${title} pt-4 text-center md:pt-2`}>{s.s3.title}</h2>
               <svg className="absolute inset-0 hidden h-full w-full text-gold-500 md:block" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
                 {[
-                  'M150 260 H 330 V 380 H 440',
-                  'M150 440 H 330 V 380',
-                  'M850 220 H 670 V 380 H 560',
+                  'M150 260 H 330 V 330 H 440',
+                  'M150 440 H 330 V 330',
+                  'M850 220 H 670 V 330 H 560',
                   'M850 350 H 670',
-                  'M850 480 H 670 V 380',
+                  'M850 480 H 670 V 330',
                 ].map((d, i) => (
                   <path key={d} data-draw={2} d={d} fill="none" stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" pathLength={1} strokeDasharray="1" strokeDashoffset={active === 2 ? 0 : 1} style={{ transition: `stroke-dashoffset 1.1s ease ${0.15 * i}s` }} />
                 ))}
@@ -183,7 +180,7 @@ export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }
             {/* 4 · Why families love Amrit: benefits on a ring */}
             <div {...scene(3)}>
               <h2 className={`${title} pt-4 text-center md:pt-2`}>{s.s4.title}</h2>
-              <div className="absolute left-1/2 top-[56%] aspect-square w-[min(84vw,62svh)] -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute left-1/2 top-[55%] aspect-square w-[min(84vw,62svh)] -translate-x-1/2 -translate-y-1/2">
                 <div data-reveal={3} data-cls-on="scale-100" data-cls-off="scale-50" className={`absolute inset-[22%] rounded-full bg-cocoa transition duration-700 ${active === 3 ? 'scale-100' : 'scale-50'}`} aria-hidden="true" />
                 <div className="absolute inset-[10%] rounded-full border border-gold-500/50" aria-hidden="true" />
                 <ul>
@@ -199,27 +196,12 @@ export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }
               </div>
             </div>
 
-            {/* 5 · In your kitchen: uses on a ring */}
+            {/* 5 · Products: the jar joins the range */}
             <div {...scene(4)}>
-              <h2 className={`${title} pt-4 text-center md:pt-2`}>{s.s8.title}</h2>
-              <div className="absolute left-1/2 top-[56%] aspect-square w-[min(84vw,62svh)] -translate-x-1/2 -translate-y-1/2">
-                <div className="absolute inset-[14%] rounded-full border border-dashed border-gold-500/60" aria-hidden="true" />
-                <ul>
-                  {uses.map((u, i) => (
-                    <li key={u} data-reveal={4} data-o className="absolute w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-line bg-char px-2 py-1.5 md:w-40 md:px-3 md:py-2 text-center text-[10.5px] font-semibold leading-tight shadow-card transition duration-500 md:text-sm" style={{ ...usePos[i], transitionDelay: `${0.08 * i}s`, opacity: active === 4 ? 1 : 0 }}>
-                      {u}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* 6 · Products: the jar joins the range */}
-            <div {...scene(5)}>
               <h2 className={`${title} pt-4 text-center md:pt-2`}>{s.s5.title}</h2>
               <ul className="mx-auto mt-6 grid max-w-5xl grid-cols-2 gap-3 md:mt-12 md:grid-cols-4 md:gap-6">
                 {items.map((item, i) => (
-                  <li key={item.href} data-reveal={5} data-on="none" data-off="translateY(40px)" className="transition duration-700" style={{ transitionDelay: `${0.1 * i}s`, transform: active === 5 ? 'none' : 'translateY(40px)' }}>
+                  <li key={item.href} data-reveal={4} data-on="none" data-off="translateY(40px)" className="transition duration-700" style={{ transitionDelay: `${0.1 * i}s`, transform: active === 4 ? 'none' : 'translateY(40px)' }}>
                     <Link href={item.href} className="group flex flex-col items-center rounded-3xl border border-line bg-char p-3 text-center shadow-card transition hover:shadow-lift md:p-5">
                       <span className="relative block h-24 w-full md:h-52">
                         <Image src={item.image} alt="" fill sizes="(max-width: 768px) 40vw, 220px" className="object-contain drop-shadow-xl transition duration-500 group-hover:-translate-y-1" />
@@ -232,13 +214,13 @@ export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }
               </ul>
             </div>
 
-            {/* 7 · Every spoon has: nutrient bubbles */}
-            <div {...scene(6)}>
+            {/* 6 · Every spoon has: nutrient bubbles */}
+            <div {...scene(5)}>
               <h2 className={`${title} pt-4 text-center md:pt-2`}>{s.s6.title}</h2>
-              <div className="absolute left-1/2 top-[56%] aspect-square w-[min(84vw,62svh)] -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute left-1/2 top-[55%] aspect-square w-[min(84vw,62svh)] -translate-x-1/2 -translate-y-1/2">
                 <ul>
                   {s.s6.points.map((p, i) => (
-                    <li key={p} data-reveal={6} data-o data-on="translate(-50%, -50%) scale(1)" data-off="translate(-50%, -50%) scale(0.4)" className="absolute flex w-20 -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center transition duration-500 md:w-28" style={{ ...nutrientPos[i], transitionDelay: `${0.07 * i}s`, transform: `translate(-50%, -50%) scale(${active === 6 ? 1 : 0.4})`, opacity: active === 6 ? 1 : 0 }}>
+                    <li key={p} data-reveal={5} data-o data-on="translate(-50%, -50%) scale(1)" data-off="translate(-50%, -50%) scale(0.4)" className="absolute flex w-20 -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center transition duration-500 md:w-28" style={{ ...nutrientPos[i], transitionDelay: `${0.07 * i}s`, transform: `translate(-50%, -50%) scale(${active === 5 ? 1 : 0.4})`, opacity: active === 5 ? 1 : 0 }}>
                       <span className="grid h-12 w-12 place-items-center rounded-full bg-gold-500 font-serif text-lg font-bold text-ink shadow-card md:h-16 md:w-16 md:text-2xl">{nutrientMarks[i]}</span>
                       <span className="mt-1.5 text-[11px] font-semibold leading-tight md:text-sm">{p}</span>
                     </li>
@@ -247,10 +229,10 @@ export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }
               </div>
             </div>
 
-            {/* 8 · Bring Amrit home */}
-            <div {...scene(7)}>
-              <div className="flex h-full max-w-xl flex-col pt-4 md:justify-center md:pt-0">
-                <h2 className={`${title} md:text-7xl`}>{s.s7.title}</h2>
+            {/* 7 · Bring Amrit home */}
+            <div {...scene(6)}>
+              <div className="flex h-full max-w-md flex-col pt-4 md:justify-center md:pt-0 lg:max-w-xl">
+                <h2 className={title}>{s.s7.title}</h2>
                 <p className="mt-4 text-lg text-muted">{s.s7.text}</p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link href={shopHref} className="btn btn-gold !px-8">{s.s7.cta} <Icon name="arrow" size={18} /></Link>
@@ -260,7 +242,7 @@ export function ScrollStory({ jar, breeds, items, uses, shopHref, whatsappHref }
             </div>
 
             {/* The pinned jar */}
-            <div className="pointer-events-none absolute left-1/2 top-[52%] h-[44svh] w-[min(58vw,340px)] md:h-[58svh]" aria-hidden="true">
+            <div className="pointer-events-none absolute left-1/2 top-[55%] h-[44svh] w-[min(58vw,340px)] md:h-[58svh]" aria-hidden="true">
               <div
                 data-jar
                 data-desktop={JSON.stringify(jarDesktop)}
