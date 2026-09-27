@@ -49,6 +49,7 @@
   --color-hill-3: #f3e6c9;
 
   --font-serif: var(--font-display), var(--font-mukta), system-ui, sans-serif;
+  --font-elegant: var(--font-cinzel), var(--font-mukta), Georgia, serif;
   --font-sans: var(--font-jost), var(--font-mukta), system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-hand: var(--font-display), var(--font-mukta), system-ui, sans-serif;
 

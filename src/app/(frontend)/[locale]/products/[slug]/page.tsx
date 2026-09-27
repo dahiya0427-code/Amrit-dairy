@@ -22,6 +22,9 @@ export async function generateStaticParams() {
   return []
 }
 
+/** Back-label photos of products that have one (cut from the jar turntable). */
+const backViews: Record<string, string> = { 'desi-cow-golden-ghee': '/images/ghee-back.png' }
+
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -98,11 +101,12 @@ export default async function ProductPage({ params }: Props) {
         </div>
       ),
     })),
-    ...storySlides({ product, image: packshot, cutout: mediaUrl(product.cutout, 'card'), locale, fssai: settings.fssai }).map((s) => ({
+    ...storySlides({ product, image: packshot, cutout: mediaUrl(product.cutout, 'card'), back: backViews[product.slug] ?? null, locale, fssai: settings.fssai }).map((s) => ({
       key: `story-${s.key}`,
+      // the slide itself, shrunk (it is sized in container units), like a photo thumbnail
       thumb: (
-        <span className="grid h-full w-full place-items-center bg-gold-500 p-1 text-center text-[9px] font-semibold leading-tight text-ink lg:text-[10px]">
-          {s.label}
+        <span className="pointer-events-none block h-full w-full" aria-hidden="true" inert>
+          {s.node}
         </span>
       ),
       node: s.node,

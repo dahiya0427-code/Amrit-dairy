@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Barlow_Semi_Condensed, Jost, Mukta } from 'next/font/google'
+import { Barlow_Semi_Condensed, Cinzel, Jost, Mukta } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import '../globals.css'
 
@@ -23,6 +23,7 @@ export async function generateStaticParams() {
 }
 
 const display = Barlow_Semi_Condensed({ subsets: ['latin'], weight: ['500', '600', '700'], variable: '--font-display', display: 'swap' })
+const elegant = Cinzel({ subsets: ['latin'], weight: ['500', '600', '700'], variable: '--font-cinzel', display: 'swap' })
 const jost = Jost({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-jost', display: 'swap' })
 const mukta = Mukta({ subsets: ['latin', 'devanagari'], weight: ['400', '500', '600', '700'], variable: '--font-mukta', display: 'swap' })
 
@@ -52,7 +53,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   ])
 
   return (
-    <html lang={htmlLang[locale]} className={`${display.variable} ${jost.variable} ${mukta.variable}`}>
+    <html lang={htmlLang[locale]} className={`${display.variable} ${elegant.variable} ${jost.variable} ${mukta.variable}`}>
       <body className="min-h-screen antialiased">
         <I18nProvider locale={locale}>
           <CartProvider>
