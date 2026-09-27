@@ -4,7 +4,6 @@ import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
 import type { Category, LegalPage, ServiceArea, SiteSetting } from '@/payload-types'
 import { telLink, whatsappLink } from '@/lib/site'
-import { FarmSketch } from './FarmSketch'
 import { Icon } from './Icon'
 import { BrandLogo } from './Logo'
 
@@ -41,10 +40,9 @@ export function Footer({
   const phones = [settings.ordersPhone, settings.cowPhone].filter((p, i, a): p is string => Boolean(p) && a.indexOf(p) === i)
 
   return (
-    <footer className="bg-char text-ink">
-      <FarmSketch className="h-48 md:aspect-[2400/810] md:h-auto" />
+    <footer className="border-t border-line bg-char text-ink">
       <div className="container-x pb-4 md:pb-8">
-        <div className="grid gap-10 border-b-2 border-ink/80 pb-10 pt-4 md:grid-cols-[1fr_auto] md:pt-8">
+        <div className="grid gap-10 border-b-2 border-ink/80 pb-10 pt-10 md:grid-cols-[1fr_auto] md:pt-14">
           {/* Order line: big numbers */}
           <div>
             <p className="font-serif text-2xl font-bold uppercase tracking-[0.02em] md:text-4xl">{t.footer.orderTitle}</p>
