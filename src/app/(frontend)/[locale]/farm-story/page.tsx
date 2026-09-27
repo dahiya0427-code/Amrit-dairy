@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Icon } from '@/components/Icon'
+import { Reveal } from '@/components/Reveal'
 import { Breadcrumbs, PageHero, SectionHeading } from '@/components/ui'
 import { getDictionary } from '@/i18n'
 import { isLocale, localePath } from '@/i18n/config'
@@ -60,25 +61,33 @@ export default async function FarmStoryPage({ params }: Props) {
       </section>
 
       <section className="container-x py-12">
-        <ul className="grid gap-4 sm:grid-cols-3">
-          {t.farm.stats.map((s) => (
-            <li key={s.label} className="rounded-lg bg-gold-500 p-6 text-center text-ink">
-              <span className="block font-serif text-5xl font-semibold text-gold-700">{s.value}</span>
+        <ul data-reveal-group className="stats-magic grid gap-4 sm:grid-cols-3">
+          {t.farm.stats.map((s, i) => (
+            <li key={s.label} data-step style={{ '--d': `${i * 0.12}s` } as React.CSSProperties} className="stat-card relative overflow-hidden rounded-lg bg-gold-500 p-6 text-center text-ink">
+              <span data-count={s.value} className="block font-serif text-5xl font-semibold tabular-nums text-[#5c3a14] md:text-6xl">{s.value}</span>
               <span className="mt-2 block">{s.label}</span>
             </li>
           ))}
         </ul>
+        <Reveal />
       </section>
 
       <section className="bg-malai/60 py-14">
         <div className="container-x">
           <SectionHeading title={t.farm.journeyTitle} intro={t.farm.bilona} />
-          <ol className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+          <ol data-reveal-group className="steps-magic grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
             {t.farm.journey.map((step, i) => (
-              <li key={step} className="relative rounded-2xl bg-char p-5 text-center shadow-card">
-                <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-latte text-caramel"><Icon name={journeyIcons[i]} /></span>
+              <li key={step} data-step style={{ '--d': `${i * 0.18}s` } as React.CSSProperties} className="step-card group relative rounded-2xl bg-char p-5 text-center shadow-card">
+                <span className="step-num absolute left-3 top-3 grid h-6 w-6 place-items-center rounded-full bg-gold-500 text-xs font-bold text-ink">{i + 1}</span>
+                <span className="step-icon relative mx-auto grid h-14 w-14 place-items-center rounded-full bg-latte text-caramel transition-colors duration-300 group-hover:bg-gold-500 group-hover:text-ink">
+                  <Icon name={journeyIcons[i]} size={24} />
+                </span>
                 <span className="mt-3 block font-semibold text-cream">{step}</span>
-                {i < t.farm.journey.length - 1 && <span className="absolute -right-3 top-1/2 hidden -translate-y-1/2 text-gold-700 lg:block" aria-hidden="true">→</span>}
+                {i < t.farm.journey.length - 1 && (
+                  <span className="step-arrow absolute -right-[14px] top-1/2 z-10 hidden h-6 w-6 -translate-y-1/2 place-items-center rounded-full bg-gold-500 text-ink shadow-card lg:grid" aria-hidden="true">
+                    <Icon name="arrow" size={14} />
+                  </span>
+                )}
               </li>
             ))}
           </ol>
