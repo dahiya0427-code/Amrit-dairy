@@ -69,19 +69,20 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
           ))}
         </div>
         {slides.length > 1 && (
-          <>
-            <button type="button" onClick={() => go(index - 1)} aria-label={t.story.prev} className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-gold-700 text-ink shadow-lift hover:bg-gold-500">
+          // Controls sit under the picture so they never cover a slide's text.
+          <div className="mt-4 flex items-center justify-center gap-5">
+            <button type="button" onClick={() => go(index - 1)} aria-label={t.story.prev} className="grid h-11 w-11 place-items-center rounded-full border border-line bg-char text-ink shadow-card transition-colors hover:border-gold-500 hover:bg-gold-500 hover:text-ink focus-visible:bg-gold-500">
               <Icon name="arrow" className="rotate-180" />
             </button>
-            <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-char text-cream shadow-lift hover:bg-char">
-              <Icon name="arrow" />
-            </button>
-            <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5" aria-hidden="true">
+            <div className="flex gap-1.5" aria-hidden="true">
               {slides.map((s, i) => (
                 <span key={s.key} className={`h-1.5 rounded-full transition-all ${i === index ? 'w-6 bg-ink' : 'w-1.5 bg-ink/25'}`} />
               ))}
             </div>
-          </>
+            <button type="button" onClick={() => go(index + 1)} aria-label={t.story.next} className="grid h-11 w-11 place-items-center rounded-full border border-line bg-char text-ink shadow-card transition-colors hover:border-gold-500 hover:bg-gold-500 hover:text-ink focus-visible:bg-gold-500">
+              <Icon name="arrow" />
+            </button>
+          </div>
         )}
       </div>
     </div>

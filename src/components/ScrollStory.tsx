@@ -87,7 +87,7 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
           <div className={inner}>
             <div className="grid content-start gap-5 pt-4 md:grid-cols-[1fr_minmax(0,22vw)_1fr] md:gap-8 md:pt-[6vh]">
               <div className="md:pl-[6%] [text-shadow:0_0_14px_#fff,0_0_6px_#fff,0_0_2px_#fff]">
-                <h1 className={`${title} !text-4xl leading-[0.92] md:!text-6xl lg:!text-7xl`}>{s.s1.title}</h1>
+                <h1 className={`${title} !text-[#6b3d1f] !text-4xl leading-[0.92] md:!text-6xl lg:!text-7xl`}>{s.s1.title}</h1>
                 <p className="mt-3 font-serif text-lg font-bold uppercase tracking-[0.06em] text-gold-700 md:mt-4 md:text-xl">{s.s1.eyebrow}</p>
               </div>
               <div className="hidden md:block" />

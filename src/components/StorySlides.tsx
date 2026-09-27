@@ -11,7 +11,7 @@ import { Icon } from './Icon'
  * comes from the CMS and dictionaries, so slides stay bilingual. Sizes use
  * container units (cqw), so the same slide also renders as its own thumbnail.
  */
-type Props = { product: Product; image: string | null; cutout?: string | null; back?: string | null; locale: Locale; fssai?: string | null }
+type Props = { product: Product; image: string | null; cutout?: string | null; back?: string | null; farm?: boolean; locale: Locale; fssai?: string | null }
 
 type Wall = 'walnut' | 'sand' | 'peach'
 const walls: Record<Wall, { wall: string; table: string; text: string; sub: string }> = {
@@ -139,9 +139,18 @@ function PlasticTub() {
 
 const stepIcons = ['cow', 'milk', 'pot', 'churn', 'flame', 'drop', 'jar', 'box']
 const testedIcons = ['cow', 'shield', 'lab']
-const benefitIcons = ['sparkle', 'flame', 'cow', 'drop', 'leaf', 'shield']
+const fallbackIcons = ['sparkle', 'leaf', 'drop', 'shield']
+/** Pick an icon that matches what the point says (no cow on honey or achar). */
+function iconFor(text: string, i: number) {
+  const t = text.toLowerCase()
+  if (/cow|गाय/.test(t)) return 'cow'
+  if (/glass|jar|काँच/.test(t)) return 'jar'
+  if (/smoke|cook|kitchen|रसोई|पका/.test(t)) return 'flame'
+  if (/batch|recipe|home|बैच|विधि/.test(t)) return 'pot'
+  return fallbackIcons[i % fallbackIcons.length]
+}
 
-export function storySlides({ product, image, cutout, back, locale, fssai }: Props): { key: string; label: string; node: React.ReactNode }[] {
+export function storySlides({ product, image, cutout, back, farm = true, locale, fssai }: Props): { key: string; label: string; node: React.ReactNode }[] {
   const s = getDictionary(locale).story
   const hero = cutout ?? image
   const photo = !cutout
@@ -270,7 +279,7 @@ export function storySlides({ product, image, cutout, back, locale, fssai }: Pro
         node: (
           <Studio wall="sand" table={26}>
             <div className="absolute left-1/2 top-[10cqw] h-[80cqw] w-[80cqw] -translate-x-1/2 rounded-full bg-white/35" aria-hidden="true" />
-            <p className={`absolute inset-x-0 top-[5cqw] text-center ${heading} ${w.text}`}>{s.benefitsTitle}</p>
+            <p className={`absolute inset-x-[4cqw] top-[5cqw] text-center ${heading} !text-[5.2cqw] ${w.text}`}>{s.benefitsTitle}</p>
             <ul className="absolute inset-0">
               {list.map((b, i) => {
                 const a = Math.PI * (1.08 + (0.84 * i) / Math.max(1, list.length - 1))
@@ -279,7 +288,7 @@ export function storySlides({ product, image, cutout, back, locale, fssai }: Pro
                 return (
                   <li key={b.id ?? i} className={`absolute flex w-[25cqw] -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center ${w.sub}`} style={{ left: `${left}%`, top: `${top}%` }}>
                     <span className="grid h-[8cqw] w-[8cqw] place-items-center rounded-full text-[#6e553f]">
-                      <Icon name={benefitIcons[i] ?? 'sparkle'} size={26} className="h-[70%] w-[70%]" />
+                      <Icon name={iconFor(b.text, i)} size={26} className="h-[70%] w-[70%]" />
                     </span>
                     <span className="mt-[0.5cqw] text-[2.6cqw] font-medium leading-tight">{b.text}</span>
                   </li>
@@ -309,7 +318,30 @@ export function storySlides({ product, image, cutout, back, locale, fssai }: Pro
         ),
       })
     }
-    if (kind === 'source') {
+    if (kind === 'source' && !farm) {
+      // Honey, oil and achar don't come from our cows: show what is true for them instead.
+      const w = walls.walnut
+      out.push({
+        key: kind,
+        label: s.promiseTitle,
+        node: (
+          <Studio wall="walnut" table={24}>
+            <div className="absolute right-[7cqw] top-[10cqw] w-[44cqw]">
+              <p className={`${kicker} ${w.sub}`}>{s.promiseKicker}</p>
+              <p className={`${big} ${w.text}`}>{s.promiseTitle}</p>
+              <ul className={`mt-[2.5cqw] space-y-[1.4cqw] text-[3cqw] leading-snug ${w.sub}`}>
+                {s.promisePoints.map((p) => (
+                  <li key={p} className="flex items-start gap-[1.2cqw]"><Icon name="check" className="mt-[0.3cqw] h-[2.8cqw] w-[2.8cqw] shrink-0 text-[#f0c24f]" size={14} /> {p}</li>
+                ))}
+              </ul>
+              {fssai && <p className={`mt-[2.5cqw] inline-block rounded-full border-[0.3cqw] border-white/60 px-[2cqw] py-[0.6cqw] text-[2.3cqw] ${w.sub}`}>{s.sourceFssai} {fssai}</p>}
+            </div>
+            <OnTable src={hero} photo={photo} className="bottom-[9cqw] left-[10cqw] h-[56cqw] w-[36cqw]" />
+          </Studio>
+        ),
+      })
+    }
+    if (kind === 'source' && farm) {
       const w = walls.walnut
       out.push({
         key: kind,

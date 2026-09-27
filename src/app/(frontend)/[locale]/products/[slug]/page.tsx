@@ -101,7 +101,7 @@ export default async function ProductPage({ params }: Props) {
         </div>
       ),
     })),
-    ...storySlides({ product, image: packshot, cutout: mediaUrl(product.cutout, 'card'), back: backViews[product.slug] ?? null, locale, fssai: settings.fssai }).map((s) => ({
+    ...storySlides({ product, image: packshot, cutout: mediaUrl(product.cutout, 'card'), back: backViews[product.slug] ?? null, farm: ['ghee', 'dairy'].includes(typeof product.category === 'object' ? (product.category?.slug ?? '') : ''), locale, fssai: settings.fssai }).map((s) => ({
       key: `story-${s.key}`,
       // the slide itself, shrunk (it is sized in container units), like a photo thumbnail
       thumb: (
