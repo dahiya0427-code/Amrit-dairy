@@ -78,7 +78,6 @@ export default async function FarmStoryPage({ params }: Props) {
           <ol data-reveal-group className="steps-magic grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
             {t.farm.journey.map((step, i) => (
               <li key={step} data-step style={{ '--d': `${i * 0.18}s` } as React.CSSProperties} className="step-card group relative rounded-2xl bg-char p-5 text-center shadow-card">
-                <span className="step-num absolute left-3 top-3 grid h-6 w-6 place-items-center rounded-full bg-gold-500 text-xs font-bold text-ink">{i + 1}</span>
                 <span className="step-icon relative mx-auto grid h-14 w-14 place-items-center rounded-full bg-latte text-caramel transition-colors duration-300 group-hover:bg-gold-500 group-hover:text-ink">
                   <Icon name={journeyIcons[i]} size={24} />
                 </span>
