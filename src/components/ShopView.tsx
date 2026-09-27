@@ -5,6 +5,7 @@ import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
 import type { Category, Product } from '@/payload-types'
 import { mediaUrl } from '@/lib/media'
+import { buyableVariants } from '@/lib/product'
 import { whatsappLink } from '@/lib/site'
 import { categoryCutout, toneOf, tones } from '@/lib/tone'
 import { Icon } from './Icon'
@@ -28,6 +29,10 @@ export function ShopView({
   whatsapp: string
 }) {
   const t = getDictionary(locale)
+  // Two sections: what can be ordered now, and what is not available yet.
+  const isAvailable = (p: Product) => p.status === 'active' && buyableVariants(p).length > 0
+  const available = products.filter(isAvailable)
+  const soon = products.filter((p) => !isAvailable(p))
   const base = active ? `/shop/${active.slug}` : '/shop'
   const bannerSrc = (active && categoryCutout[active.slug]) || mediaUrl(active?.bannerImage, 'card') || '/images/ghee-cutout.png'
   const tone = tones[toneOf(active?.slug)]
@@ -87,9 +92,36 @@ export function ShopView({
 
       <section className="container-x">
         {products.length ? (
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
-            {products.map((p, i) => <ProductCard key={p.id} product={p} locale={locale} priority={i < 4} />)}
-          </div>
+          <>
+            {available.length > 0 && (
+              <div>
+                <div className="mb-5 flex flex-wrap items-end justify-between gap-2">
+                  <h2 className="flex items-center gap-3 text-2xl md:text-3xl">
+                    <span className="h-3 w-3 rounded-full bg-success" aria-hidden="true" /> {t.shop.availableTitle}
+                    <span className="text-base font-normal normal-case text-muted">({available.length})</span>
+                  </h2>
+                  <p className="text-sm text-muted">{t.shop.availableText}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
+                  {available.map((p, i) => <ProductCard key={p.id} product={p} locale={locale} priority={i < 4} />)}
+                </div>
+              </div>
+            )}
+            {soon.length > 0 && (
+              <div className={available.length ? 'mt-14 border-t border-line pt-10' : ''}>
+                <div className="mb-5 flex flex-wrap items-end justify-between gap-2">
+                  <h2 className="flex items-center gap-3 text-2xl md:text-3xl">
+                    <span className="h-3 w-3 rounded-full bg-gold-500" aria-hidden="true" /> {t.shop.soonTitle}
+                    <span className="text-base font-normal normal-case text-muted">({soon.length})</span>
+                  </h2>
+                  <p className="max-w-md text-sm text-muted">{t.shop.soonText}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
+                  {soon.map((p) => <ProductCard key={p.id} product={p} locale={locale} />)}
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <p className="py-10 text-center text-muted">{t.shop.empty}</p>
         )}

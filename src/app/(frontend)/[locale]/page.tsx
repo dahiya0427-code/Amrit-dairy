@@ -7,7 +7,7 @@ import { ScrollStory } from '@/components/ScrollStory'
 import { getDictionary } from '@/i18n'
 import { isLocale, localePath, type Locale } from '@/i18n/config'
 import { formatINR } from '@/lib/format'
-import { mediaUrl } from '@/lib/media'
+import { cowPhoto } from '@/lib/cow-photo'
 import { minPrice } from '@/lib/product'
 import { getBreeds, getCategories, getProduct, getProducts, getSettings } from '@/lib/queries'
 import { buildMetadata } from '@/lib/seo'
@@ -63,7 +63,7 @@ export default async function HomePage({ params }: Props) {
     { title: pick('desi-cow-milk')?.title ?? 'Desi Cow Milk', price: priceOf('desi-cow-milk'), image: '/images/milk-cutout.png', href: href('/products/desi-cow-milk') },
     { title: acharCat?.title ?? 'Achar', price: null, image: '/images/mix-veg-achar-cutout.png', href: href('/shop/achar') },
   ]
-  const storyBreeds = farmBreeds.map((b) => ({ name: b.name, image: mediaUrl(b.image, 'card') }))
+  const storyBreeds = farmBreeds.map((b) => ({ name: b.name, image: cowPhoto(b) }))
 
   return (
     <>

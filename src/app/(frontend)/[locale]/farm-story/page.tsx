@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { cowPhoto } from '@/lib/cow-photo'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -6,7 +7,6 @@ import { Icon } from '@/components/Icon'
 import { Breadcrumbs, PageHero, SectionHeading } from '@/components/ui'
 import { getDictionary } from '@/i18n'
 import { isLocale, localePath } from '@/i18n/config'
-import { mediaUrl } from '@/lib/media'
 import { getBreeds, getSettings } from '@/lib/queries'
 import { buildMetadata } from '@/lib/seo'
 import { telLink } from '@/lib/site'
@@ -45,8 +45,8 @@ export default async function FarmStoryPage({ params }: Props) {
           {onFarm.map((b) => (
             <li key={b.id}>
               <Link href={href(`/desi-cows/${b.slug}`)} className="card block p-3 text-center hover:shadow-lift">
-                <span className="relative block aspect-square rounded-xl bg-paper">
-                  {mediaUrl(b.image, 'card') && <Image src={mediaUrl(b.image, 'card') as string} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 20vw" className="object-contain" />}
+                <span className="relative block aspect-square overflow-hidden rounded-xl bg-paper">
+                  {cowPhoto(b) && <Image src={cowPhoto(b) as string} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 20vw" className="object-cover" />}
                 </span>
                 <span className="mt-2 block font-semibold text-cream">{b.name}</span>
                 {b.origin && <span className="block text-sm text-muted">{b.origin}</span>}
