@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useI18n } from './I18nProvider'
 import { Icon } from './Icon'
 import { LanguageToggle } from './LanguageToggle'
@@ -24,7 +25,9 @@ export function MobileMenu({ groups, buttonClassName = 'text-cream hover:bg-whit
       <button type="button" className={`grid h-11 w-11 place-items-center rounded-full ${buttonClassName}`} onClick={() => setOpen(true)} aria-label={t.nav.menu} aria-expanded={open}>
         <Icon name="menu" size={24} />
       </button>
-      {open && (
+      {/* Portal to <body>: the header's backdrop blur would otherwise trap this
+          fixed overlay inside the header box. */}
+      {open && createPortal(
         <div className="fixed inset-0 z-[70] overflow-y-auto bg-char" role="dialog" aria-modal="true" aria-label={t.nav.menu}>
           <div className="flex items-center justify-between bg-gold-500 px-4 py-3 text-ink">
             <span className="font-serif text-xl">{t.nav.menu}</span>
@@ -52,7 +55,8 @@ export function MobileMenu({ groups, buttonClassName = 'text-cream hover:bg-whit
               </div>
             ))}
           </nav>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   )
