@@ -359,3 +359,7 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-drift, .animate-sun, .animate-birds, .animate-graze, .animate-marquee { animation: none; }
 }
+
+/* Scrollable strips without visible scroll bars (thumbnail rails). */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

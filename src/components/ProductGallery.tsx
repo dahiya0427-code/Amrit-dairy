@@ -10,6 +10,7 @@ export type GallerySlide = { key: string; thumb: React.ReactNode; node: React.Re
 export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
   const { t } = useI18n()
   const track = useRef<HTMLDivElement>(null)
+  const rail = useRef<HTMLUListElement>(null)
   const [index, setIndex] = useState(0)
 
   const go = useCallback((i: number) => {
@@ -28,12 +29,21 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
     return () => el.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Keep the open picture's thumbnail in view inside the rail (without moving the page).
+  useEffect(() => {
+    const r = rail.current
+    const li = r?.children[index] as HTMLElement | undefined
+    if (!r || !li) return
+    if (r.scrollHeight > r.clientHeight) r.scrollTo({ top: li.offsetTop - r.clientHeight / 2 + li.offsetHeight / 2, behavior: 'smooth' })
+    else r.scrollTo({ left: li.offsetLeft - r.clientWidth / 2 + li.offsetWidth / 2, behavior: 'smooth' })
+  }, [index])
+
   if (!slides.length) return null
 
   return (
     <div className="flex flex-col-reverse gap-3 lg:flex-row">
       {slides.length > 1 && (
-        <ul className="flex gap-2 overflow-x-auto pb-1 lg:max-h-[560px] lg:w-20 lg:flex-col lg:overflow-y-auto lg:pb-0" aria-label={t.story.slideLabel(index + 1, slides.length)}>
+        <ul ref={rail} data-thumbs className="no-scrollbar relative flex gap-2 overflow-x-auto p-1 lg:max-h-[560px] lg:w-[88px] lg:flex-col lg:overflow-y-auto lg:overflow-x-hidden" aria-label={t.story.slideLabel(index + 1, slides.length)}>
           {slides.map((s, i) => (
             <li key={s.key} className="shrink-0">
               <button
@@ -41,9 +51,8 @@ export function ProductGallery({ slides }: { slides: GallerySlide[] }) {
                 onClick={() => go(i)}
                 aria-label={t.story.slideLabel(i + 1, slides.length)}
                 aria-current={i === index}
-                className={`relative block h-16 w-16 overflow-hidden rounded-xl border-2 bg-paper transition lg:h-20 lg:w-20 ${
-                  i === index ? 'border-cream' : 'border-transparent opacity-70 hover:opacity-100'
-                }`}
+                data-active={i === index}
+                className="relative block h-16 w-16 overflow-hidden rounded-xl bg-paper ring-1 ring-line transition hover:ring-gold-500 data-[active=true]:ring-[3px] data-[active=true]:ring-gold-500 lg:h-20 lg:w-20"
               >
                 {s.thumb}
               </button>
