@@ -405,6 +405,8 @@ export const hi: Dictionary = {
     cowEnquiry: 'गाय पूछताछ',
     areas: 'हम यहाँ पहुँचाते हैं',
     legal: 'कानूनी',
+    orderTitle: 'WhatsApp पर ऑर्डर करें',
+    madeBy: 'वेबसाइट डिज़ाइन और डेवलपमेंट',
     rights: 'अमृत डेयरी। सर्वाधिकार सुरक्षित।',
   },
   notFound: {

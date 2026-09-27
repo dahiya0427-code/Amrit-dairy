@@ -8,11 +8,14 @@ import { FarmSketch } from './FarmSketch'
 import { Icon } from './Icon'
 import { BrandLogo } from './Logo'
 
+/**
+ * Clean footer (Mr Dairy style): big phone numbers on the left, a short list
+ * of links on the right, then licences, address and the logo, and a visible
+ * credit for the agency that built the site.
+ */
 export function Footer({
   locale,
   settings,
-  categories,
-  areas,
   legal,
 }: {
   locale: Locale
@@ -29,105 +32,86 @@ export function Footer({
     { name: 'youtube', url: settings.youtube },
   ].filter((s) => s.url)
 
-  const heading = 'mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700'
-  const link = 'hover:text-gold-700 hover:underline underline-offset-4'
+  const links = [
+    { label: t.nav.shop, href: '/shop' },
+    { label: t.nav.farmStory, href: '/farm-story' },
+    ...legal.map((l) => ({ label: l.title, href: `/legal/${l.slug}` })),
+    { label: t.nav.contact, href: '/contact' },
+  ]
+  const phones = [settings.ordersPhone, settings.cowPhone].filter((p, i, a): p is string => Boolean(p) && a.indexOf(p) === i)
 
   return (
-    <footer className="bg-espresso text-cream/85">
-      <FarmSketch className="h-36 bg-char md:h-64" />
-      <div className="pb-24 md:pb-0">
-      <div className="border-b border-cream/15">
-        <div className="container-x flex flex-col items-center py-12 text-center">
-          <BrandLogo height={110} className="h-24 w-auto md:h-28" />
-          <p className="mt-4 max-w-xl font-serif text-2xl italic text-cream">{t.footer.tagline}</p>
-          <span className="mt-5 h-px w-24 bg-gold-500/60" aria-hidden="true" />
-        </div>
-      </div>
-      <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <h2 className={heading}>Amrit Dairy</h2>
-          <p className="text-sm leading-relaxed">{t.footer.about}</p>
-          <p className="mt-3 text-sm">{settings.address}</p>
-          {socials.length > 0 && (
-            <ul className="mt-4 flex gap-2">
-              {socials.map((s) => (
-                <li key={s.name}>
-                  <a href={s.url as string} target="_blank" rel="noopener" className="grid h-10 w-10 place-items-center rounded-full border border-cream/30 hover:border-gold-500" aria-label={s.name}>
-                    <Icon name={s.name} size={18} />
+    <footer className="bg-char text-ink">
+      <FarmSketch className="h-36 md:h-64" />
+      <div className="container-x pb-4 md:pb-8">
+        <div className="grid gap-10 border-b-2 border-ink/80 pb-10 pt-4 md:grid-cols-[1fr_auto] md:pt-8">
+          {/* Order line: big numbers */}
+          <div>
+            <p className="font-serif text-2xl font-bold uppercase tracking-[0.02em] md:text-4xl">{t.footer.orderTitle}</p>
+            <ul className="mt-2 space-y-1">
+              {phones.map((p) => (
+                <li key={p}>
+                  <a href={whatsappLink(p)} target="_blank" rel="noopener" className="font-serif text-3xl font-bold tracking-[0.08em] text-[#6b3d1f] hover:text-gold-700 md:text-5xl">
+                    {p}
                   </a>
                 </li>
               ))}
             </ul>
-          )}
-        </div>
-
-        <div>
-          <h2 className={heading}>{t.footer.shop}</h2>
-          <ul className="space-y-2 text-sm">
-            <li><Link className={link} href={href('/shop')}>{t.shop.filterAll}</Link></li>
-            {categories.map((c) => (
-              <li key={c.id}><Link className={link} href={href(`/shop/${c.slug}`)}>{c.title}</Link></li>
-            ))}
-            <li><Link className={link} href={href('/subscribe')}>{t.nav.subscribe}</Link></li>
-            <li><Link className={link} href={href('/bulk-orders')}>{t.nav.bulk}</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 className={heading}>{t.footer.farm}</h2>
-          <ul className="space-y-2 text-sm">
-            <li><Link className={link} href={href('/farm-story')}>{t.nav.farmStory}</Link></li>
-            <li><Link className={link} href={href('/desi-cows')}>{t.nav.desiCows}</Link></li>
-            <li><Link className={link} href={href('/departments')}>{t.nav.departments}</Link></li>
-            <li><Link className={link} href={href('/facilities')}>{t.nav.facilities}</Link></li>
-            <li><Link className={link} href={href('/about')}>{t.nav.about}</Link></li>
-            <li><Link className={link} href={href('/blog')}>{t.nav.blog}</Link></li>
-            <li><Link className={link} href={href('/news')}>{t.nav.news}</Link></li>
-            <li><Link className={link} href={href('/delivery')}>{t.nav.delivery}</Link></li>
-            <li><Link className={link} href={href('/contact')}>{t.nav.contact}</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 className={heading}>{t.footer.contact}</h2>
-          <ul className="space-y-2 text-sm">
-            <li>
-              {t.footer.ordersWhatsapp}:{' '}
-              <a className={link} href={whatsappLink(settings.ordersPhone)} target="_blank" rel="noopener">{settings.ordersPhone}</a>
-            </li>
-            <li>{t.footer.cowEnquiry}: <a className={link} href={telLink(settings.cowPhone)}>{settings.cowPhone}</a></li>
-            <li><a className={link} href={`mailto:${settings.email}`}>{settings.email}</a></li>
-          </ul>
-          <h2 className={`${heading} mt-6`}>{t.footer.registered}</h2>
-          <ul className="space-y-1 text-sm">
-            {settings.gstin && <li>GSTIN: {settings.gstin}</li>}
-            {settings.fssai && <li>FSSAI Lic. No.: {settings.fssai}</li>}
-            {settings.udyam && <li>Udyam Reg. No.: {settings.udyam}</li>}
-          </ul>
-        </div>
-      </div>
-
-      {areas.length > 0 && (
-        <div className="border-t border-cream/15">
-          <div className="container-x flex flex-wrap items-center gap-x-4 gap-y-2 py-4 text-sm">
-            <span className="font-semibold text-gold-700">{t.footer.areas}:</span>
-            {areas.map((a) => (
-              <Link key={a.id} className={link} href={href(`/delivery/${a.slug}`)}>{a.name}, {a.city}</Link>
-            ))}
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              {settings.email && (
+                <a href={`mailto:${settings.email}`} className="inline-flex items-center gap-2 text-base font-medium hover:text-gold-700">
+                  <Icon name="mail" size={20} /> {settings.email}
+                </a>
+              )}
+              {socials.map((s) => (
+                <a key={s.name} href={s.url as string} target="_blank" rel="noopener" aria-label={s.name} className="grid h-11 w-11 place-items-center rounded-xl bg-[#6b3d1f] text-white hover:bg-gold-500 hover:text-ink">
+                  <Icon name={s.name} size={22} />
+                </a>
+              ))}
+              {phones[0] && (
+                <a href={telLink(phones[0])} className="grid h-11 w-11 place-items-center rounded-xl bg-[#6b3d1f] text-white hover:bg-gold-500 hover:text-ink" aria-label={t.common.callUs}>
+                  <Icon name="phone" size={20} />
+                </a>
+              )}
+            </div>
           </div>
-        </div>
-      )}
 
-      <div className="border-t border-cream/15">
-        <div className="container-x flex flex-col gap-3 py-5 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {t.footer.rights}</p>
-          <ul className="flex flex-wrap gap-x-4 gap-y-1" aria-label={t.footer.legal}>
-            {legal.map((l) => (
-              <li key={l.id}><Link className={link} href={href(`/legal/${l.slug}`)}>{l.title}</Link></li>
-            ))}
-          </ul>
+          {/* Short list of links */}
+          <nav aria-label={t.footer.legal}>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-3 md:grid-cols-1 md:text-right">
+              {links.map((l) => (
+                <li key={l.href}>
+                  <Link href={href(l.href)} className="text-sm font-bold uppercase tracking-[0.06em] hover:text-gold-700">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        {/* Licences, address, logo */}
+        <div className="flex flex-col gap-6 py-8 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-2 text-sm text-muted">
+            <p className="flex flex-wrap gap-2">
+              {settings.fssai && <span className="rounded-md border border-line px-2.5 py-1 font-semibold text-ink">FSSAI {settings.fssai}</span>}
+              {settings.gstin && <span className="rounded-md border border-line px-2.5 py-1">GSTIN {settings.gstin}</span>}
+            </p>
+            {settings.address && <p>{settings.address}</p>}
+            <p>© {new Date().getFullYear()} {t.footer.rights}</p>
+          </div>
+          <Link href={href('/')} aria-label="Amrit Dairy home" className="shrink-0">
+            <BrandLogo height={110} className="h-24 w-auto md:h-28" />
+          </Link>
         </div>
       </div>
+
+      {/* Credit for the agency that built the site */}
+      <div className="bg-[#2b1b10] text-center text-[#f6eee0]">
+        <a href="https://pehchaan.digital" target="_blank" rel="noopener" className="container-x flex flex-wrap items-center justify-center gap-x-2 gap-y-1 py-4 pb-24 text-sm md:pb-4 md:text-base">
+          <span className="opacity-80">{t.footer.madeBy}</span>
+          <span className="inline-flex items-center gap-1.5 whitespace-nowrap font-serif text-lg font-bold tracking-[0.04em] text-gold-500 underline-offset-4 hover:underline md:text-xl">
+            Pehchaan.Digital <Icon name="arrow" size={16} className="-rotate-45" />
+          </span>
+        </a>
       </div>
     </footer>
   )

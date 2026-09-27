@@ -409,6 +409,8 @@ export const en = {
     areas: 'We deliver in',
     legal: 'Legal',
     rights: 'Amrit Dairy. All rights reserved.',
+    orderTitle: 'Order on WhatsApp',
+    madeBy: 'Website designed & developed by',
   },
   notFound: {
     title: 'This path leads back to the farm',
