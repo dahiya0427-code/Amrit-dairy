@@ -44,13 +44,20 @@ export function attachStoryDriver(section: HTMLElement): () => void {
   let spriteReady = false
   let lastFrame = -1
 
-  // Scenes and the jar are moved by scroll from now on, not by CSS transitions.
-  // (drop the first-paint position classes: Tailwind's translate-* would add to our transform)
-  scenes.forEach((el) => {
-    el.style.transition = 'none'
-    el.classList.remove('translate-y-0', 'translate-y-full', '-translate-y-full')
-  })
-  if (jar) jar.style.transition = 'none'
+  // Scenes and the jar are moved by scroll, not by CSS transitions. The
+  // first-paint position classes stay until we can really measure the page:
+  // a page loaded while hidden (a background tab, a collapsed panel) has no
+  // size yet, and positions worked out from that would stack every scene.
+  let taken = false
+  const takeOver = () => {
+    if (taken) return
+    taken = true
+    scenes.forEach((el) => {
+      el.style.transition = 'none'
+      el.classList.remove('translate-y-0', 'translate-y-full', '-translate-y-full')
+    })
+    if (jar) jar.style.transition = 'none'
+  }
 
   // Swap the still photo for the turntable once it has loaded.
   const showTurntable = () => {
@@ -73,9 +80,12 @@ export function attachStoryDriver(section: HTMLElement): () => void {
     const total = section.offsetHeight - window.innerHeight
     return { rect, total, top: rect.top + window.scrollY }
   }
-  const target = () => {
+  /** Story position 0..n-1 from the scroll, or null while the page has no size. */
+  const target = (): number | null => {
     const { rect, total } = geometry()
-    return clamp(-rect.top / total) * (n - 1)
+    if (!(total > 0) || !(window.innerHeight > 0)) return null
+    const pos = clamp(-rect.top / total) * (n - 1)
+    return Number.isFinite(pos) ? pos : null
   }
 
   function setActive(a: number) {
@@ -111,7 +121,8 @@ export function attachStoryDriver(section: HTMLElement): () => void {
   }
 
   function draw(pos: number) {
-    const k = Math.min(n - 2, Math.floor(pos))
+    takeOver()
+    const k = Math.max(0, Math.min(n - 2, Math.floor(pos)))
     const e = ease(clamp((pos - k - HOLD) / (1 - 2 * HOLD)))
     scenes.forEach((el, i) => {
       const y = i < k ? -100 : i > k + 1 ? 100 : i === k ? -e * 100 : (1 - e) * 100
@@ -138,7 +149,8 @@ export function attachStoryDriver(section: HTMLElement): () => void {
   function tick() {
     frame = 0
     const t = target()
-    if (current < 0 || reduced) current = t
+    if (t === null) return // not laid out yet; the resize observer tries again
+    if (current < 0 || reduced || !Number.isFinite(current)) current = t
     else current += (t - current) * SMOOTH
     if (Math.abs(t - current) < 0.0005) current = t
     draw(current)
@@ -159,16 +171,25 @@ export function attachStoryDriver(section: HTMLElement): () => void {
     queue()
   }
 
-  current = target()
-  draw(current)
+  const first = target()
+  if (first !== null) {
+    current = first
+    draw(current)
+  }
+  // Also re-measure when the story itself changes size (e.g. a hidden page becomes visible).
+  const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(queue) : null
+  ro?.observe(section)
   window.addEventListener('scroll', queue, { passive: true })
   window.addEventListener('resize', queue)
+  document.addEventListener('visibilitychange', queue)
   section.addEventListener('click', onDot)
   mq.addEventListener('change', onMq)
   return () => {
     cancelAnimationFrame(frame)
     window.removeEventListener('scroll', queue)
     window.removeEventListener('resize', queue)
+    document.removeEventListener('visibilitychange', queue)
+    ro?.disconnect()
     section.removeEventListener('click', onDot)
     mq.removeEventListener('change', onMq)
     spriteImg?.removeEventListener('load', showTurntable)
