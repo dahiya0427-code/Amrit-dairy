@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
-import { FarmSketch } from './FarmSketch'
 import { useI18n } from './I18nProvider'
 import { Icon } from './Icon'
 import { attachStoryDriver } from './scroll-story-driver'
@@ -79,18 +78,20 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
         {s.skip}
       </a>
       <div className="sticky top-0 h-svh overflow-hidden bg-char">
-        {/* 1 · Pure Bilona Ghee: etched farm */}
+        {/* 1 · Pure Bilona Ghee: big bold farm drawing (scripts/farm-hero.py), Mr Dairy layout:
+            title on the left with its sub-line, the jar in the middle, the welcome text top right */}
         <div {...scene(0)}>
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,#f6efe0_0%,rgb(246_239_224/0)_55%)]" aria-hidden="true" />
-          <FarmSketch className="absolute inset-x-0 bottom-0 h-[34%] md:h-auto md:aspect-[3000/760]" />
+          <div className="absolute inset-x-0 bottom-0 h-[42%] md:h-[72%]" aria-hidden="true">
+            <Image src="/images/sketch/farm-hero.png" alt="" fill priority sizes="100vw" className="object-cover object-[0%_100%] md:object-bottom" />
+          </div>
           <div className={inner}>
-            <div className="grid content-start gap-6 pt-6 md:grid-cols-[1fr_auto_1fr] md:pt-16">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold-700">{s.s1.eyebrow}</p>
-                <h1 className={`${title} mt-3 md:!text-7xl lg:!text-8xl`}>{s.s1.title}</h1>
+            <div className="grid content-start gap-5 pt-4 md:grid-cols-[1fr_minmax(0,22vw)_1fr] md:gap-8 md:pt-[6vh]">
+              <div className="md:pl-[6%] [text-shadow:0_0_14px_#fff,0_0_6px_#fff,0_0_2px_#fff]">
+                <h1 className={`${title} !text-5xl leading-[0.9] md:!text-7xl lg:!text-8xl`}>{s.s1.title}</h1>
+                <p className="mt-3 font-serif text-lg font-bold uppercase tracking-[0.06em] text-gold-700 md:mt-5 md:text-2xl">{s.s1.eyebrow}</p>
               </div>
-              <div className="hidden w-[min(30vw,340px)] md:block" />
-              <p className="max-w-sm text-lg text-muted md:justify-self-end">{s.s1.text}</p>
+              <div className="hidden md:block" />
+              <p className="max-w-md text-base leading-relaxed tracking-[0.04em] text-ink/80 [text-shadow:0_0_10px_#fff,0_0_4px_#fff] md:pt-2 md:text-lg lg:text-xl">{s.s1.text}</p>
             </div>
           </div>
         </div>
