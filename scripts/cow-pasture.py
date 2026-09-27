@@ -51,7 +51,7 @@ def cutout(path):
     kill[band:] = (greenish | pale)[band:]
     alpha[kill] = 0
     # the patch outline is a thin line touching the hooves: remove thin shapes in the bottom band
-    alpha[band:] = cv2.morphologyEx(alpha[band:], cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7)))
+    alpha[band:] = cv2.morphologyEx(alpha[band:], cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (13, 13)))
     # keep only the cow: the largest connected shape (drops the patch's leftover outline)
     n2, lbl2, st2, _ = cv2.connectedComponentsWithStats((alpha > 60).astype(np.uint8), 8)
     if n2 > 1:
@@ -67,6 +67,8 @@ def cutout(path):
     if os.path.exists(hd):
         rgb = np.asarray(Image.open(hd).convert('RGB'))
         alpha = cv2.resize(alpha, (rgb.shape[1], rgb.shape[0]), interpolation=cv2.INTER_CUBIC)
+        # pull the edge in a little so no light fringe from the white backdrop remains
+        alpha = cv2.erode(alpha, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (13, 13)))
         alpha = cv2.GaussianBlur(alpha, (0, 0), 1.2)
     out = np.dstack([rgb, alpha])
     ys, xs = np.where(alpha > 40)
