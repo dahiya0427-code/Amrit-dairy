@@ -13,8 +13,12 @@
  */
 type Pose = { x: number; y: number; s: number; r: number; o: number }
 
-const HOLD = 0.2 // share at each end of a scene's scroll where nothing moves
-const SMOOTH = 0.14 // easing of the scroll position per frame (1 = none)
+const HOLD = 0.08 // share at each end of a scene's scroll where nothing moves
+const SMOOTH = 0.35 // light easing of the scroll position per frame (1 = none)
+const IDLE_MS = 130 // a pause this long after scrolling counts as "stopped"
+const SNAP_MIN_MS = 450 // snap glide duration range (Mr Dairy's moves take ~0.7-0.9 s)
+const SNAP_MAX_MS = 850
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 const FRAMES = 48
 const COLS = 8
 const ROWS = 6
@@ -163,7 +167,7 @@ export function attachStoryDriver(section: HTMLElement): () => void {
     frame = 0
     const t = target()
     if (t === null) return // not laid out yet; the resize observer tries again
-    if (current < 0 || reduced || !Number.isFinite(current)) current = t
+    if (current < 0 || reduced || snapping || !Number.isFinite(current)) current = t
     else current += (t - current) * SMOOTH
     if (Math.abs(t - current) < 0.0005) current = t
     draw(current)
@@ -173,11 +177,74 @@ export function attachStoryDriver(section: HTMLElement): () => void {
     if (!frame) frame = requestAnimationFrame(tick)
   }
 
+  // ── Snapping (Mr Dairy style): when scrolling stops between two scenes, the
+  // page glides on to a whole scene so the jar always settles in its place.
+  let snapFrame = 0
+  let snapping = false
+  let idle = 0
+  let prevScrollY = window.scrollY
+  let dir = 0
+  const sceneY = (k: number) => {
+    const { top, total } = geometry()
+    return Math.round(top + (k / (n - 1)) * total)
+  }
+  function stopSnap() {
+    if (snapFrame) cancelAnimationFrame(snapFrame)
+    snapFrame = 0
+    snapping = false
+  }
+  function glideTo(y: number) {
+    stopSnap()
+    const from = window.scrollY
+    const dist = y - from
+    if (Math.abs(dist) < 2) return
+    if (reduced) {
+      window.scrollTo({ top: y, behavior: 'instant' as ScrollBehavior })
+      return
+    }
+    const seg = geometry().total / (n - 1)
+    const dur = Math.min(SNAP_MAX_MS, Math.max(SNAP_MIN_MS, (Math.abs(dist) / seg) * SNAP_MAX_MS))
+    const t0 = performance.now()
+    snapping = true
+    const step = (now: number) => {
+      const t = Math.min(1, (now - t0) / dur)
+      window.scrollTo({ top: from + dist * easeInOut(t), behavior: 'instant' as ScrollBehavior })
+      if (t < 1) snapFrame = requestAnimationFrame(step)
+      else stopSnap()
+    }
+    snapFrame = requestAnimationFrame(step)
+  }
+  function snapIfBetween() {
+    if (snapping) return
+    const { rect, total } = geometry()
+    if (!(total > 0)) return
+    const pos = (-rect.top / total) * (n - 1)
+    if (pos <= 0.001 || pos >= n - 1 - 0.001) return // before the story, on its last scene or past it
+    const k = Math.floor(pos)
+    const frac = pos - k
+    if (frac < 0.004 || frac > 0.996) return
+    // go on in the direction of travel once the move has visibly started, else settle back
+    const next = dir > 0 ? (frac > 0.1 ? k + 1 : k) : dir < 0 ? (frac < 0.9 ? k : k + 1) : Math.round(pos)
+    glideTo(sceneY(next))
+  }
+  const onScroll = () => {
+    const y = window.scrollY
+    if (y !== prevScrollY) dir = y > prevScrollY ? 1 : -1
+    prevScrollY = y
+    queue()
+    if (!snapping) {
+      window.clearTimeout(idle)
+      idle = window.setTimeout(snapIfBetween, IDLE_MS)
+    }
+  }
+  // the reader takes over again the moment they scroll, touch or use the keys
+  const interrupt = () => {
+    if (snapping) stopSnap()
+  }
+
   const onDot = (e: Event) => {
     const d = (e.target as HTMLElement).closest<HTMLElement>('[data-dot]')
-    if (!d) return
-    const { top, total } = geometry()
-    window.scrollTo({ top: Math.round(top + (Number(d.dataset.dot) / (n - 1)) * total), behavior: reduced ? 'auto' : 'smooth' })
+    if (d) glideTo(sceneY(Number(d.dataset.dot)))
   }
   const onMq = () => {
     list = poses()
@@ -192,14 +259,22 @@ export function attachStoryDriver(section: HTMLElement): () => void {
   // Also re-measure when the story itself changes size (e.g. a hidden page becomes visible).
   const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(queue) : null
   ro?.observe(section)
-  window.addEventListener('scroll', queue, { passive: true })
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('wheel', interrupt, { passive: true })
+  window.addEventListener('touchstart', interrupt, { passive: true })
+  window.addEventListener('keydown', interrupt)
   window.addEventListener('resize', queue)
   document.addEventListener('visibilitychange', queue)
   section.addEventListener('click', onDot)
   mq.addEventListener('change', onMq)
   return () => {
     cancelAnimationFrame(frame)
-    window.removeEventListener('scroll', queue)
+    stopSnap()
+    window.clearTimeout(idle)
+    window.removeEventListener('scroll', onScroll)
+    window.removeEventListener('wheel', interrupt)
+    window.removeEventListener('touchstart', interrupt)
+    window.removeEventListener('keydown', interrupt)
     window.removeEventListener('resize', queue)
     document.removeEventListener('visibilitychange', queue)
     ro?.disconnect()
