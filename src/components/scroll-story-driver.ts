@@ -28,7 +28,8 @@ export function attachStoryDriver(section: HTMLElement): () => void {
   const n = scenes.length
   const jar = section.querySelector<HTMLElement>('[data-jar]')
   const still = section.querySelector<HTMLElement>('[data-jar-still]')
-  const turn = section.querySelector<HTMLElement>('[data-jar-turn]')
+  const turn = section.querySelector<HTMLCanvasElement>('[data-jar-turn]')
+  const ctx = turn?.getContext('2d') ?? null
   const spriteImg = section.querySelector<HTMLImageElement>('[data-jar-sprite]')
   const reveals = Array.from(section.querySelectorAll<HTMLElement>('[data-reveal]'))
   const draws = Array.from(section.querySelectorAll<SVGElement>('[data-draw]'))
@@ -43,6 +44,7 @@ export function attachStoryDriver(section: HTMLElement): () => void {
   let current = -1
   let spriteReady = false
   let lastFrame = -1
+  const lastY: number[] = []
 
   // Scenes and the jar are moved by scroll, not by CSS transitions. The
   // first-paint position classes stay until we can really measure the page:
@@ -54,6 +56,7 @@ export function attachStoryDriver(section: HTMLElement): () => void {
     taken = true
     scenes.forEach((el) => {
       el.style.transition = 'none'
+      el.style.willChange = 'transform' // own GPU layer: sliding it needs no repaint
       el.classList.remove('translate-y-0', 'translate-y-full', '-translate-y-full')
     })
     if (jar) jar.style.transition = 'none'
@@ -62,8 +65,11 @@ export function attachStoryDriver(section: HTMLElement): () => void {
   // Swap the still photo for the turntable once it has loaded.
   const showTurntable = () => {
     if (!turn || !spriteImg || spriteReady || reduced) return
-    turn.style.backgroundImage = `url("${spriteImg.currentSrc || spriteImg.src}")`
-    turn.style.backgroundSize = `${COLS * 100}% ${ROWS * 100}%`
+    if (!ctx) return
+    // Canvas at the frame's own resolution: each scroll step copies one small
+    // frame instead of repainting a patch of the big sprite sheet.
+    turn.width = Math.round(spriteImg.naturalWidth / COLS)
+    turn.height = Math.round(spriteImg.naturalHeight / ROWS)
     turn.style.opacity = '1'
     if (still) still.style.opacity = '0'
     spriteReady = true
@@ -126,7 +132,11 @@ export function attachStoryDriver(section: HTMLElement): () => void {
     const e = ease(clamp((pos - k - HOLD) / (1 - 2 * HOLD)))
     scenes.forEach((el, i) => {
       const y = i < k ? -100 : i > k + 1 ? 100 : i === k ? -e * 100 : (1 - e) * 100
-      el.style.transform = `translate3d(0, ${y}%, 0)`
+      if (lastY[i] === y) return // only touch scenes that actually move
+      lastY[i] = y
+      el.style.transform = `translate3d(0, ${y.toFixed(3)}%, 0)`
+      // off-screen scenes are hidden so the browser doesn't keep them in its layers
+      el.style.visibility = Math.abs(y) >= 100 ? 'hidden' : 'visible'
     })
     setActive(e > 0.5 ? k + 1 : k)
     if (jar && list.length) {
@@ -141,7 +151,10 @@ export function attachStoryDriver(section: HTMLElement): () => void {
       const f = Math.round((k + e) * FRAMES) % FRAMES
       if (f !== lastFrame) {
         lastFrame = f
-        turn.style.backgroundPosition = `${((f % COLS) / (COLS - 1)) * 100}% ${(Math.floor(f / COLS) / (ROWS - 1)) * 100}%`
+        const fw = turn.width
+        const fh = turn.height
+        ctx?.clearRect(0, 0, fw, fh)
+        ctx?.drawImage(spriteImg as HTMLImageElement, (f % COLS) * fw, Math.floor(f / COLS) * fh, fw, fh, 0, 0, fw, fh)
       }
     }
   }

@@ -252,13 +252,15 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
                 data-jar
                 data-desktop={JSON.stringify(jarDesktop)}
                 data-mobile={JSON.stringify(jarMobile)}
-                className="h-full w-full transition-[transform,opacity] duration-[900ms] ease-[cubic-bezier(0.7,0,0.3,1)] motion-reduce:transition-none"
+                className="h-full w-full transition-[transform,opacity] duration-[900ms] ease-[cubic-bezier(0.7,0,0.3,1)] will-change-transform motion-reduce:transition-none"
                 style={{ transform: `translate(calc(-50% + ${j.x}vw), calc(-50% + ${j.y}%)) scale(${j.s})`, opacity: j.o }}
               >
-                <div className="animate-float-wide relative h-full w-full drop-shadow-[0_30px_35px_rgb(60_35_10/0.3)]">
+                {/* soft floor shadow: a fixed blurred ellipse (a filter on the turning jar would repaint every frame) */}
+                <div className="absolute bottom-[-2%] left-1/2 h-[7%] w-[70%] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(60_35_10/0.35),rgb(60_35_10/0))]" />
+                <div className="animate-float-wide relative h-full w-full will-change-transform">
                   <Image data-jar-still src={jar} alt="" fill priority sizes="340px" className="object-contain transition-opacity duration-300" />
-                  {/* real 360° turntable of the jar, shown once loaded (see scripts/jar-turntable.py) */}
-                  <div data-jar-turn className="absolute left-1/2 top-1/2 aspect-[351/560] h-full -translate-x-1/2 -translate-y-1/2 bg-no-repeat opacity-0" />
+                  {/* real 360° turntable of the jar, drawn frame by frame once loaded (see scripts/jar-turntable.py) */}
+                  <canvas data-jar-turn className="absolute left-1/2 top-1/2 aspect-[351/560] h-full -translate-x-1/2 -translate-y-1/2 opacity-0" />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img data-jar-sprite src={turntable} alt="" hidden />
                 </div>
