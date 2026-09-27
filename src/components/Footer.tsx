@@ -42,7 +42,7 @@ export function Footer({
 
   return (
     <footer className="bg-char text-ink">
-      <FarmSketch className="h-36 md:h-64" />
+      <FarmSketch className="h-48 md:aspect-[2400/810] md:h-auto" />
       <div className="container-x pb-4 md:pb-8">
         <div className="grid gap-10 border-b-2 border-ink/80 pb-10 pt-4 md:grid-cols-[1fr_auto] md:pt-8">
           {/* Order line: big numbers */}
