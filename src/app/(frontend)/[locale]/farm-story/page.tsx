@@ -46,7 +46,7 @@ export default async function FarmStoryPage({ params }: Props) {
             <li key={b.id}>
               <Link href={href(`/desi-cows/${b.slug}`)} className="card block p-3 text-center hover:shadow-lift">
                 <span className="relative block aspect-square overflow-hidden rounded-xl bg-paper">
-                  {cowPhoto(b) && <Image src={cowPhoto(b) as string} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 20vw" className="object-cover" />}
+                  {cowPhoto(b) && <Image src={cowPhoto(b) as string} quality={90} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 20vw" className="object-cover" />}
                 </span>
                 <span className="mt-2 block font-semibold text-cream">{b.name}</span>
                 {b.origin && <span className="block text-sm text-muted">{b.origin}</span>}

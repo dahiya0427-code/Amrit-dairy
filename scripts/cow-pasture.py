@@ -15,7 +15,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
-S = 800
+S = 560  # close to the source photos' size, so the cow is never blown up and blurred
 os.makedirs('public/images/cows', exist_ok=True)
 
 
@@ -123,7 +123,7 @@ def backdrop(seed):
     a = layer[..., 3:4] / 255
     img = img * (1 - a) + layer[..., :3] * a
     # a little film grain
-    img += rng.normal(0, 3.2, img.shape)
+    img += rng.normal(0, 1.5, img.shape)
     return np.clip(img, 0, 255).astype(np.uint8)
 
 
@@ -145,8 +145,12 @@ for path in sorted(glob.glob('seed-media/breeds/*.jpg')):
     seed = sum(map(ord, slug))
     cow = cutout(path)
     # scale: cow fills about 70% of the width
-    k = min(S * 0.74 / cow.width, S * 0.62 / cow.height)
+    k = min(S * 0.74 / cow.width, S * 0.62 / cow.height, 1.1)  # never enlarge more than 10%
     cow = cow.resize((int(cow.width * k), int(cow.height * k)), Image.LANCZOS)
+    # crisp the cow (the background stays soft, like a photo with shallow depth of field)
+    a_ = cow.getchannel('A')
+    cow = cow.convert('RGB').filter(ImageFilter.UnsharpMask(radius=1.4, percent=140, threshold=2)).convert('RGBA')
+    cow.putalpha(a_)
     bg = Image.fromarray(backdrop(seed), 'RGB').convert('RGBA')
     feet = int(S * 0.9)
     # the photo's grass patch is gone: stand the hooves on the meadow
@@ -167,5 +171,5 @@ for path in sorted(glob.glob('seed-media/breeds/*.jpg')):
     yy, xx = np.mgrid[0:S, 0:S]
     v = 1 - 0.18 * (((xx - S / 2) / (S / 2)) ** 2 + ((yy - S / 2) / (S / 2)) ** 2)
     out *= v[..., None]
-    Image.fromarray(out.clip(0, 255).astype(np.uint8)).save(f'public/images/cows/{slug}.jpg', quality=86)
+    Image.fromarray(out.clip(0, 255).astype(np.uint8)).save(f'public/images/cows/{slug}.jpg', quality=92)
     print(slug)

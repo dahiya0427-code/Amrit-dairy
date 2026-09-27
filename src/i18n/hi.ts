@@ -145,7 +145,7 @@ export const hi: Dictionary = {
     empty: 'यहाँ अभी कोई उत्पाद नहीं है।',
     availableTitle: 'अभी उपलब्ध',
     availableText: 'स्टॉक में है, अभी ऑर्डर करें।',
-    soonTitle: 'अभी उपलब्ध नहीं / जल्द आ रहा है',
+    soonTitle: 'जल्द आ रहा है',
     soonText: 'किसी भी उत्पाद पर “सूचित करें” दबाएँ, तैयार होते ही हम WhatsApp पर बताएँगे।',
     helpTitle: 'क्या चुनें, तय नहीं कर पा रहे?',
     helpText: 'WhatsApp पर पूछें, हम आपकी मदद करेंगे।',

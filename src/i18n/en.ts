@@ -147,7 +147,7 @@ export const en = {
     empty: 'No products here yet.',
     availableTitle: 'Available now',
     availableText: 'In stock and ready to order.',
-    soonTitle: 'Not available / Coming soon',
+    soonTitle: 'Coming soon',
     soonText: 'Tap “Notify me” on a product and we will tell you on WhatsApp when it is ready.',
     helpTitle: 'Not sure what to choose?',
     helpText: 'Ask us on WhatsApp and we will help you pick.',
