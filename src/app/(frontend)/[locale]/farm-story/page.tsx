@@ -4,7 +4,6 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Icon } from '@/components/Icon'
-import { Reveal } from '@/components/Reveal'
 import { Breadcrumbs, PageHero, SectionHeading } from '@/components/ui'
 import { getDictionary } from '@/i18n'
 import { isLocale, localePath } from '@/i18n/config'
@@ -69,7 +68,6 @@ export default async function FarmStoryPage({ params }: Props) {
             </li>
           ))}
         </ul>
-        <Reveal />
       </section>
 
       <section className="bg-malai/60 py-14">

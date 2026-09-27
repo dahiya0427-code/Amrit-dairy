@@ -6,6 +6,7 @@ import '../globals.css'
 import { BottomNav } from '@/components/BottomNav'
 import { CartDrawer } from '@/components/CartDrawer'
 import { CartProvider } from '@/components/CartProvider'
+import { Reveal } from '@/components/Reveal'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { I18nProvider } from '@/components/I18nProvider'
@@ -59,6 +60,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
           <CartProvider>
             <Header locale={locale} ticker={ticker.map((i) => ({ id: i.id, text: i.text, link: i.link }))} />
             <main id="main" className="pb-12">{children}</main>
+            <Reveal />
             <Footer
               locale={locale}
               settings={settings}

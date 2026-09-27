@@ -404,3 +404,32 @@
   .reveal-armed [data-step], .reveal-armed .step-arrow { opacity: 1; transform: none; filter: none; animation: none !important; }
   .steps-magic .step-icon::after { animation: none; }
 }
+
+/* ── Site-wide scroll entrances (classes added by reveal-driver.ts) ──
+   Start states apply only until .rv-in; animations fill backwards, so once
+   they finish the element's own styles (hover lifts, zooms) work again. */
+/* headings: each word rises out of a mask with a slight tilt */
+.rv-head .rv-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.rv-head .rv-w > span { display: inline-block; }
+.rv-head:not(.rv-in) .rv-w > span { transform: translateY(105%) rotate(4deg); opacity: 0; }
+.rv-head.rv-in .rv-w > span { animation: rv-word 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--rv-d, 0s) + var(--w, 0) * 0.07s) backwards; }
+@keyframes rv-word { from { transform: translateY(105%) rotate(4deg); opacity: 0; } }
+.rv-head:not(.rv-in):not(:has(.rv-w)) { opacity: 0; }
+.rv-head.rv-in:not(:has(.rv-w)) { animation: rv-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+/* text: fades up out of a soft blur */
+.rv-text:not(.rv-in) { opacity: 0; }
+.rv-text.rv-in { animation: rv-up 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) var(--rv-d, 0s) backwards; }
+@keyframes rv-up { from { opacity: 0; transform: translateY(22px); filter: blur(6px); } }
+/* pictures: wipe up from the bottom while settling from a zoom and blur */
+.rv-img:not(.rv-in) { clip-path: inset(100% 0 0 0); }
+.rv-img.rv-in { animation: rv-wipe 1.1s cubic-bezier(0.7, 0, 0.2, 1) var(--rv-d, 0s) backwards; }
+.rv-img.rv-in > img { animation: rv-settle 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) var(--rv-d, 0s) backwards; }
+@keyframes rv-wipe { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes rv-settle { from { transform: scale(1.18); filter: blur(10px) saturate(0.6); } }
+/* cards: rise in one after another with a small 3D tilt */
+.rv-card:not(.rv-in) { opacity: 0; }
+.rv-card.rv-in { animation: rv-card 0.9s cubic-bezier(0.2, 0.9, 0.25, 1.15) var(--rv-d, 0s) backwards; }
+@keyframes rv-card { from { opacity: 0; transform: perspective(900px) translateY(46px) rotateX(10deg) scale(0.96); } }
+@media (prefers-reduced-motion: reduce) {
+  .rv, .rv *, .rv-img > img { opacity: 1 !important; transform: none !important; filter: none !important; clip-path: none !important; animation: none !important; }
+}
