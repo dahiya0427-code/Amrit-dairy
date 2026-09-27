@@ -363,3 +363,9 @@
 /* Scrollable strips without visible scroll bars (thumbnail rails). */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Farm story: cows moving right to left in an endless strip */
+@keyframes cow-marquee { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 0.5rem)); } }
+.cow-marquee-track { animation: cow-marquee 32s linear infinite; }
+.cow-marquee:hover .cow-marquee-track, .cow-marquee:focus-within .cow-marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .cow-marquee-track { animation: none; } }

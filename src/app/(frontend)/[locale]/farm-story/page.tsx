@@ -41,19 +41,22 @@ export default async function FarmStoryPage({ params }: Props) {
 
       <section className="container-x py-6">
         <SectionHeading title={t.farm.cowsTitle} intro={t.farm.cowsText} />
-        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {onFarm.map((b) => (
-            <li key={b.id}>
-              <Link href={href(`/desi-cows/${b.slug}`)} className="card block p-3 text-center hover:shadow-lift">
-                <span className="relative block aspect-square overflow-hidden rounded-xl bg-paper">
-                  {cowPhoto(b) && <Image src={cowPhoto(b) as string} quality={90} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 20vw" className="object-cover" />}
-                </span>
-                <span className="mt-2 block font-semibold text-cream">{b.name}</span>
-                {b.origin && <span className="block text-sm text-muted">{b.origin}</span>}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Cows glide right to left in an endless strip (paused on hover; still for reduced motion) */}
+        <div className="cow-marquee -mx-4 overflow-hidden py-2 sm:mx-0 [mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]">
+          <ul className="cow-marquee-track flex w-max gap-4">
+            {[...onFarm, ...onFarm].map((b, i) => (
+              <li key={`${b.id}-${i}`} className="w-52 shrink-0 md:w-60" aria-hidden={i >= onFarm.length || undefined}>
+                <Link href={href(`/desi-cows/${b.slug}`)} tabIndex={i >= onFarm.length ? -1 : undefined} className="card block h-full p-3 text-center hover:shadow-lift">
+                  <span className="relative block aspect-square overflow-hidden rounded-xl bg-paper">
+                    {cowPhoto(b) && <Image src={cowPhoto(b) as string} quality={90} alt={`${b.name} cow`} fill sizes="240px" className="object-cover" />}
+                  </span>
+                  <span className="mt-2 block font-semibold text-cream">{b.name}</span>
+                  {b.origin && <span className="block text-sm text-muted">{b.origin}</span>}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       <section className="container-x py-12">
