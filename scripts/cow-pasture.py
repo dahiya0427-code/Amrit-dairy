@@ -15,7 +15,8 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
-S = 560  # close to the source photos' size, so the cow is never blown up and blurred
+S = 1120  # large enough for the cow detail page; the cow comes from the 4x AI-upscaled photo
+F = S / 560  # sizes below were tuned at 560 px
 os.makedirs('public/images/cows', exist_ok=True)
 
 
@@ -60,6 +61,13 @@ def cutout(path):
     alpha = cv2.morphologyEx(alpha, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
     alpha = cv2.GaussianBlur(alpha, (0, 0), 0.9)
     rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    # use the AI-upscaled photo (scripts/upscale-cows.py) when there is one: the
+    # cut-out shape is worked out on the small original and scaled up with it
+    hd = path.replace('/breeds/', '/breeds-hd/').replace('.jpg', '.png')
+    if os.path.exists(hd):
+        rgb = np.asarray(Image.open(hd).convert('RGB'))
+        alpha = cv2.resize(alpha, (rgb.shape[1], rgb.shape[0]), interpolation=cv2.INTER_CUBIC)
+        alpha = cv2.GaussianBlur(alpha, (0, 0), 1.2)
     out = np.dstack([rgb, alpha])
     ys, xs = np.where(alpha > 40)
     return Image.fromarray(out[ys.min():ys.max() + 1, xs.min():xs.max() + 1], 'RGBA')
@@ -79,12 +87,12 @@ def backdrop(seed):
     cl = Image.new('L', (S, S), 0)
     cd = ImageDraw.Draw(cl)
     for _ in range(5):
-        cx, cy = r.uniform(0, S), r.uniform(40, S * 0.32)
+        cx, cy = r.uniform(0, S), r.uniform(40 * F, S * 0.32)
         for _k in range(7):
-            rr = r.uniform(25, 60)
-            ox, oy = r.uniform(-70, 70), r.uniform(-12, 12)
+            rr = r.uniform(25, 60) * F
+            ox, oy = r.uniform(-70, 70) * F, r.uniform(-12, 12) * F
             cd.ellipse([cx + ox - rr * 1.6, cy + oy - rr * 0.6, cx + ox + rr * 1.6, cy + oy + rr * 0.6], fill=r.randint(60, 110))
-    cl = np.array(cl.filter(ImageFilter.GaussianBlur(18))).astype(np.float32)[..., None] / 255
+    cl = np.array(cl.filter(ImageFilter.GaussianBlur(18 * F))).astype(np.float32)[..., None] / 255
     img = img * (1 - cl) + 255 * cl
     # distant tree line (hazy, blurred)
     tl = Image.new('L', (S, S), 0)
@@ -92,11 +100,11 @@ def backdrop(seed):
     hy = int(S * horizon)
     x = -20
     while x < S + 20:
-        w = r.uniform(30, 80)
-        h = r.uniform(25, 70)
-        td.ellipse([x, hy - h, x + w, hy + 10], fill=255)
+        w = r.uniform(30, 80) * F
+        h = r.uniform(25, 70) * F
+        td.ellipse([x, hy - h, x + w, hy + 10 * F], fill=255)
         x += w * 0.55
-    tl = np.array(tl.filter(ImageFilter.GaussianBlur(4))).astype(np.float32)[..., None] / 255
+    tl = np.array(tl.filter(ImageFilter.GaussianBlur(4 * F))).astype(np.float32)[..., None] / 255
     trees = np.array([112, 132, 102], np.float32)
     img = img * (1 - tl * 0.85) + trees * tl * 0.85
     # meadow: darker, greener and sharper towards the viewer
@@ -108,14 +116,14 @@ def backdrop(seed):
     # grass texture: many short blades, blurred more with distance
     tex = Image.new('RGBA', (S, S), (0, 0, 0, 0))
     gd = ImageDraw.Draw(tex)
-    for _ in range(9000):
+    for _ in range(int(9000 * F * F)):
         yy = hy + (S - hy) * (r.random() ** 0.7)
         d = (yy - hy) / (S - hy)
         xx = r.uniform(0, S)
-        L = 2 + 16 * d
+        L = (2 + 16 * d) * F
         col = r.choice([(70, 100, 40), (128, 150, 76), (150, 160, 90), (88, 118, 48), (180, 176, 110)])
-        gd.line([(xx, yy), (xx + r.uniform(-3, 3) * d, yy - L)], fill=col + (int(90 + 120 * d),), width=max(1, int(1 + 1.5 * d)))
-    far_layer = tex.filter(ImageFilter.GaussianBlur(1.6))
+        gd.line([(xx, yy), (xx + r.uniform(-3, 3) * d, yy - L)], fill=col + (int(90 + 120 * d),), width=max(1, int((1 + 1.5 * d) * F)))
+    far_layer = tex.filter(ImageFilter.GaussianBlur(1.6 * F))
     fl = np.array(far_layer).astype(np.float32)
     nl = np.array(tex).astype(np.float32)
     depth = np.clip((y - horizon) / (1 - horizon), 0, 1)[..., None]
@@ -131,13 +139,13 @@ def foreground_grass(seed, x0, x1, y):
     r = random.Random(seed + 99)
     layer = Image.new('RGBA', (S, S), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    for _ in range(int((x1 - x0) * 5)):
-        xx = r.uniform(x0 - 70, x1 + 70)
-        yy = y + r.uniform(-4, 34)
+    for _ in range(int((x1 - x0) * 5 * F)):
+        xx = r.uniform(x0 - 70 * F, x1 + 70 * F)
+        yy = y + r.uniform(-4, 34) * F
         col = r.choice([(76, 108, 42), (104, 134, 56), (132, 150, 70), (64, 92, 34), (118, 140, 62)])
-        L = r.uniform(12, 40)
-        d.line([(xx, yy), (xx + r.uniform(-5, 5), yy - L)], fill=col + (235,), width=2)
-    return layer.filter(ImageFilter.GaussianBlur(0.4))
+        L = r.uniform(12, 40) * F
+        d.line([(xx, yy), (xx + r.uniform(-5, 5) * F, yy - L)], fill=col + (235,), width=max(2, int(2 * F)))
+    return layer.filter(ImageFilter.GaussianBlur(0.4 * F))
 
 
 for path in sorted(glob.glob('seed-media/breeds/*.jpg')):
@@ -149,7 +157,7 @@ for path in sorted(glob.glob('seed-media/breeds/*.jpg')):
     cow = cow.resize((int(cow.width * k), int(cow.height * k)), Image.LANCZOS)
     # crisp the cow (the background stays soft, like a photo with shallow depth of field)
     a_ = cow.getchannel('A')
-    cow = cow.convert('RGB').filter(ImageFilter.UnsharpMask(radius=1.4, percent=140, threshold=2)).convert('RGBA')
+    cow = cow.convert('RGB').filter(ImageFilter.UnsharpMask(radius=1.2, percent=80, threshold=2)).convert('RGBA')
     cow.putalpha(a_)
     bg = Image.fromarray(backdrop(seed), 'RGB').convert('RGBA')
     feet = int(S * 0.9)
@@ -159,8 +167,8 @@ for path in sorted(glob.glob('seed-media/breeds/*.jpg')):
     y = feet - cow.height
     # contact shadow under the body and hooves
     sh = Image.new('L', (S, S), 0)
-    ImageDraw.Draw(sh).ellipse([x + cow.width * 0.12, feet - 16, x + cow.width * 0.9, feet + 14], fill=150)
-    sh = sh.filter(ImageFilter.GaussianBlur(12))
+    ImageDraw.Draw(sh).ellipse([x + cow.width * 0.12, feet - 16 * F, x + cow.width * 0.9, feet + 14 * F], fill=150)
+    sh = sh.filter(ImageFilter.GaussianBlur(12 * F))
     dark = Image.new('RGBA', (S, S), (30, 34, 14, 255))
     bg = Image.composite(dark, bg, sh.point(lambda v: int(v * 0.55)))
     bg.alpha_composite(cow, (x, y))
