@@ -27,6 +27,10 @@ import { LegalPages } from './collections/LegalPages'
 import { SiteSettings } from './globals/SiteSettings'
 import { migrations } from './migrations'
 
+// Vercel Blob token for image uploads. The store may be connected with the "MEDIA" prefix
+// (MEDIA_READ_WRITE_TOKEN) when the project already had a BLOB_READ_WRITE_TOKEN.
+const blobToken = process.env.MEDIA_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN || ''
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -90,9 +94,9 @@ export default buildConfig({
     : undefined,
   plugins: [
     vercelBlobStorage({
-      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      enabled: Boolean(blobToken),
       collections: { media: true },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+      token: blobToken,
     }),
   ],
 })
