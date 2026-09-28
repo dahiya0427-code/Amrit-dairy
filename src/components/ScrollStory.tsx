@@ -32,7 +32,7 @@ const jarDesktop = [
   { x: 24, y: 0, s: 0.92, r: 0, o: 1 },
 ]
 const jarMobile = [
-  { x: 0, y: 30, s: 0.62, r: 0, o: 1 },
+  { x: 0, y: 14, s: 0.72, r: 0, o: 1 },
   { x: 0, y: 8, s: 0.5, r: 0, o: 1 },
   { x: 0, y: 0, s: 0.46, r: 0, o: 1 },
   { x: 0, y: 0, s: 0.36, r: 0, o: 1 },
@@ -81,7 +81,7 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
         {/* 1 · Pure Bilona Ghee: big bold farm drawing (scripts/farm-hero.py), Mr Dairy layout:
             title on the left with its sub-line, the jar in the middle, the welcome text top right */}
         <div {...scene(0)}>
-          <div className="absolute inset-x-0 bottom-0 h-[42%] md:h-[72%]" aria-hidden="true">
+          <div className="absolute inset-x-0 bottom-0 h-[50%] md:h-[72%]" aria-hidden="true">
             <Image src="/images/sketch/farm-hero.png" alt="" fill priority sizes="100vw" className="object-cover object-[0%_100%] md:object-bottom" />
           </div>
           <div className={inner}>

@@ -136,7 +136,7 @@ export default async function ProductPage({ params }: Props) {
         ]}
       />
 
-      <section className="container-x grid gap-8 py-6 lg:grid-cols-2 lg:gap-12">
+      <section className="container-x grid grid-cols-[minmax(0,1fr)] gap-8 py-6 lg:grid-cols-2 lg:gap-12">
         <div>
           <ProductGallery slides={slides} />
         </div>

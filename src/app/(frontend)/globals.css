@@ -433,3 +433,7 @@
 @media (prefers-reduced-motion: reduce) {
   .rv, .rv *, .rv-img > img { opacity: 1 !important; transform: none !important; filter: none !important; clip-path: none !important; animation: none !important; }
 }
+
+/* Never let anything (an animation, a wide row) make the page scroll sideways on phones.
+   clip (not hidden) keeps sticky headers and the scroll story working. */
+html, body { overflow-x: clip; }
