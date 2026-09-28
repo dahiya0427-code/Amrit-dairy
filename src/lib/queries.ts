@@ -3,6 +3,7 @@ import { cache } from 'react'
 import type { Where } from 'payload'
 import { getPayloadClient } from './payload'
 import type { Locale } from '@/i18n/config'
+import { applyOffers } from './offers'
 
 const one = async <T,>(p: Promise<{ docs: T[] }>) => (await p).docs[0] ?? null
 
@@ -45,6 +46,12 @@ export const getCategory = cache(async (slug: string, locale: Locale) => {
   return one(payload.find({ collection: 'categories', locale, limit: 1, depth: 1, where: { slug: { equals: slug } } }))
 })
 
+/** Offers that are switched on; dates are checked per request when applied. */
+export const getOffers = cache(async (locale: Locale) => {
+  const payload = await getPayloadClient()
+  return (await payload.find({ collection: 'offers', locale, depth: 0, limit: 200, pagination: false, where: { active: { equals: true } } })).docs
+})
+
 type ProductFilter = { categoryId?: number; featured?: boolean; fulfilment?: 'local' | 'ship'; limit?: number }
 
 export const getProducts = cache(async (locale: Locale, filter: ProductFilter = {}) => {
@@ -61,12 +68,14 @@ export const getProducts = cache(async (locale: Locale, filter: ProductFilter = 
     sort: 'order',
     where: and.length ? { and } : undefined,
   })
-  return res.docs
+  const offers = await getOffers(locale)
+  return res.docs.map((p) => applyOffers(p, offers))
 })
 
 export const getProduct = cache(async (slug: string, locale: Locale) => {
   const payload = await getPayloadClient()
-  return one(payload.find({ collection: 'products', locale, depth: 2, limit: 1, where: { slug: { equals: slug } } }))
+  const p = await one(payload.find({ collection: 'products', locale, depth: 2, limit: 1, where: { slug: { equals: slug } } }))
+  return p ? applyOffers(p, await getOffers(locale)) : null
 })
 
 export const getBreeds = cache(async (locale: Locale) => {

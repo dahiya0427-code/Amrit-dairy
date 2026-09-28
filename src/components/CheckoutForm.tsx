@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { formatINR } from '@/lib/format'
 import { whatsappLink } from '@/lib/site'
 import { cartWhatsappText } from './CartDrawer'
@@ -12,6 +12,8 @@ import { useI18n } from './I18nProvider'
 import { Icon } from './Icon'
 
 type Fees = { threshold: number; local: number; ship: number }
+type AppliedCoupon = { code: string; description: string | null; discount: number; freeDelivery: boolean }
+type QuoteError = { error?: string; code?: string; reason?: string; min?: number }
 
 type RazorpayResponse = { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }
 type RazorpayCtor = new (opts: Record<string, unknown>) => { open: () => void; on: (e: string, cb: () => void) => void }
@@ -36,6 +38,80 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
   const [pincode, setPincode] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const cc = c.coupon
+  const formRef = useRef<HTMLFormElement>(null)
+  const [couponInput, setCouponInput] = useState('')
+  const [coupon, setCoupon] = useState<AppliedCoupon | null>(null)
+  const [couponMsg, setCouponMsg] = useState('')
+  const [checking, setChecking] = useState(false)
+  const [repriced, setRepriced] = useState(false)
+  const lineKey = cart.items.map((i) => `${i.sku}:${i.qty}`).join(',')
+
+  const couponText = (d: QuoteError) => {
+    if (d.reason === 'min_order' && d.min) return cc.errors.min_order(formatINR(d.min))
+    const msg = cc.errors[d.reason as Exclude<keyof typeof cc.errors, 'min_order'>]
+    return typeof msg === 'string' ? msg : cc.errors.error
+  }
+
+  /** Server price for the cart (live offers) and, with a code, the coupon discount. */
+  async function quote(code?: string) {
+    const phone = (formRef.current?.elements.namedItem('phone') as HTMLInputElement | null)?.value
+    const res = await fetch('/api/quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        code,
+        locale,
+        pincode: /^[1-9][0-9]{5}$/.test(pincode) ? pincode : '',
+        phone,
+        items: cart.items.map((i) => ({ productId: i.productId, sku: i.sku, qty: i.qty })),
+      }),
+    })
+    return { ok: res.ok, data: await res.json() }
+  }
+
+  // Refresh prices when the page opens or the cart changes, and re-check an applied coupon.
+  useEffect(() => {
+    if (!cart.ready || !cart.items.length) return
+    let live = true
+    quote(coupon?.code)
+      .then(({ ok, data }) => {
+        if (!live) return
+        if (ok) {
+          if (cart.items.some((i) => data.prices[i.sku] && data.prices[i.sku] !== i.price)) {
+            cart.reprice(data.prices)
+            setRepriced(true)
+          }
+          if (coupon) setCoupon(data.coupon ?? null)
+        } else if (data.code === 'coupon') {
+          setCoupon(null)
+          setCouponMsg(couponText(data))
+        }
+      })
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+    // runs for a new cart only (sku × qty); the coupon and helpers are read at that moment
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart.ready, lineKey])
+
+  async function applyCoupon() {
+    const code = couponInput.trim()
+    if (!code) return
+    setChecking(true)
+    setCouponMsg('')
+    try {
+      const { ok, data } = await quote(code)
+      if (ok && data.coupon) {
+        setCoupon(data.coupon)
+        if (cart.items.some((i) => data.prices[i.sku] && data.prices[i.sku] !== i.price)) cart.reprice(data.prices)
+      } else setCouponMsg(couponText(data))
+    } catch {
+      setCouponMsg(cc.errors.error)
+    }
+    setChecking(false)
+  }
 
   useEffect(() => {
     try {
@@ -47,8 +123,9 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
   const isLocal = livePincodes.includes(pincode)
   const hasFresh = cart.items.some((i) => i.fulfilment === 'local')
   const freshBlocked = hasFresh && /^[1-9][0-9]{5}$/.test(pincode) && !isLocal
-  const fee = fees.threshold && cart.subtotal >= fees.threshold ? 0 : isLocal ? fees.local : fees.ship
-  const total = cart.subtotal + fee
+  const discount = coupon?.discount ?? 0
+  const fee = coupon?.freeDelivery || (fees.threshold && cart.subtotal >= fees.threshold) ? 0 : isLocal ? fees.local : fees.ship
+  const total = cart.subtotal - discount + fee
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -62,6 +139,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           locale,
+          couponCode: coupon?.code,
           items: cart.items.map((i) => ({ productId: i.productId, sku: i.sku, qty: i.qty })),
           customer: {
             name: f.name,
@@ -77,6 +155,11 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
         }),
       })
       const data = await res.json()
+      if (!res.ok && data.code === 'coupon') {
+        setCoupon(null)
+        setCouponMsg(couponText(data))
+        throw new Error(couponText(data))
+      }
       if (!res.ok) throw new Error(data.error || c.errorGeneric)
 
       const done = () => {
@@ -142,7 +225,7 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
   return (
     <section className="container-x py-10">
       <h1 className="mb-6 text-4xl">{c.title}</h1>
-      <form onSubmit={onSubmit} className="grid gap-8 lg:grid-cols-5">
+      <form ref={formRef} onSubmit={onSubmit} className="grid gap-8 lg:grid-cols-5">
         <div className="space-y-5 lg:col-span-3">
           <fieldset className="space-y-4 rounded-lg border border-line bg-char p-5 md:p-6">
             <legend className="px-2 font-serif text-xl font-semibold text-cream">1 · {c.contact}</legend>
@@ -198,11 +281,60 @@ export function CheckoutForm({ whatsapp, onlinePayments, livePincodes, fees }: {
               </li>
             ))}
           </ul>
+          <div className="border-t border-line pt-3">
+            {coupon ? (
+              <div className="flex items-start justify-between gap-3 rounded-xl border border-gold-500/60 bg-gold-500/10 p-3 text-sm">
+                <p>
+                  <span className="flex items-center gap-1.5 font-bold text-cream"><Icon name="check" size={16} /> {cc.applied(coupon.code)}</span>
+                  <span className="block text-muted">{coupon.description || (coupon.freeDelivery ? cc.freeDelivery : cc.save(formatINR(coupon.discount)))}</span>
+                </p>
+                <button
+                  type="button"
+                  className="shrink-0 text-sm font-semibold underline underline-offset-4 hover:text-gold-700"
+                  onClick={() => {
+                    setCoupon(null)
+                    setCouponInput('')
+                  }}
+                >
+                  {cc.remove}
+                </button>
+              </div>
+            ) : (
+              <div>
+                <label className="label" htmlFor="co-coupon">{cc.label}</label>
+                <div className="flex gap-2">
+                  <input
+                    id="co-coupon"
+                    className="input min-w-0 flex-1 uppercase"
+                    value={couponInput}
+                    maxLength={30}
+                    autoComplete="off"
+                    placeholder={cc.placeholder}
+                    onChange={(e) => setCouponInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        applyCoupon()
+                      }
+                    }}
+                  />
+                  <button type="button" className="btn btn-outline shrink-0 !px-5" disabled={checking || !couponInput.trim()} onClick={applyCoupon}>
+                    {checking ? cc.checking : cc.apply}
+                  </button>
+                </div>
+                {couponMsg && <p role="alert" className="mt-1.5 text-sm font-medium text-error">{couponMsg}</p>}
+              </div>
+            )}
+          </div>
           <dl className="space-y-1 border-t border-line pt-3 text-sm">
             <div className="flex justify-between"><dt>{t.cart.subtotal}</dt><dd className="tabular-nums">{formatINR(cart.subtotal)}</dd></div>
+            {discount > 0 && coupon && (
+              <div className="flex justify-between font-semibold text-success"><dt>{cc.discount} ({coupon.code})</dt><dd className="tabular-nums">− {formatINR(discount)}</dd></div>
+            )}
             <div className="flex justify-between"><dt>{t.cart.delivery}</dt><dd className="tabular-nums">{fee === 0 ? c.freeDelivery : formatINR(fee)}</dd></div>
             <div className="flex justify-between border-t border-line pt-2 text-lg font-bold"><dt>{t.cart.total}</dt><dd className="tabular-nums">{formatINR(total)}</dd></div>
             <p className="text-xs text-muted">{t.common.inclTaxes}</p>
+            {repriced && <p className="text-xs font-medium text-gold-700">{c.pricesUpdated}</p>}
           </dl>
           <label className="flex items-start gap-2 text-sm">
             <input type="checkbox" required className="mt-1 h-4 w-4 accent-walnut" />

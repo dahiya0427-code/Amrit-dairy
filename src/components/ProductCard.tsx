@@ -3,7 +3,7 @@ import Link from 'next/link'
 import type { Locale } from '@/i18n/config'
 import { localePath } from '@/i18n/config'
 import { getDictionary } from '@/i18n'
-import type { Product } from '@/payload-types'
+import type { PricedProduct } from '@/lib/offers'
 import { formatINR } from '@/lib/format'
 import { mediaOf, mediaUrl } from '@/lib/media'
 import { buyableVariants, hasMultiplePrices, minPrice } from '@/lib/product'
@@ -13,7 +13,7 @@ import { CardAddButton } from './CardAddButton'
 import { FlipToggle } from './FlipToggle'
 import { Icon } from './Icon'
 
-export function ProductCard({ product, locale, priority = false }: { product: Product; locale: Locale; priority?: boolean }) {
+export function ProductCard({ product, locale, priority = false }: { product: PricedProduct; locale: Locale; priority?: boolean }) {
   const t = getDictionary(locale)
   const img = product.images?.[0]
   const src = mediaUrl(img, 'card')
@@ -101,6 +101,7 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
           </span>
         </Link>
         <span className="pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-start gap-1">
+          {product.offer && <Badge tone="offer">{product.offer.label} · {product.offer.percentOff}% {t.common.off}</Badge>}
           {product.badge === 'bestseller' && <Badge tone="bestseller">{t.common.bestseller}</Badge>}
           {product.badge === 'new' && <Badge tone="new">{t.common.new}</Badge>}
           {product.status === 'coming_soon' && <Badge tone="soon">{t.common.comingSoon}</Badge>}
@@ -118,6 +119,9 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
             <p className="mb-3 text-xl font-bold tabular-nums text-gold-700">
               {hasMultiplePrices(product) && <span className="text-sm font-normal text-muted">{t.common.from} </span>}
               {formatINR(price)}
+              {product.offer && v?.mrp && v.price && v.mrp > v.price && !hasMultiplePrices(product) && (
+                <span className="ml-1.5 text-sm font-normal text-muted line-through">{formatINR(v.mrp)}</span>
+              )}
               {variants.length === 1 && <span className="ml-1 text-sm font-normal text-muted">· {variants[0].label}</span>}
             </p>
           ) : (

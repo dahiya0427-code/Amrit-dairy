@@ -7,6 +7,7 @@ import { clientIp, rateLimit } from '@/lib/ratelimit'
 
 const schema = z.object({
   locale: z.enum(['en', 'hi']).default('en'),
+  couponCode: z.string().trim().max(30).optional(),
   items: z.array(z.object({ productId: z.number().int().positive(), sku: z.string().min(1).max(80), qty: z.number().int().min(1).max(20) })).min(1).max(30),
   customer: z.object({
     name: z.string().trim().min(2).max(100),
@@ -26,13 +27,13 @@ export async function POST(req: Request) {
 
   const parsed = schema.safeParse(await req.json().catch(() => null))
   if (!parsed.success) return NextResponse.json({ error: 'Please check your details.', issues: parsed.error.issues.map((i) => i.path.join('.')) }, { status: 400 })
-  const { items, customer, locale } = parsed.data
+  const { items, customer, locale, couponCode } = parsed.data
 
   const payload = await getPayloadClient()
   const settings = await payload.findGlobal({ slug: 'site-settings', depth: 0 })
 
   try {
-    const priced = await priceCart(payload, items, customer.pincode, settings)
+    const priced = await priceCart(payload, items, customer.pincode, settings, { couponCode: couponCode || undefined, phone: customer.phone, locale })
     const orderNumber = newOrderNumber()
     const accessToken = newAccessToken()
     const online = razorpayEnabled()
@@ -57,6 +58,8 @@ export async function POST(req: Request) {
           lineTotal: l.lineTotal,
         })),
         subtotal: priced.subtotal,
+        discount: priced.discount,
+        couponCode: priced.coupon?.code,
         deliveryFee: priced.deliveryFee,
         total: priced.total,
         customer: { ...customer, email: customer.email || undefined },
@@ -80,7 +83,7 @@ export async function POST(req: Request) {
       customer: { name: customer.name, email: customer.email, phone: customer.phone },
     })
   } catch (err) {
-    if (err instanceof CheckoutError) return NextResponse.json({ error: err.message, code: err.code }, { status: 422 })
+    if (err instanceof CheckoutError) return NextResponse.json({ error: err.message, code: err.code, reason: err.reason, min: err.min }, { status: 422 })
     payload.logger.error({ err }, 'Checkout failed')
     return NextResponse.json({ error: 'Checkout failed' }, { status: 500 })
   }

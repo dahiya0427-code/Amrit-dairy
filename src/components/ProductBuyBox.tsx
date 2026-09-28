@@ -34,6 +34,8 @@ type Props = {
   subscribable: boolean
   variants: BuyBoxVariant[]
   whatsapp: string
+  /** live offer from Shop → Offers, if any */
+  offer?: { label: string; percentOff: number } | null
 }
 
 export function ProductBuyBox(p: Props) {
@@ -71,6 +73,11 @@ export function ProductBuyBox(p: Props) {
     <div className="space-y-5">
       {p.status === 'active' && v?.price ? (
         <div>
+          {p.offer && (
+            <p className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-gold-500 px-3 py-1 text-sm font-bold text-ink">
+              <Icon name="sparkle" size={16} /> {p.offer.label}
+            </p>
+          )}
           <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="text-3xl font-bold tabular-nums text-cream">{formatINR(v.price)}</span>
             {discount > 0 && (

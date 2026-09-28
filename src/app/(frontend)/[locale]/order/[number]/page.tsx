@@ -68,6 +68,12 @@ export default async function OrderPage({ params, searchParams }: Props) {
             <span className="font-semibold tabular-nums">{formatINR(i.lineTotal)}</span>
           </li>
         ))}
+        {order.discount ? (
+          <li className="flex justify-between p-4 text-sm font-semibold text-success">
+            <span>{t.checkout.coupon.discount} ({order.couponCode})</span>
+            <span className="tabular-nums">− {formatINR(order.discount)}</span>
+          </li>
+        ) : null}
         <li className="flex justify-between p-4 text-sm">
           <span>{t.cart.delivery}</span>
           <span className="tabular-nums">{order.deliveryFee ? formatINR(order.deliveryFee) : t.checkout.freeDelivery}</span>

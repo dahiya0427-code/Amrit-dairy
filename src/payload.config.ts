@@ -13,6 +13,8 @@ import { Categories } from './collections/Categories'
 import { Products } from './collections/Products'
 import { ServiceAreas } from './collections/ServiceAreas'
 import { Orders } from './collections/Orders'
+import { Offers } from './collections/Offers'
+import { Coupons } from './collections/Coupons'
 import { Leads } from './collections/Leads'
 import { Testimonials } from './collections/Testimonials'
 import { Breeds } from './collections/Breeds'
@@ -34,11 +36,19 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: ' · Amrit Dairy Admin' },
+    components: {
+      views: {
+        priceList: { Component: '/components/admin/PriceList#PriceListView', path: '/price-list' },
+      },
+      afterNavLinks: ['/components/admin/PriceListNavLink#PriceListNavLink'],
+    },
   },
   collections: [
     Products,
     Categories,
     Orders,
+    Offers,
+    Coupons,
     Leads,
     ServiceAreas,
     Testimonials,

@@ -1,24 +1,98 @@
 import 'server-only'
 import crypto from 'crypto'
 import type { Payload } from 'payload'
-import type { Order, Product, SiteSetting } from '@/payload-types'
+import type { Coupon, Order, Product, SiteSetting } from '@/payload-types'
 import { formatINR } from './format'
+import { applyOffers } from './offers'
 import { SITE_URL, whatsappLink } from './site'
 
 export type CartLine = { productId: number; sku: string; qty: number }
 
+export type PricedLine = { product: Product; sku: string; variant: string; qty: number; unitPrice: number; lineTotal: number }
+
+export type AppliedCoupon = { code: string; description: string | null; discount: number; freeDelivery: boolean }
+
 export type PricedCart = {
-  lines: { product: Product; sku: string; variant: string; qty: number; unitPrice: number; lineTotal: number }[]
+  lines: PricedLine[]
   subtotal: number
+  discount: number
+  coupon: AppliedCoupon | null
   deliveryFee: number
   total: number
   deliveryType: 'local' | 'ship'
 }
 
+/** Why a coupon was refused; the site shows a translated message for each. */
+export type CouponReason = 'not_found' | 'not_started' | 'expired' | 'used_up' | 'already_used' | 'min_order' | 'no_items'
+
 export class CheckoutError extends Error {
-  constructor(public code: 'empty' | 'unavailable' | 'not_serviceable' | 'invalid', message: string) {
+  constructor(
+    public code: 'empty' | 'unavailable' | 'not_serviceable' | 'invalid' | 'coupon',
+    message: string,
+    public reason?: CouponReason,
+    public min?: number,
+  ) {
     super(message)
   }
+}
+
+const couponError = (reason: CouponReason, message: string, min?: number) => new CheckoutError('coupon', message, reason, min)
+
+/** Offers that are switched on (dates are checked when they are applied). */
+export async function activeOffers(payload: Payload) {
+  return (await payload.find({ collection: 'offers', where: { active: { equals: true } }, limit: 200, depth: 0, locale: 'en', pagination: false })).docs
+}
+
+const lastTen = (phone: string) => phone.replace(/\D/g, '').slice(-10)
+
+/** Orders that count as a use of a code: not cancelled, and paid unless it was a WhatsApp order. */
+async function couponUses(payload: Payload, code: string, phone?: string) {
+  const and: Record<string, unknown>[] = [
+    { couponCode: { equals: code } },
+    { status: { not_in: ['cancelled', 'refunded'] } },
+    { or: [{ paymentStatus: { equals: 'paid' } }, { paymentMethod: { equals: 'whatsapp' } }] },
+  ]
+  if (phone) and.push({ phone: { contains: lastTen(phone) } })
+  return (await payload.count({ collection: 'orders', where: { and } as never })).totalDocs
+}
+
+/** Finds a code and checks its dates and usage limits. */
+export async function findCoupon(payload: Payload, rawCode: string, phone?: string, locale: 'en' | 'hi' = 'en'): Promise<Coupon> {
+  const code = rawCode.trim().toUpperCase().replace(/\s+/g, '')
+  if (!code) throw couponError('not_found', 'Enter a coupon code')
+  const { docs } = await payload.find({ collection: 'coupons', where: { code: { equals: code } }, limit: 1, depth: 0, locale })
+  const c = docs[0]
+  const now = new Date()
+  if (!c || !c.active) throw couponError('not_found', 'This coupon code is not valid')
+  if (c.startsAt && new Date(c.startsAt) > now) throw couponError('not_started', 'This coupon is not active yet')
+  if (c.endsAt && new Date(c.endsAt) <= now) throw couponError('expired', 'This coupon has expired')
+  if (c.usageLimit && (await couponUses(payload, c.code)) >= c.usageLimit) throw couponError('used_up', 'This coupon has been fully used')
+  if (phone && c.perCustomerLimit && (await couponUses(payload, c.code, phone)) >= c.perCustomerLimit) {
+    throw couponError('already_used', 'You have already used this coupon')
+  }
+  return c
+}
+
+const idOf = (v: unknown) => (typeof v === 'object' && v !== null ? (v as { id: number }).id : (v as number))
+
+/** Works out a coupon's discount on the priced lines (whole rupees). */
+export function couponDiscount(c: Coupon, lines: PricedLine[], subtotal: number): AppliedCoupon {
+  if (c.minOrder && subtotal < c.minOrder) throw couponError('min_order', `Add items worth ${formatINR(c.minOrder)} to use this coupon`, c.minOrder)
+  const matches = (p: Product) =>
+    c.appliesTo === 'products'
+      ? (c.products ?? []).some((x) => idOf(x) === p.id)
+      : c.appliesTo === 'categories'
+        ? (c.categories ?? []).some((x) => idOf(x) === idOf(p.category))
+        : true
+  const eligible = lines.filter((l) => matches(l.product)).reduce((n, l) => n + l.lineTotal, 0)
+  if (!eligible) throw couponError('no_items', 'This coupon does not apply to the items in your cart')
+  let discount = 0
+  if (c.type === 'percent') discount = Math.round((eligible * (c.value ?? 0)) / 100)
+  if (c.type === 'flat') discount = c.value ?? 0
+  if (c.maxDiscount && c.type === 'percent') discount = Math.min(discount, c.maxDiscount)
+  // always leave at least ₹1 to pay
+  discount = Math.max(0, Math.min(discount, eligible, subtotal - 1))
+  return { code: c.code, description: c.description ?? null, discount, freeDelivery: c.type === 'free_delivery' }
 }
 
 /** Live service-area pincodes, from the Delivery areas collection. */
@@ -31,12 +105,20 @@ export async function livePincodes(payload: Payload): Promise<Set<string>> {
  * Re-prices the cart from the database. Client prices are never trusted, and
  * inactive, on-demand or ₹0 variants are rejected.
  */
-export async function priceCart(payload: Payload, items: CartLine[], pincode: string, settings: SiteSetting): Promise<PricedCart> {
+export async function priceCart(
+  payload: Payload,
+  items: CartLine[],
+  pincode: string,
+  settings: SiteSetting,
+  opts: { couponCode?: string; phone?: string; locale?: 'en' | 'hi'; /** coupon preview: don't block on the delivery area yet */ preview?: boolean } = {},
+): Promise<PricedCart> {
   if (!items.length) throw new CheckoutError('empty', 'Cart is empty')
   if (items.length > 30) throw new CheckoutError('invalid', 'Too many items')
 
   const ids = [...new Set(items.map((i) => i.productId))]
-  const { docs } = await payload.find({ collection: 'products', where: { id: { in: ids } }, limit: ids.length, depth: 0, locale: 'en' })
+  const found = await payload.find({ collection: 'products', where: { id: { in: ids } }, limit: ids.length, depth: 0, locale: 'en' })
+  const offers = await activeOffers(payload)
+  const docs = found.docs.map((d) => applyOffers(d, offers))
 
   const lines: PricedCart['lines'] = []
   for (const item of items) {
@@ -53,23 +135,26 @@ export async function priceCart(payload: Payload, items: CartLine[], pincode: st
   const hasFresh = lines.some((l) => l.product.fulfilment === 'local')
   const live = await livePincodes(payload)
   const isLocal = live.has(pincode)
-  if (hasFresh && !isLocal) {
+  if (hasFresh && !isLocal && !opts.preview) {
     throw new CheckoutError('not_serviceable', 'Fresh products are not delivered to this pincode yet')
   }
 
   const subtotal = lines.reduce((n, l) => n + l.lineTotal, 0)
+  const coupon = opts.couponCode ? couponDiscount(await findCoupon(payload, opts.couponCode, opts.phone, opts.locale), lines, subtotal) : null
+  const discount = coupon?.discount ?? 0
   const threshold = settings.freeDeliveryThreshold ?? 0
   const fee = isLocal ? (settings.localDeliveryFee ?? 0) : (settings.shippingFee ?? 0)
-  const deliveryFee = threshold && subtotal >= threshold ? 0 : fee
-  return { lines, subtotal, deliveryFee, total: subtotal + deliveryFee, deliveryType: isLocal ? 'local' : 'ship' }
+  const deliveryFee = coupon?.freeDelivery || (threshold && subtotal >= threshold) ? 0 : fee
+  return { lines, subtotal, discount, coupon, deliveryFee, total: subtotal - discount + deliveryFee, deliveryType: isLocal ? 'local' : 'ship' }
 }
 
 export const newOrderNumber = () => `AD${Date.now().toString().slice(-7)}${crypto.randomInt(10, 99)}`
 export const newAccessToken = () => crypto.randomBytes(18).toString('base64url')
 
-export function orderWhatsappText(order: Pick<Order, 'orderNumber' | 'items' | 'total' | 'customer'>) {
+export function orderWhatsappText(order: Pick<Order, 'orderNumber' | 'items' | 'total' | 'customer' | 'discount' | 'couponCode'>) {
   const items = (order.items ?? []).map((i) => `• ${i.title} (${i.variant}) × ${i.quantity}`).join('\n')
-  return `Hi Amrit Dairy, I placed order ${order.orderNumber}.\n${items}\nTotal: ${formatINR(order.total)}\nName: ${order.customer.name}\nPincode: ${order.customer.pincode}\nPlease share UPI details to pay.`
+  const coupon = order.discount ? `\nCoupon ${order.couponCode}: −${formatINR(order.discount)}` : ''
+  return `Hi Amrit Dairy, I placed order ${order.orderNumber}.\n${items}${coupon}\nTotal: ${formatINR(order.total)}\nName: ${order.customer.name}\nPincode: ${order.customer.pincode}\nPlease share UPI details to pay.`
 }
 
 export const orderUrl = (o: Pick<Order, 'orderNumber' | 'accessToken' | 'locale'>) =>
@@ -89,6 +174,7 @@ function orderEmailHtml(order: Order, heading: string) {
       <h1 style="font:600 20px Georgia,serif;color:#2B1B10;margin:0 0 8px">${esc(heading)}</h1>
       <p style="margin:0 0 16px">Order <strong>${order.orderNumber}</strong></p>
       <table style="width:100%;border-collapse:collapse;font-size:14px">${rows}
+        ${order.discount ? `<tr><td style="padding:6px 0;border-top:1px solid #E6DCC6">Coupon ${esc(order.couponCode)}</td><td style="padding:6px 0;border-top:1px solid #E6DCC6;text-align:right">− ${formatINR(order.discount)}</td></tr>` : ''}
         <tr><td style="padding:6px 0;border-top:1px solid #E6DCC6">Delivery</td><td style="padding:6px 0;border-top:1px solid #E6DCC6;text-align:right">${order.deliveryFee ? formatINR(order.deliveryFee) : 'Free'}</td></tr>
         <tr><td style="padding:6px 0;font-weight:700">Total</td><td style="padding:6px 0;text-align:right;font-weight:700">${formatINR(order.total)}</td></tr>
       </table>

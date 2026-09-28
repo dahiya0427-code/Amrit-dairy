@@ -70,6 +70,8 @@ export interface Config {
     products: Product;
     categories: Category;
     orders: Order;
+    offers: Offer;
+    coupons: Coupon;
     leads: Lead;
     'service-areas': ServiceArea;
     testimonials: Testimonial;
@@ -92,6 +94,8 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
+    offers: OffersSelect<false> | OffersSelect<true>;
+    coupons: CouponsSelect<false> | CouponsSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
     'service-areas': ServiceAreasSelect<false> | ServiceAreasSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
@@ -148,6 +152,8 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Tip: to change many prices at once, open "₹ Price list" in the menu. For sale prices use Offers; for discount codes use Coupons.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
@@ -457,6 +463,10 @@ export interface Order {
     id?: string | null;
   }[];
   subtotal?: number | null;
+  /**
+   * Coupon discount (₹)
+   */
+  discount?: number | null;
   deliveryFee?: number | null;
   total: number;
   customer: {
@@ -477,9 +487,105 @@ export interface Order {
     orderId?: string | null;
     paymentId?: string | null;
   };
+  couponCode?: string | null;
   locale?: string | null;
   accessToken?: string | null;
   internalNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Sale prices applied automatically on the website, e.g. "10% off all ghee this Diwali". If two offers match a product, the bigger discount is used. Changes show on the site within 5 minutes.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offers".
+ */
+export interface Offer {
+  id: number;
+  /**
+   * For your reference, e.g. "Diwali ghee offer".
+   */
+  title: string;
+  /**
+   * Short label on the product, e.g. "Diwali offer". Leave empty to use the title.
+   */
+  badge?: string | null;
+  discountType: 'percent' | 'flat';
+  /**
+   * e.g. 10 for 10% or ₹10
+   */
+  value: number;
+  appliesTo: 'all' | 'categories' | 'products';
+  categories?: (number | Category)[] | null;
+  products?: (number | Product)[] | null;
+  /**
+   * Untick to pause the offer.
+   */
+  active?: boolean | null;
+  /**
+   * Optional. Empty = starts now.
+   */
+  startsAt?: string | null;
+  /**
+   * Optional. Empty = no end.
+   */
+  endsAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Discount codes for checkout, e.g. WELCOME10. Codes are not case-sensitive.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons".
+ */
+export interface Coupon {
+  id: number;
+  /**
+   * Letters and numbers, e.g. GHEE100. Saved in capitals.
+   */
+  code: string;
+  /**
+   * Shown to the customer when the code works, e.g. "₹100 off your first ghee order".
+   */
+  description?: string | null;
+  type: 'percent' | 'flat' | 'free_delivery';
+  /**
+   * e.g. 10 for 10% or 100 for ₹100
+   */
+  value?: number | null;
+  /**
+   * Minimum order (₹), optional
+   */
+  minOrder?: number | null;
+  /**
+   * Cap on the discount (₹), optional
+   */
+  maxDiscount?: number | null;
+  /**
+   * The discount is worked out on the matching items only.
+   */
+  appliesTo: 'all' | 'categories' | 'products';
+  categories?: (number | Category)[] | null;
+  products?: (number | Product)[] | null;
+  /**
+   * Total uses allowed, optional
+   */
+  usageLimit?: number | null;
+  /**
+   * Uses per phone number, optional (1 = once each)
+   */
+  perCustomerLimit?: number | null;
+  /**
+   * Untick to stop the code working.
+   */
+  active?: boolean | null;
+  startsAt?: string | null;
+  endsAt?: string | null;
+  /**
+   * Orders placed with this code (not counting cancelled ones).
+   */
+  usedCount?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -982,6 +1088,14 @@ export interface PayloadLockedDocument {
         value: number | Order;
       } | null)
     | ({
+        relationTo: 'offers';
+        value: number | Offer;
+      } | null)
+    | ({
+        relationTo: 'coupons';
+        value: number | Coupon;
+      } | null)
+    | ({
         relationTo: 'leads';
         value: number | Lead;
       } | null)
@@ -1222,6 +1336,7 @@ export interface OrdersSelect<T extends boolean = true> {
         id?: T;
       };
   subtotal?: T;
+  discount?: T;
   deliveryFee?: T;
   total?: T;
   customer?:
@@ -1246,9 +1361,51 @@ export interface OrdersSelect<T extends boolean = true> {
         orderId?: T;
         paymentId?: T;
       };
+  couponCode?: T;
   locale?: T;
   accessToken?: T;
   internalNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offers_select".
+ */
+export interface OffersSelect<T extends boolean = true> {
+  title?: T;
+  badge?: T;
+  discountType?: T;
+  value?: T;
+  appliesTo?: T;
+  categories?: T;
+  products?: T;
+  active?: T;
+  startsAt?: T;
+  endsAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons_select".
+ */
+export interface CouponsSelect<T extends boolean = true> {
+  code?: T;
+  description?: T;
+  type?: T;
+  value?: T;
+  minOrder?: T;
+  maxDiscount?: T;
+  appliesTo?: T;
+  categories?: T;
+  products?: T;
+  usageLimit?: T;
+  perCustomerLimit?: T;
+  active?: T;
+  startsAt?: T;
+  endsAt?: T;
+  usedCount?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -78,13 +78,14 @@ export function PageHero({ title, intro, eyebrow, secondary }: { title: string; 
   )
 }
 
-export function Badge({ tone, children }: { tone: 'bestseller' | 'new' | 'soon' | 'ship' | 'local'; children: React.ReactNode }) {
+export function Badge({ tone, children }: { tone: 'bestseller' | 'new' | 'soon' | 'ship' | 'local' | 'offer'; children: React.ReactNode }) {
   const tones = {
     bestseller: 'bg-ink text-gold-500',
     new: 'bg-leaf text-ink',
     soon: 'bg-ink/85 text-snow',
     ship: 'bg-ink/85 text-snow',
     local: 'bg-char text-cream border border-line',
+    offer: 'bg-gold-500 text-ink',
   }
   return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold ${tones[tone]}`}>{children}</span>
 }

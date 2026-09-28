@@ -84,9 +84,10 @@ export const Orders: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'subtotal', type: 'number', admin: { readOnly: true, width: '33%' } },
-        { name: 'deliveryFee', type: 'number', admin: { readOnly: true, width: '33%' } },
-        { name: 'total', type: 'number', required: true, admin: { readOnly: true, width: '33%' } },
+        { name: 'subtotal', type: 'number', admin: { readOnly: true, width: '25%' } },
+        { name: 'discount', type: 'number', defaultValue: 0, admin: { readOnly: true, width: '25%', description: 'Coupon discount (₹)' } },
+        { name: 'deliveryFee', type: 'number', admin: { readOnly: true, width: '25%' } },
+        { name: 'total', type: 'number', required: true, admin: { readOnly: true, width: '25%' } },
       ],
     },
     {
@@ -121,11 +122,36 @@ export const Orders: CollectionConfig = {
         { name: 'paymentId', type: 'text', admin: { readOnly: true } },
       ],
     },
+    { name: 'couponCode', type: 'text', index: true, admin: { position: 'sidebar', readOnly: true } },
     { name: 'locale', type: 'text', admin: { position: 'sidebar', readOnly: true } },
     { name: 'accessToken', type: 'text', admin: { hidden: true } },
     { name: 'internalNotes', type: 'textarea', admin: { position: 'sidebar' } },
   ],
   hooks: {
+    // keep each coupon's "used" count in step with its orders (cancelled and unpaid online orders don't count)
+    afterChange: [
+      async ({ doc, previousDoc, req }) => {
+        const code = doc.couponCode || previousDoc?.couponCode
+        if (!code) return doc
+        try {
+          const uses = await req.payload.count({
+            collection: 'orders',
+            req,
+            where: {
+              and: [
+                { couponCode: { equals: code } },
+                { status: { not_in: ['cancelled', 'refunded'] } },
+                { or: [{ paymentStatus: { equals: 'paid' } }, { paymentMethod: { equals: 'whatsapp' } }] },
+              ],
+            },
+          })
+          await req.payload.update({ collection: 'coupons', where: { code: { equals: code } }, data: { usedCount: uses.totalDocs }, req })
+        } catch (err) {
+          req.payload.logger.error({ err }, 'Could not update coupon usage')
+        }
+        return doc
+      },
+    ],
     beforeChange: [
       ({ data }) => {
         if (data.customer) {

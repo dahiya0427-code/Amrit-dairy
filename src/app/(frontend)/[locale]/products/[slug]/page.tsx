@@ -170,6 +170,7 @@ export default async function ProductPage({ params }: Props) {
               subscribable={Boolean(product.subscribable)}
               variants={variants}
               whatsapp={settings.ordersPhone}
+              offer={product.offer}
             />
           </div>
 

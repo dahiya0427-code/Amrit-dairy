@@ -12,6 +12,7 @@ export const Products: CollectionConfig = {
     group: 'Shop',
     defaultColumns: ['title', 'category', 'status', 'fulfilment', 'featured'],
     listSearchableFields: ['title', 'slug'],
+    description: 'Tip: to change many prices at once, open "₹ Price list" in the menu. For sale prices use Offers; for discount codes use Coupons.',
   },
   access: { read: anyone, create: loggedIn, update: loggedIn, delete: loggedIn },
   defaultSort: 'order',

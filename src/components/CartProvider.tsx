@@ -25,6 +25,8 @@ type Cart = {
   setQty: (sku: string, qty: number) => void
   remove: (sku: string) => void
   clear: () => void
+  /** replace prices with the live ones from the server (offers change over time) */
+  reprice: (prices: Record<string, number>) => void
 }
 
 const KEY = 'amrit-cart-v1'
@@ -70,6 +72,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const remove = useCallback((sku: string) => setItems((prev) => prev.filter((i) => i.sku !== sku)), [])
   const clear = useCallback(() => setItems([]), [])
+  const reprice = useCallback((prices: Record<string, number>) => {
+    setItems((prev) => (prev.some((i) => prices[i.sku] && prices[i.sku] !== i.price) ? prev.map((i) => (prices[i.sku] ? { ...i, price: prices[i.sku] } : i)) : prev))
+  }, [])
 
   const value = useMemo<Cart>(
     () => ({
@@ -83,8 +88,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setQty,
       remove,
       clear,
+      reprice,
     }),
-    [items, ready, open, add, setQty, remove, clear],
+    [items, ready, open, add, setQty, remove, clear, reprice],
   )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
