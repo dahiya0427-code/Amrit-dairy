@@ -13,7 +13,7 @@ import { attachStoryDriver } from './scroll-story-driver'
  * Rendered in its first-scene state; scroll-story-driver.ts does the motion
  * (the same driver runs in the static preview).
  */
-type Breed = { name: string; image: string | null }
+type Breed = { name: string; image: string | null; origin?: string | null }
 type Item = { title: string; price: string | null; image: string; href: string }
 
 const SCENES = 7
@@ -97,10 +97,13 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
           </div>
         </div>
 
-        {/* 2 · What is A2: dark band with grass, breeds below */}
+        {/* 2 · What is A2: dark band with a big gold "A2", grass edge, a warm glow
+            behind the jar, two fact callouts and the breed portraits rising in turn */}
         <div {...scene(1)}>
-          <div className="absolute inset-x-0 top-0 h-[48%] bg-ink" aria-hidden="true">
-            <svg className="absolute inset-x-0 bottom-0 h-16 w-full text-gold-500/50" viewBox="0 0 1200 60" preserveAspectRatio="none" fill="none" stroke="currentColor">
+          <div className="absolute inset-x-0 top-0 h-[48%] overflow-hidden bg-ink" aria-hidden="true">
+            <span className="absolute -right-[4%] -top-[18%] select-none font-serif text-[46vh] font-bold leading-none text-transparent [-webkit-text-stroke:2px_rgba(201,162,74,0.22)] md:right-[3%]">A2</span>
+            <span className="absolute -left-[8%] top-[30%] select-none font-serif text-[30vh] font-bold leading-none text-transparent [-webkit-text-stroke:1px_rgba(201,162,74,0.12)] max-md:hidden">A2</span>
+            <svg className="absolute inset-x-0 bottom-0 h-16 w-full text-gold-500/60" viewBox="0 0 1200 60" preserveAspectRatio="none" fill="none" stroke="currentColor">
               {Array.from({ length: 120 }, (_, k) => {
                 const x = k * 10 + (k % 3) * 3
                 const h = 18 + ((k * 37) % 40)
@@ -108,19 +111,68 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
               })}
             </svg>
           </div>
+          {/* warm glow and rings behind the jar */}
+          <div className="pointer-events-none absolute left-1/2 top-[62%] aspect-square w-[80vw] max-w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(201,162,74,0.28)_0%,rgba(201,162,74,0.1)_40%,transparent_68%)]" aria-hidden="true" />
+          <div className="pointer-events-none absolute left-1/2 top-[62%] hidden aspect-square w-[46vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-gold-500/40 md:block" aria-hidden="true" />
           <div className={inner}>
             <div className="relative h-full">
-              <div className="mx-auto max-w-2xl pt-6 text-center">
-                <h2 className={`${title} !text-snow`}>{s.s2.title}</h2>
-                <p className="mt-3 text-lg text-snow/80">{s.s2.text}</p>
-              </div>
-              <ul className="absolute inset-x-0 bottom-[12%] grid grid-cols-4 gap-2 md:bottom-[8%] md:flex md:justify-between">
-                {breeds.slice(0, 4).map((b, i) => (
-                  <li key={b.name} className={`flex flex-col items-center text-center ${i === 1 ? 'md:mr-auto md:ml-[10%]' : ''} ${i === 2 ? 'md:ml-auto md:mr-[10%]' : ''}`}>
-                    <span className="relative block h-16 w-16 overflow-hidden rounded-full border border-line bg-char md:h-24 md:w-24">
-                      {b.image && <Image src={b.image} alt="" fill sizes="96px" className="object-contain" />}
+              <div className="mx-auto max-w-3xl pt-4 text-center md:pt-6">
+                <p className="inline-flex items-center gap-3 font-serif text-xs font-bold uppercase tracking-[0.3em] text-gold-500 md:text-sm">
+                  <span className="h-px w-8 bg-gold-500/70" aria-hidden="true" />
+                  {s.s2.kicker}
+                  <span className="h-px w-8 bg-gold-500/70" aria-hidden="true" />
+                </p>
+                <h2 className={`${title} mt-3 !text-snow`}>
+                  {s.s2.title.split('A2').map((part, k, all) => (
+                    <span key={k}>
+                      {part}
+                      {k < all.length - 1 && <span className="text-gold-500">A2</span>}
                     </span>
-                    <span className="mt-2 font-serif text-sm font-bold uppercase md:text-lg">{b.name}</span>
+                  ))}
+                </h2>
+                <p className="mx-auto mt-3 max-w-2xl text-base text-snow/80 md:text-lg">{s.s2.text}</p>
+              </div>
+
+              {/* fact callouts either side of the jar (larger screens) */}
+              {s.s2.facts.map((f, i) => (
+                <div
+                  key={f.title}
+                  data-reveal={1}
+                  data-o
+                  data-on="none"
+                  data-off={`translateX(${i ? 40 : -40}px)`}
+                  className={`absolute top-[41%] hidden max-w-[17rem] items-center gap-4 opacity-0 transition duration-700 md:flex [@media(max-height:680px)]:!hidden ${i ? 'right-0 flex-row-reverse text-right lg:right-[6%]' : 'left-0 lg:left-[6%]'}`}
+                  style={{ transform: `translateX(${i ? 40 : -40}px)`, transitionDelay: `${0.5 + 0.15 * i}s` }}
+                >
+                  <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-ink text-gold-500 shadow-[0_0_0_6px_rgba(201,162,74,0.18)]">
+                    <Icon name={i ? 'sparkle' : 'drop'} size={26} />
+                  </span>
+                  <span>
+                    <span className="block font-serif text-lg font-bold uppercase leading-tight text-[#6b3d1f]">{f.title}</span>
+                    <span className="mt-1 block text-sm leading-snug text-ink/70">{f.text}</span>
+                  </span>
+                </div>
+              ))}
+
+              <ul className="absolute inset-x-0 bottom-[11%] grid grid-cols-4 gap-2 md:bottom-[5%] md:grid-cols-[1fr_1fr_minmax(0,34%)_1fr_1fr] md:gap-4">
+                {breeds.slice(0, 4).map((b, i) => (
+                  <li
+                    key={b.name}
+                    data-reveal={1}
+                    data-o
+                    data-on="none"
+                    data-off="translateY(40px)"
+                    className={`group flex flex-col items-center text-center opacity-0 transition duration-700 ${i === 2 ? 'md:col-start-4' : ''}`}
+                    style={{ transform: 'translateY(40px)', transitionDelay: `${0.35 + 0.1 * i}s` }}
+                  >
+                    <span className="relative block h-[4.5rem] w-[4.5rem] rounded-full bg-gradient-to-br from-gold-500 via-[#f3dc9a] to-gold-700 p-[3px] shadow-[0_10px_24px_-10px_rgba(43,27,16,0.55)] transition-transform duration-300 group-hover:-translate-y-1 md:h-28 md:w-28">
+                      <span className="relative block h-full w-full overflow-hidden rounded-full border-2 border-white bg-char">
+                        {b.image && <Image src={b.image} alt="" fill sizes="128px" className="object-cover transition-transform duration-500 group-hover:scale-110" />}
+                      </span>
+                      <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-ink px-2 py-0.5 font-serif text-[10px] font-bold leading-none text-gold-500 md:text-xs">A2</span>
+                    </span>
+                    <span className="mt-3 font-serif text-sm font-bold uppercase tracking-[0.04em] text-[#6b3d1f] md:text-xl">{b.name}</span>
+                    {b.origin && <span className="hidden text-xs uppercase tracking-[0.12em] text-gold-700 md:block">{b.origin}</span>}
                   </li>
                 ))}
               </ul>

@@ -63,7 +63,7 @@ export default async function HomePage({ params }: Props) {
     { title: pick('desi-cow-milk')?.title ?? 'Desi Cow Milk', price: priceOf('desi-cow-milk'), image: '/images/milk-cutout.png', href: href('/products/desi-cow-milk') },
     { title: acharCat?.title ?? 'Achar', price: null, image: '/images/mix-veg-achar-cutout.png', href: href('/shop/achar') },
   ]
-  const storyBreeds = farmBreeds.map((b) => ({ name: b.name, image: cowPhoto(b) }))
+  const storyBreeds = farmBreeds.map((b) => ({ name: b.name, image: cowPhoto(b), origin: b.origin ?? null }))
 
   return (
     <>
