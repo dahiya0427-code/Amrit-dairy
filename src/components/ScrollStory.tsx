@@ -33,7 +33,7 @@ const jarDesktop = [
 ]
 const jarMobile = [
   { x: 0, y: 14, s: 0.72, r: 0, o: 1 },
-  { x: 0, y: 8, s: 0.5, r: 0, o: 1 },
+  { x: 0, y: 4, s: 0.64, r: 0, o: 1 },
   { x: 0, y: 0, s: 0.46, r: 0, o: 1 },
   { x: 0, y: 0, s: 0.36, r: 0, o: 1 },
   { x: 0, y: 40, s: 0.5, r: 0, o: 1 },
@@ -97,26 +97,27 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
           </div>
         </div>
 
-        {/* 2 · What is A2: dark band with a big gold "A2", grass edge, a warm glow
-            behind the jar, two fact callouts and the breed portraits rising in turn */}
+        {/* 2 · What is A2: a dark stage with the jar in a spotlight, A1 vs A2 on the
+            left and the desi breeds in arched gold frames on the right */}
         <div {...scene(1)}>
-          <div className="absolute inset-x-0 top-0 h-[48%] overflow-hidden bg-ink" aria-hidden="true">
-            <span className="absolute -right-[4%] -top-[18%] select-none font-serif text-[46vh] font-bold leading-none text-transparent [-webkit-text-stroke:2px_rgba(201,162,74,0.22)] md:right-[3%]">A2</span>
-            <span className="absolute -left-[8%] top-[30%] select-none font-serif text-[30vh] font-bold leading-none text-transparent [-webkit-text-stroke:1px_rgba(201,162,74,0.12)] max-md:hidden">A2</span>
-            <svg className="absolute inset-x-0 bottom-0 h-16 w-full text-gold-500/60" viewBox="0 0 1200 60" preserveAspectRatio="none" fill="none" stroke="currentColor">
-              {Array.from({ length: 120 }, (_, k) => {
-                const x = k * 10 + (k % 3) * 3
-                const h = 18 + ((k * 37) % 40)
+          <div className="absolute inset-0 overflow-hidden bg-ink" aria-hidden="true">
+            {/* spotlight from above onto the jar, and a warm pool of light under it */}
+            <div className="absolute left-1/2 top-0 h-full w-[70vw] max-w-[760px] -translate-x-1/2 bg-[radial-gradient(ellipse_50%_75%_at_50%_0%,rgba(201,162,74,0.22),transparent_70%)]" />
+            <div className="absolute left-1/2 top-[64%] aspect-square w-[90vw] max-w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(201,162,74,0.34)_0%,rgba(201,162,74,0.1)_42%,transparent_68%)]" />
+            <div className="absolute left-1/2 top-[64%] hidden aspect-square w-[52vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold-500/25 md:block" />
+            <div className="absolute left-1/2 top-[64%] hidden aspect-square w-[64vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-gold-500/15 md:block" />
+            <span className="absolute -bottom-[8vh] left-1/2 -translate-x-1/2 select-none font-serif text-[52vh] font-bold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(201,162,74,0.12)]">A2</span>
+            <svg className="absolute inset-x-0 bottom-0 h-14 w-full text-gold-500/45 md:h-20" viewBox="0 0 1200 60" preserveAspectRatio="none" fill="none" stroke="currentColor">
+              {Array.from({ length: 140 }, (_, k) => {
+                const x = k * 8.6 + (k % 3) * 3
+                const h = 14 + ((k * 37) % 42)
                 return <path key={k} d={`M${x} 60 q ${k % 2 ? 4 : -4} -${h / 2} ${k % 2 ? 2 : -2} -${h}`} strokeWidth="1" vectorEffect="non-scaling-stroke" />
               })}
             </svg>
           </div>
-          {/* warm glow and rings behind the jar */}
-          <div className="pointer-events-none absolute left-1/2 top-[62%] aspect-square w-[80vw] max-w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(201,162,74,0.28)_0%,rgba(201,162,74,0.1)_40%,transparent_68%)]" aria-hidden="true" />
-          <div className="pointer-events-none absolute left-1/2 top-[62%] hidden aspect-square w-[46vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-gold-500/40 md:block" aria-hidden="true" />
           <div className={inner}>
             <div className="relative h-full">
-              <div className="mx-auto max-w-3xl pt-4 text-center md:pt-6">
+              <div className="mx-auto max-w-3xl pt-3 text-center md:pt-6">
                 <p className="inline-flex items-center gap-3 font-serif text-xs font-bold uppercase tracking-[0.3em] text-gold-500 md:text-sm">
                   <span className="h-px w-8 bg-gold-500/70" aria-hidden="true" />
                   {s.s2.kicker}
@@ -130,52 +131,67 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
                     </span>
                   ))}
                 </h2>
-                <p className="mx-auto mt-3 max-w-2xl text-base text-snow/80 md:text-lg">{s.s2.text}</p>
+                <p className="mx-auto mt-3 max-w-2xl text-sm text-snow/75 md:text-lg">{s.s2.text}</p>
               </div>
 
-              {/* fact callouts either side of the jar (larger screens) */}
-              {s.s2.facts.map((f, i) => (
-                <div
-                  key={f.title}
-                  data-reveal={1}
-                  data-o
-                  data-on="none"
-                  data-off={`translateX(${i ? 40 : -40}px)`}
-                  className={`absolute top-[41%] hidden max-w-[17rem] items-center gap-4 opacity-0 transition duration-700 md:flex [@media(max-height:680px)]:!hidden ${i ? 'right-0 flex-row-reverse text-right lg:right-[6%]' : 'left-0 lg:left-[6%]'}`}
-                  style={{ transform: `translateX(${i ? 40 : -40}px)`, transitionDelay: `${0.5 + 0.15 * i}s` }}
-                >
-                  <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-ink text-gold-500 shadow-[0_0_0_6px_rgba(201,162,74,0.18)]">
-                    <Icon name={i ? 'sparkle' : 'drop'} size={26} />
-                  </span>
-                  <span>
-                    <span className="block font-serif text-lg font-bold uppercase leading-tight text-[#6b3d1f]">{f.title}</span>
-                    <span className="mt-1 block text-sm leading-snug text-ink/70">{f.text}</span>
-                  </span>
-                </div>
-              ))}
-
-              <ul className="absolute inset-x-0 bottom-[11%] grid grid-cols-4 gap-2 md:bottom-[5%] md:grid-cols-[1fr_1fr_minmax(0,34%)_1fr_1fr] md:gap-4">
-                {breeds.slice(0, 4).map((b, i) => (
-                  <li
-                    key={b.name}
-                    data-reveal={1}
-                    data-o
-                    data-on="none"
-                    data-off="translateY(40px)"
-                    className={`group flex flex-col items-center text-center opacity-0 transition duration-700 ${i === 2 ? 'md:col-start-4' : ''}`}
-                    style={{ transform: 'translateY(40px)', transitionDelay: `${0.35 + 0.1 * i}s` }}
-                  >
-                    <span className="relative block h-[4.5rem] w-[4.5rem] rounded-full bg-gradient-to-br from-gold-500 via-[#f3dc9a] to-gold-700 p-[3px] shadow-[0_10px_24px_-10px_rgba(43,27,16,0.55)] transition-transform duration-300 group-hover:-translate-y-1 md:h-28 md:w-28">
-                      <span className="relative block h-full w-full overflow-hidden rounded-full border-2 border-white bg-char">
-                        {b.image && <Image src={b.image} alt="" fill sizes="128px" className="object-cover transition-transform duration-500 group-hover:scale-110" />}
-                      </span>
-                      <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-ink px-2 py-0.5 font-serif text-[10px] font-bold leading-none text-gold-500 md:text-xs">A2</span>
+              {/* A1 vs A2 */}
+              <div
+                data-reveal={1}
+                data-o
+                data-on="none"
+                data-off="translateX(-40px)"
+                className="absolute inset-x-0 top-[23%] opacity-0 transition duration-700 md:inset-x-auto md:left-0 md:top-[36%] md:w-[30%] lg:left-[2%] lg:w-[26%]"
+                style={{ transform: 'translateX(-40px)', transitionDelay: '0.45s' }}
+              >
+                <p className="hidden font-serif text-sm font-bold uppercase tracking-[0.25em] text-gold-500 md:block">{s.s2.vs}</p>
+                <div className="grid grid-cols-2 gap-2 md:mt-3 md:grid-cols-1 md:gap-3">
+                  <div className="flex items-center gap-2 rounded-2xl border border-snow/10 bg-snow/[0.04] p-2.5 md:gap-4 md:p-4">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-snow/25 text-snow/50 md:h-11 md:w-11">
+                      <Icon name="close" size={16} />
                     </span>
-                    <span className="mt-3 font-serif text-sm font-bold uppercase tracking-[0.04em] text-[#6b3d1f] md:text-xl">{b.name}</span>
-                    {b.origin && <span className="hidden text-xs uppercase tracking-[0.12em] text-gold-700 md:block">{b.origin}</span>}
-                  </li>
-                ))}
-              </ul>
+                    <span className="min-w-0">
+                      <span className="block font-serif text-sm font-bold uppercase leading-tight text-snow/55 line-through decoration-gold-500/60 md:text-xl">{s.s2.a1.label}</span>
+                      <span className="block text-[11px] leading-snug text-snow/45 md:text-sm">{s.s2.a1.who}<span className="hidden md:inline"> · {s.s2.a1.note}</span></span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-2xl border border-gold-500/60 bg-gradient-to-br from-gold-500/25 to-gold-500/5 p-2.5 shadow-[0_0_40px_-12px_rgba(201,162,74,0.7)] md:gap-4 md:p-4">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gold-500 text-ink md:h-11 md:w-11">
+                      <Icon name="check" size={18} />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-serif text-sm font-bold uppercase leading-tight text-gold-500 md:text-xl">{s.s2.a2.label}</span>
+                      <span className="block text-[11px] leading-snug text-snow/85 md:text-sm">{s.s2.a2.who}<span className="hidden md:inline"> · {s.s2.a2.note}</span></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* desi breeds in arched gold frames */}
+              <div className="absolute inset-x-0 bottom-[10%] md:inset-x-auto md:bottom-auto md:right-0 md:top-[29%] md:w-[30%] lg:right-[2%] lg:w-[25%]">
+                <p className="hidden text-right font-serif text-sm font-bold uppercase tracking-[0.25em] text-gold-500 md:block">{s.s2.breedsLabel}</p>
+                <ul className="grid grid-cols-4 gap-2 md:mt-3 md:grid-cols-2 md:gap-3">
+                  {breeds.slice(0, 4).map((b, i) => (
+                    <li
+                      key={b.name}
+                      data-reveal={1}
+                      data-o
+                      data-on="none"
+                      data-off="translateY(40px)"
+                      className="group opacity-0 transition duration-700"
+                      style={{ transform: 'translateY(40px)', transitionDelay: `${0.35 + 0.1 * i}s` }}
+                    >
+                      <span className="block rounded-t-full rounded-b-2xl bg-gradient-to-b from-[#f3dc9a] via-gold-500 to-gold-700 p-[2px] shadow-[0_18px_30px_-16px_rgba(0,0,0,0.8)] transition-transform duration-300 group-hover:-translate-y-1">
+                        <span className="relative block aspect-[3/4] overflow-hidden rounded-t-full md:aspect-[5/6] rounded-b-[14px] bg-char">
+                          {b.image && <Image src={b.image} alt="" fill sizes="(min-width: 768px) 14vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />}
+                          <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/70 to-transparent px-1 pb-1.5 pt-6 text-center md:pb-2.5">
+                            <span className="block font-serif text-[11px] font-bold uppercase tracking-[0.06em] text-snow md:text-base">{b.name}</span>
+                          </span>
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>

@@ -518,7 +518,7 @@ export const en = {
     skip: 'Skip the story',
     hint: 'Scroll',
     s1: { eyebrow: 'From our farm in Sonipat', title: 'Pure Bilona Ghee', text: 'Made from the milk of our own desi cows, the slow and traditional way. Nothing added, nothing taken away.' },
-    s2: { title: 'Wondering what A2 is?', text: 'Gir, Sahiwal and Tharparkar cows naturally give A2 milk. It is the only milk we use.', kicker: 'Only from Indian desi cows', facts: [{ title: 'A2 beta-casein', text: 'The original milk protein, as nature made it' }, { title: 'Easy to digest', text: 'Gentle on the stomach, for children and elders' }] },
+    s2: { title: 'Wondering what A2 is?', text: 'Gir, Sahiwal and Tharparkar cows naturally give A2 milk. It is the only milk we use.', kicker: 'Only from Indian desi cows', breedsLabel: 'Our desi breeds', vs: 'The difference', a1: { label: 'A1 milk', who: 'Hybrid and foreign cows', note: 'Can feel heavy to digest' }, a2: { label: 'A2 milk', who: 'Indian desi cows', note: 'Gentle and easy to digest, the milk our grandparents drank' } },
     s3: { title: 'Made the Bilona way', steps: ['Fresh A2 milk', 'Set into curd', 'Churned in a bilona', 'Makkhan collected', 'Slow-cooked into ghee'] },
     s4: { title: 'Why families love Amrit', points: ['Our own desi cows', 'Hand-churned from curd', 'No preservatives', 'Packed in glass', 'Small batches', 'FSSAI licensed'] },
     s5: { title: 'From our farm to your kitchen', label: 'Products', cta: 'View' },
