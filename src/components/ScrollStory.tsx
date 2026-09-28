@@ -81,8 +81,9 @@ export function ScrollStory({ jar, turntable, breeds, items, centre, shopHref, w
         {/* 1 · Pure Bilona Ghee: big bold farm drawing (scripts/farm-hero.py), Mr Dairy layout:
             title on the left with its sub-line, the jar in the middle, the welcome text top right */}
         <div {...scene(0)}>
-          <div className="absolute inset-x-0 bottom-0 h-[50%] md:h-[72%]" aria-hidden="true">
-            <Image src="/images/sketch/farm-hero.png" alt="" fill priority sizes="100vw" className="object-cover object-[0%_100%] md:object-bottom" />
+          {/* phones: the whole drawing, uncropped, just above the bottom bar; larger screens: fills the lower part */}
+          <div className="absolute inset-x-0 bottom-[calc(62px+env(safe-area-inset-bottom))] aspect-[2400/1000] md:bottom-0 md:aspect-auto md:h-[72%]" aria-hidden="true">
+            <Image src="/images/sketch/farm-hero.png" alt="" fill priority sizes="100vw" className="object-contain object-bottom md:object-cover" />
           </div>
           <div className={inner}>
             <div className="grid content-start gap-5 pt-4 md:grid-cols-[1fr_minmax(0,22vw)_1fr] md:gap-8 md:pt-[6vh]">
