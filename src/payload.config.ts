@@ -31,7 +31,8 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SITE_URL || '',
+  // empty = same address the admin is opened on, so it works on any domain
+  serverURL: '',
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },

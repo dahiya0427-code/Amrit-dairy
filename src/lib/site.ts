@@ -1,5 +1,7 @@
 /** Fallback business facts (Doc 01). Editable values live in the Site settings global. */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://amritdairy.in').replace(/\/$/, '')
+// On Vercel, the project's production address (its custom domain once one is added) is used automatically.
+const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL
+export const SITE_URL = (vercelUrl ? `https://${vercelUrl}` : process.env.NEXT_PUBLIC_SITE_URL || 'https://amritdairy.in').replace(/\/$/, '')
 
 export const BUSINESS = {
   name: 'Amrit Dairy',

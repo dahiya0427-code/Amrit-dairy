@@ -1,8 +1,9 @@
 import type { Media } from '@/payload-types'
+import { SITE_URL } from './site'
 
 type MaybeMedia = number | Media | null | undefined
 
-const SITE = (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, '')
+const SITE = SITE_URL
 
 export function mediaOf(value: MaybeMedia): Media | null {
   return value && typeof value === 'object' ? value : null
