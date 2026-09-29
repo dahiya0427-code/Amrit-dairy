@@ -102,14 +102,17 @@ export function Footer({
         </div>
       </div>
 
-      {/* Credit for the agency that built the site */}
-      <div className="bg-[#2b1b10] text-center text-[#f6eee0]">
-        <a href="https://pehchaan.digital" target="_blank" rel="noopener" className="container-x flex flex-wrap items-center justify-center gap-x-2 gap-y-1 py-4 pb-24 text-sm md:pb-4 md:text-base">
+      {/* Credit for the designer: her name in shimmering gold with twinkling sparkles */}
+      <div className="relative overflow-hidden bg-[#2b1b10] text-center text-[#f6eee0]">
+        <span className="credit-glow" aria-hidden="true" />
+        <p className="container-x relative flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-5 pb-24 text-sm md:pb-5 md:text-base">
           <span className="opacity-80">{t.footer.madeBy}</span>
-          <span className="inline-flex items-center gap-1.5 whitespace-nowrap font-serif text-lg font-bold tracking-[0.04em] text-gold-500 underline-offset-4 hover:underline md:text-xl">
-            Pehchaan.Digital <Icon name="arrow" size={16} className="-rotate-45" />
+          <span className="credit-name">
+            <span className="credit-spark credit-spark-a" aria-hidden="true">✦</span>
+            <span className="credit-text">Nancy</span>
+            <span className="credit-spark credit-spark-b" aria-hidden="true">✦</span>
           </span>
-        </a>
+        </p>
       </div>
     </footer>
   )
