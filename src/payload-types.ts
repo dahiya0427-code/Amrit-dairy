@@ -83,6 +83,7 @@ export interface Config {
     faqs: Faq;
     'legal-pages': LegalPage;
     media: Media;
+    'media-files': MediaFile;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -107,6 +108,7 @@ export interface Config {
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'media-files': MediaFilesSelect<false> | MediaFilesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -345,6 +347,7 @@ export interface Media {
    * Describe the image for screen readers and Google, e.g. "Amrit Bilona ghee in a 1 kg glass jar".
    */
   alt: string;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1025,6 +1028,21 @@ export interface LegalPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media-files".
+ */
+export interface MediaFile {
+  id: number;
+  filename: string;
+  mimeType?: string | null;
+  /**
+   * Base64 file contents
+   */
+  data: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -1138,6 +1156,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'media-files';
+        value: number | MediaFile;
       } | null)
     | ({
         relationTo: 'users';
@@ -1705,6 +1727,7 @@ export interface LegalPagesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1750,6 +1773,17 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media-files_select".
+ */
+export interface MediaFilesSelect<T extends boolean = true> {
+  filename?: T;
+  mimeType?: T;
+  data?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

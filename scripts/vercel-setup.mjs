@@ -1,9 +1,8 @@
 /**
  * Runs before `next build` on Vercel, so a new deployment sets itself up:
  * 1. creates/updates the database tables (committed migrations);
- * 2. on an empty database, loads the starter catalogue and content.
- *    Photos go to Vercel Blob, so this waits until a Blob store is connected
- *    (MEDIA_READ_WRITE_TOKEN or BLOB_READ_WRITE_TOKEN); without it the site would show broken images.
+ * 2. on an empty database, loads the starter catalogue, content and photos
+ *    (photos are stored in the database itself, see src/storage/db-storage.ts).
  * Does nothing outside Vercel (local builds use `pnpm migrate` / `pnpm seed`).
  */
 import { execSync } from 'node:child_process'
@@ -18,11 +17,6 @@ if (!process.env.DATABASE_URL) {
 
 console.log('[setup] Updating database tables…')
 run('pnpm exec payload migrate')
-
-if (!process.env.MEDIA_READ_WRITE_TOKEN && !process.env.BLOB_READ_WRITE_TOKEN) {
-  console.warn('[setup] No Blob store connected yet: starter content (with photos) will load on the next deploy after you connect one.')
-  process.exit(0)
-}
 
 console.log('[setup] Loading starter content if the database is empty…')
 try {

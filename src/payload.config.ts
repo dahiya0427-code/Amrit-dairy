@@ -4,11 +4,13 @@ import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { resendAdapter } from '@payloadcms/email-resend'
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { MediaFiles } from './collections/MediaFiles'
+import { dbStorage } from './storage/db-storage'
 import { Categories } from './collections/Categories'
 import { Products } from './collections/Products'
 import { ServiceAreas } from './collections/ServiceAreas'
@@ -26,10 +28,6 @@ import { FAQs } from './collections/FAQs'
 import { LegalPages } from './collections/LegalPages'
 import { SiteSettings } from './globals/SiteSettings'
 import { migrations } from './migrations'
-
-// Vercel Blob token for image uploads. The store may be connected with the "MEDIA" prefix
-// (MEDIA_READ_WRITE_TOKEN) when the project already had a BLOB_READ_WRITE_TOKEN.
-const blobToken = process.env.MEDIA_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN || ''
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -65,6 +63,7 @@ export default buildConfig({
     FAQs,
     LegalPages,
     Media,
+    MediaFiles,
     Users,
   ],
   globals: [SiteSettings],
@@ -93,10 +92,9 @@ export default buildConfig({
       })
     : undefined,
   plugins: [
-    vercelBlobStorage({
-      enabled: Boolean(blobToken),
-      collections: { media: true },
-      token: blobToken,
+    // Uploaded images are stored in the database, so no separate file storage is needed
+    cloudStoragePlugin({
+      collections: { media: { adapter: dbStorage } },
     }),
   ],
 })

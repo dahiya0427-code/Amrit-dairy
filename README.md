@@ -36,10 +36,9 @@ pnpm dev                      # http://localhost:3000   · admin: http://localho
 
 1. Create a Neon project and copy the **pooled** connection string.
 2. Import this repo into Vercel and set the environment variables from `.env.example`:
-   `DATABASE_URL`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SITE_URL=https://amritdairy.in`, `BLOB_READ_WRITE_TOKEN` (create a Vercel Blob store for image uploads), `RESEND_API_KEY` + `EMAIL_FROM`, `ORDER_NOTIFY_EMAIL`, and the `RAZORPAY_*` keys.
-3. Deploy. Database tables are created automatically from `src/migrations` on first start.
-4. Load the starter content once, from your computer, pointing at Neon:
-   `DATABASE_URL=<neon url> NODE_ENV=production pnpm seed`
+   `DATABASE_URL` (pooled Neon URL) and `PAYLOAD_SECRET` are required; add `RESEND_API_KEY` + `EMAIL_FROM`, `ORDER_NOTIFY_EMAIL` and the `RAZORPAY_*` keys when ready. The site address is taken from Vercel automatically.
+3. Deploy. Each Vercel build runs `scripts/vercel-setup.mjs`: it applies `src/migrations` and, on an empty database, loads the starter catalogue with its photos. Uploaded images are stored in the database (`src/storage/db-storage.ts`), so no separate file storage is needed.
+4. Open `/admin` straight after the first deploy and create the first admin user.
 5. In Razorpay, add a webhook to `https://amritdairy.in/api/razorpay/webhook` (events `payment.captured`, `order.paid`) using `RAZORPAY_WEBHOOK_SECRET`.
 6. In Resend, verify the sending domain (e.g. `mail.amritdairy.in`).
 7. Point the domain to Vercel and submit `https://amritdairy.in/sitemap.xml` in Google Search Console.
