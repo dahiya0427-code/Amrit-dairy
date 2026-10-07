@@ -5,7 +5,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { LeadForm } from '@/components/LeadForm'
 import { SellCowForm } from '@/components/SellCowForm'
-import { Badge, Breadcrumbs, PageHero, SectionHeading } from '@/components/ui'
+import { Breadcrumbs, PageHero, SectionHeading } from '@/components/ui'
 import { getDictionary } from '@/i18n'
 import { isLocale, localePath } from '@/i18n/config'
 import { getBreeds, getSettings } from '@/lib/queries'
@@ -40,9 +40,7 @@ export default async function DesiCowsPage({ params }: Props) {
                 <span className="relative block aspect-square overflow-hidden rounded-md">
                   {cowPhoto(b) && <Image src={cowPhoto(b) as string} quality={90} alt={`${b.name} cow`} fill sizes="(max-width: 640px) 50vw, 25vw" className="object-cover transition duration-500 group-hover:scale-105" />}
                 </span>
-                <span className="mt-2 block font-semibold text-cream">{b.name}</span>
-                {b.onFarm && <span className="mt-1 inline-block"><Badge tone="ship">{t.cows.onFarm}</Badge></span>}
-              </Link>
+                <span className="mt-2 block font-semibold text-cream">{b.name}</span>              </Link>
             </li>
           ))}
         </ul>

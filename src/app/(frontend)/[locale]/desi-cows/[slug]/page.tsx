@@ -3,7 +3,7 @@ import { cowPhoto } from '@/lib/cow-photo'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Badge, Breadcrumbs, CheckList } from '@/components/ui'
+import { Breadcrumbs, CheckList } from '@/components/ui'
 import { getDictionary } from '@/i18n'
 import { isLocale, localePath } from '@/i18n/config'
 import { mediaUrl } from '@/lib/media'
@@ -42,8 +42,7 @@ export default async function BreedPage({ params }: Props) {
           {cowPhoto(breed, 'hero') && <Image src={cowPhoto(breed, 'hero') as string} quality={90} alt={`${breed.name} cow`} fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
         </div>
         <div>
-          {breed.onFarm && <Badge tone="ship">{t.cows.onFarm}</Badge>}
-          <h1 className="mt-2 text-4xl md:text-5xl">{breed.name}</h1>
+          <h1 className="text-4xl md:text-5xl">{breed.name}</h1>
           {breed.origin && <p className="mt-2 text-lg"><strong>{t.cows.origin}:</strong> {breed.origin}</p>}
           {breed.summary && <p className="mt-4 text-lg text-muted">{breed.summary}</p>}
           {breed.traits && breed.traits.length > 0 && (
