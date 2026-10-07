@@ -588,7 +588,7 @@ export const hi: Dictionary = {
     areas: 'हम यहाँ पहुँचाते हैं',
     legal: 'कानूनी',
     orderTitle: 'WhatsApp पर ऑर्डर करें',
-    madeBy: 'वेबसाइट डिज़ाइन और डेवलपमेंट',
+    madeBy: { before: 'प्यार', after: 'से बनाया ·' },
     rights: 'अमृत डेयरी। सर्वाधिकार सुरक्षित।',
   },
   notFound: {

@@ -438,24 +438,7 @@
    clip (not hidden) keeps sticky headers and the scroll story working. */
 html, body { overflow-x: clip; }
 
-/* Footer credit: the designer's name in shimmering gold, with twinkling sparkles */
-.credit-glow {
-  position: absolute; left: 50%; top: 50%; width: 320px; height: 90px; transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse at center, rgba(201, 162, 74, 0.28), transparent 70%);
-  animation: credit-breathe 4s ease-in-out infinite; pointer-events: none;
-}
-.credit-name { position: relative; display: inline-flex; align-items: center; gap: 0.35rem; }
-.credit-text {
-  font-family: var(--font-elegant); font-weight: 700; font-size: 1rem; line-height: 1; letter-spacing: 0.1em;
-  background: linear-gradient(100deg, #b58d36 0%, #c9a24a 30%, #fff4cf 45%, #f3dc9a 50%, #c9a24a 65%, #b58d36 100%);
-  background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 0 6px rgba(201, 162, 74, 0.35));
-  animation: credit-shimmer 3.5s linear infinite;
-}
-@media (min-width: 768px) { .credit-text { font-size: 1.1rem; } }
-.credit-spark { color: #f3dc9a; font-size: 0.6rem; animation: credit-twinkle 2.4s ease-in-out infinite; }
-.credit-spark-b { animation-delay: 1.2s; font-size: 0.5rem; }
-@keyframes credit-shimmer { from { background-position: 150% 0; } to { background-position: -100% 0; } }
-@keyframes credit-twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); } 50% { opacity: 1; transform: scale(1.15) rotate(45deg); } }
-@keyframes credit-breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .credit-text, .credit-spark, .credit-glow { animation: none; } }
+/* Footer credit: a small red heart that beats gently */
+.credit-heart { display: inline-block; color: #f0506e; font-size: 1.15em; line-height: 1; animation: credit-beat 1.6s ease-in-out infinite; }
+@keyframes credit-beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.25); } 30% { transform: scale(1); } 45% { transform: scale(1.18); } 60% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .credit-heart { animation: none; } }

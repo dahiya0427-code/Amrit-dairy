@@ -105,16 +105,13 @@ export function Footer({
         </div>
       </div>
 
-      {/* Credit for the designer: her name in shimmering gold with twinkling sparkles */}
-      <div className="relative overflow-hidden bg-[#2b1b10] text-center text-[#f6eee0]">
-        <span className="credit-glow" aria-hidden="true" />
-        <p className="container-x relative flex flex-wrap items-center justify-center gap-x-2 gap-y-1 py-4 pb-24 text-sm md:pb-4 md:text-base">
-          <span className="opacity-80">{t.footer.madeBy}</span>
-          <span className="credit-name">
-            <span className="credit-spark credit-spark-a" aria-hidden="true">✦</span>
-            <span className="credit-text">Nancy</span>
-            <span className="credit-spark credit-spark-b" aria-hidden="true">✦</span>
-          </span>
+      {/* Credit for the designer: "Crafted with ♥ by Nancy" in small spaced capitals */}
+      <div className="bg-[#2b1b10] text-center">
+        <p className={`container-x flex flex-wrap items-center justify-center gap-x-1.5 py-4 pb-24 font-bold uppercase text-[#f6eee0]/70 md:pb-4 ${locale === 'hi' ? 'text-sm' : 'text-[11px] tracking-[0.22em] md:text-xs'}`}>
+          <span>{t.footer.madeBy.before}</span>
+          <span className="credit-heart" role="img" aria-label="love">♥</span>
+          <span>{t.footer.madeBy.after}</span>
+          <span className="tracking-[0.22em] text-gold-500">Nancy</span>
         </p>
       </div>
     </footer>
