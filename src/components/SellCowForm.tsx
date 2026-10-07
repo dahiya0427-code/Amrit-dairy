@@ -81,8 +81,26 @@ export function SellCowForm({ breeds, whatsapp }: { breeds: string[]; whatsapp: 
   const maxMb = MAX_VIDEO_BYTES / 1024 / 1024
 
   // open straight away when someone arrives on /desi-cows#sell-cow
+  // (also when the menu's "Sell Cow" link is clicked while already on this page)
   useEffect(() => {
-    if (window.location.hash === '#sell-cow') setOpen(true)
+    const check = () => {
+      if (window.location.hash === '#sell-cow') {
+        setOpen(true)
+        panel.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+    // Next.js links change the hash without a hashchange event, so watch those clicks too
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a[href$="#sell-cow"]')
+      if (a) setTimeout(check, 50)
+    }
+    check()
+    window.addEventListener('hashchange', check)
+    document.addEventListener('click', onClick)
+    return () => {
+      window.removeEventListener('hashchange', check)
+      document.removeEventListener('click', onClick)
+    }
   }, [])
   useEffect(() => {
     if (open) panel.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })

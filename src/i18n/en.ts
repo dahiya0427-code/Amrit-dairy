@@ -11,6 +11,7 @@ export const en = {
       'Hand-churned Bilona ghee, fresh desi cow milk, matka dahi and Rajasthani achar from our own farm of about 250 desi cows in Sonipat, Haryana. Order online. Ghee and achar ship across India.',
   },
   nav: {
+    sellCow: 'Sell Cow',
     home: 'Home',
     shop: 'Shop',
     ghee: 'Ghee',

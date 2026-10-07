@@ -23,6 +23,7 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
     { label: t.nav.achar, href: '/shop/achar', icon: 'jar' },
     { label: t.nav.farmStory, href: '/farm-story', icon: 'cow' },
     { label: t.nav.journal, href: '/blog', icon: 'leaf' },
+    { label: t.nav.sellCow, href: '/desi-cows#sell-cow', icon: 'tag', highlight: true },
   ]
 
   const menuGroups = [
@@ -38,7 +39,7 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
         { label: t.nav.delivery, href: '/delivery' },
       ],
     },
-    { title: t.nav.farmStory, links: [...t.mega.big, { label: t.nav.about, href: '/about' }] },
+    { title: t.nav.farmStory, links: [{ label: `🐄 ${t.nav.sellCow}`, href: '/desi-cows#sell-cow' }, ...t.mega.big, { label: t.nav.about, href: '/about' }] },
     {
       title: t.nav.contact,
       links: [
@@ -64,8 +65,11 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
           <ul className="hidden items-center lg:flex">
             {nav.map((l) => (
               <li key={l.href}>
-                <Link href={href(l.href)} className="group flex w-[78px] flex-col items-center gap-1 rounded-xl px-1 py-2 text-center text-ink transition hover:bg-smoke xl:w-[88px]">
-                  <Icon name={l.icon} size={22} className="text-gold-700 transition group-hover:-translate-y-0.5" />
+                <Link
+                  href={href(l.href)}
+                  className={`group flex w-[78px] flex-col items-center gap-1 rounded-xl px-1 py-2 text-center transition xl:w-[88px] ${l.highlight ? 'bg-ink text-gold-500 shadow-[0_0_18px_-6px_rgba(201,162,74,0.9)] hover:bg-[#3a2616]' : 'text-ink hover:bg-smoke'}`}
+                >
+                  <Icon name={l.icon} size={22} className={`transition group-hover:-translate-y-0.5 ${l.highlight ? 'text-gold-500' : 'text-gold-700'}`} />
                   <span className="text-[10.5px] font-semibold uppercase leading-tight tracking-[0.1em]">{l.label}</span>
                 </Link>
               </li>
