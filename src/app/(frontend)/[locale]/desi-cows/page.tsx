@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { LeadForm } from '@/components/LeadForm'
+import { SellCowForm } from '@/components/SellCowForm'
 import { Badge, Breadcrumbs, PageHero, SectionHeading } from '@/components/ui'
 import { getDictionary } from '@/i18n'
 import { isLocale, localePath } from '@/i18n/config'
@@ -46,6 +47,7 @@ export default async function DesiCowsPage({ params }: Props) {
           ))}
         </ul>
       </section>
+      <SellCowForm breeds={breeds.map((b) => b.name)} whatsapp={settings.cowPhone || settings.ordersPhone} />
       <section id="enquiry" className="container-x py-10">
         <div className="grid gap-8 rounded-lg bg-malai p-6 md:grid-cols-2 md:p-10">
           <div>

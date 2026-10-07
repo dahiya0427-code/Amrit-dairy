@@ -18,6 +18,9 @@ import { Orders } from './collections/Orders'
 import { Offers } from './collections/Offers'
 import { Coupons } from './collections/Coupons'
 import { Leads } from './collections/Leads'
+import { CowOffers } from './collections/CowOffers'
+import { CowOfferFiles } from './collections/CowOfferFiles'
+import { CowOfferChunks } from './collections/CowOfferChunks'
 import { Testimonials } from './collections/Testimonials'
 import { Breeds } from './collections/Breeds'
 import { Departments } from './collections/Departments'
@@ -56,6 +59,9 @@ export default buildConfig({
     ServiceAreas,
     Testimonials,
     Breeds,
+    CowOffers,
+    CowOfferFiles,
+    CowOfferChunks,
     Departments,
     Facilities,
     Posts,

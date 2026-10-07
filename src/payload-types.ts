@@ -76,6 +76,9 @@ export interface Config {
     'service-areas': ServiceArea;
     testimonials: Testimonial;
     breeds: Breed;
+    'cow-offers': CowOffer;
+    'cow-offer-files': CowOfferFile;
+    'cow-offer-chunks': CowOfferChunk;
     departments: Department;
     facilities: Facility;
     posts: Post;
@@ -101,6 +104,9 @@ export interface Config {
     'service-areas': ServiceAreasSelect<false> | ServiceAreasSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     breeds: BreedsSelect<false> | BreedsSelect<true>;
+    'cow-offers': CowOffersSelect<false> | CowOffersSelect<true>;
+    'cow-offer-files': CowOfferFilesSelect<false> | CowOfferFilesSelect<true>;
+    'cow-offer-chunks': CowOfferChunksSelect<false> | CowOfferChunksSelect<true>;
     departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
     facilities: FacilitiesSelect<false> | FacilitiesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -726,6 +732,92 @@ export interface Breed {
   createdAt: string;
 }
 /**
+ * Cows offered to us through the "Sell your cow" form. Photos and videos are at the top of each offer.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cow-offers".
+ */
+export interface CowOffer {
+  id: number;
+  status?: ('new' | 'contacted' | 'visit' | 'bought' | 'rejected') | null;
+  /**
+   * Only visible to the team.
+   */
+  internalNotes?: string | null;
+  locale?: string | null;
+  title?: string | null;
+  phone?: string | null;
+  expectedPrice?: number | null;
+  seller: {
+    name: string;
+    phone: string;
+    whatsapp?: string | null;
+    email?: string | null;
+    village: string;
+    district?: string | null;
+    state?: string | null;
+    pincode?: string | null;
+  };
+  cow: {
+    breed: string;
+    breedOther?: string | null;
+    ageYears?: number | null;
+    calvings?: number | null;
+    milkingStatus?: ('milking' | 'dry' | 'heifer') | null;
+    milkPerDay?: number | null;
+    lastCalving?: string | null;
+    pregnant?: ('yes' | 'no' | 'unknown') | null;
+    pregnantMonths?: number | null;
+    calf?: ('none' | 'female' | 'male') | null;
+    colour?: string | null;
+    tagNumber?: string | null;
+    papers?: ('yes' | 'no' | 'unknown') | null;
+  };
+  health?: {
+    vaccinations?: ('fmd' | 'hs' | 'bq' | 'lsd' | 'brucellosis' | 'theileria')[] | null;
+    dewormed?: ('yes' | 'no' | 'unknown') | null;
+    notes?: string | null;
+  };
+  sale?: {
+    expectedPrice?: number | null;
+    negotiable?: boolean | null;
+    availableFrom?: string | null;
+    transport?: ('seller' | 'buyer' | 'discuss') | null;
+    reason?: string | null;
+  };
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cow-offer-files".
+ */
+export interface CowOfferFile {
+  id: number;
+  uploadId: string;
+  offer?: (number | null) | CowOffer;
+  kind: 'photo' | 'video';
+  filename: string;
+  mimeType: string;
+  size: number;
+  chunks: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cow-offer-chunks".
+ */
+export interface CowOfferChunk {
+  id: number;
+  uploadId: string;
+  index: number;
+  data: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "departments".
  */
@@ -1034,9 +1126,6 @@ export interface MediaFile {
   id: number;
   filename: string;
   mimeType?: string | null;
-  /**
-   * Base64 file contents
-   */
   data: string;
   updatedAt: string;
   createdAt: string;
@@ -1128,6 +1217,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'breeds';
         value: number | Breed;
+      } | null)
+    | ({
+        relationTo: 'cow-offers';
+        value: number | CowOffer;
+      } | null)
+    | ({
+        relationTo: 'cow-offer-files';
+        value: number | CowOfferFile;
+      } | null)
+    | ({
+        relationTo: 'cow-offer-chunks';
+        value: number | CowOfferChunk;
       } | null)
     | ({
         relationTo: 'departments';
@@ -1522,6 +1623,92 @@ export interface BreedsSelect<T extends boolean = true> {
         title?: T;
         description?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cow-offers_select".
+ */
+export interface CowOffersSelect<T extends boolean = true> {
+  status?: T;
+  internalNotes?: T;
+  locale?: T;
+  title?: T;
+  phone?: T;
+  expectedPrice?: T;
+  seller?:
+    | T
+    | {
+        name?: T;
+        phone?: T;
+        whatsapp?: T;
+        email?: T;
+        village?: T;
+        district?: T;
+        state?: T;
+        pincode?: T;
+      };
+  cow?:
+    | T
+    | {
+        breed?: T;
+        breedOther?: T;
+        ageYears?: T;
+        calvings?: T;
+        milkingStatus?: T;
+        milkPerDay?: T;
+        lastCalving?: T;
+        pregnant?: T;
+        pregnantMonths?: T;
+        calf?: T;
+        colour?: T;
+        tagNumber?: T;
+        papers?: T;
+      };
+  health?:
+    | T
+    | {
+        vaccinations?: T;
+        dewormed?: T;
+        notes?: T;
+      };
+  sale?:
+    | T
+    | {
+        expectedPrice?: T;
+        negotiable?: T;
+        availableFrom?: T;
+        transport?: T;
+        reason?: T;
+      };
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cow-offer-files_select".
+ */
+export interface CowOfferFilesSelect<T extends boolean = true> {
+  uploadId?: T;
+  offer?: T;
+  kind?: T;
+  filename?: T;
+  mimeType?: T;
+  size?: T;
+  chunks?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cow-offer-chunks_select".
+ */
+export interface CowOfferChunksSelect<T extends boolean = true> {
+  uploadId?: T;
+  index?: T;
+  data?: T;
   updatedAt?: T;
   createdAt?: T;
 }
