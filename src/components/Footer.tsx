@@ -34,6 +34,9 @@ export function Footer({
   const links = [
     { label: t.nav.shop, href: '/shop' },
     { label: t.nav.farmStory, href: '/farm-story' },
+    { label: t.adopt.nav, href: '/adopt-a-cow' },
+    { label: t.nav.sellCow, href: '/desi-cows#sell-cow' },
+    { label: t.reviews.pageTitle, href: '/reviews' },
     ...legal.map((l) => ({ label: l.title, href: `/legal/${l.slug}` })),
     { label: t.nav.contact, href: '/contact' },
   ]

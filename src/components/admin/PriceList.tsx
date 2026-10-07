@@ -32,6 +32,7 @@ export async function PriceListView({ initPageResult, params, searchParams }: Ad
         price: v.price ?? null,
         mrp: v.mrp ?? null,
         inStock: v.inStock !== false,
+        stock: typeof v.stock === 'number' ? v.stock : null,
         onDemand: Boolean(v.onDemand),
         sitePrice: onSite.variants?.[i]?.price ?? null,
       })),

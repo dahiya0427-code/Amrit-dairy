@@ -129,6 +129,9 @@ export async function priceCart(
     if (!product || !variant || product.status !== 'active' || variant.onDemand || variant.inStock === false || !variant.price || variant.price <= 0) {
       throw new CheckoutError('unavailable', `${product?.title ?? 'A product'} is not available right now`)
     }
+    if (typeof variant.stock === 'number' && qty > variant.stock) {
+      throw new CheckoutError('unavailable', variant.stock > 0 ? `Only ${variant.stock} left of ${product.title} (${variant.label})` : `${product.title} is sold out`)
+    }
     lines.push({ product, sku: variant.sku, variant: variant.label, qty, unitPrice: variant.price, lineTotal: variant.price * qty })
   }
 

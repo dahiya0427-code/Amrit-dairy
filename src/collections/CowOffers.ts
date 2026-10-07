@@ -30,10 +30,10 @@ export const CowOffers: CollectionConfig = {
         return data
       },
     ],
-    // deleting an offer deletes its photos and videos
-    afterDelete: [
-      async ({ doc, req }) => {
-        await req.payload.delete({ collection: 'cow-offer-files', where: { offer: { equals: doc.id } }, req, overrideAccess: true })
+    // deleting an offer deletes its photos and videos (before the delete, while they still point at it)
+    beforeDelete: [
+      async ({ id, req }) => {
+        await req.payload.delete({ collection: 'cow-offer-files', where: { offer: { equals: id } }, req, overrideAccess: true })
       },
     ],
   },

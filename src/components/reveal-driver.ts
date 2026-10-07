@@ -67,15 +67,17 @@ export function attachReveal(root: ParentNode = document): () => void {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {}
   const targets: HTMLElement[] = []
   // a clipped picture never "intersects", so its (unclipped) container is watched instead
-  const watchFor = new WeakMap<Element, HTMLElement>()
+  const watchFor = new WeakMap<Element, HTMLElement[]>()
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
         if (!e.isIntersecting) continue
         io.unobserve(e.target)
-        const el = watchFor.get(e.target) ?? (e.target as HTMLElement)
-        if (el.hasAttribute('data-count')) countUp(el)
-        else el.classList.add(el.hasAttribute('data-reveal-group') ? 'is-in' : 'rv-in')
+        // a watched container reveals every picture that waits on it (several can share one)
+        for (const el of watchFor.get(e.target) ?? [e.target as HTMLElement]) {
+          if (el.hasAttribute('data-count')) countUp(el)
+          else el.classList.add(el.hasAttribute('data-reveal-group') ? 'is-in' : 'rv-in')
+        }
       }
     },
     { threshold: 0.18, rootMargin: '0px 0px -6% 0px' },
@@ -126,8 +128,12 @@ export function attachReveal(root: ParentNode = document): () => void {
 
   targets.forEach((el) => {
     if (el.dataset.rv === 'img' && el.parentElement) {
-      watchFor.set(el.parentElement, el)
-      io.observe(el.parentElement)
+      const waiting = watchFor.get(el.parentElement)
+      if (waiting) waiting.push(el)
+      else {
+        watchFor.set(el.parentElement, [el])
+        io.observe(el.parentElement)
+      }
     } else io.observe(el)
   })
   return () => io.disconnect()

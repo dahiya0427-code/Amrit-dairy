@@ -1,3 +1,4 @@
+import { AdoptBand } from '@/components/AdoptBand'
 import Image from 'next/image'
 import { cowPhoto } from '@/lib/cow-photo'
 import Link from 'next/link'
@@ -90,6 +91,8 @@ export default async function FarmStoryPage({ params }: Props) {
           </ol>
         </div>
       </section>
+
+      <AdoptBand locale={locale} photos={onFarm.map((b) => cowPhoto(b)).filter((x): x is string => Boolean(x))} />
 
       <section className="container-x py-14">
         <div className="rounded-lg bg-milk p-8 text-ink md:p-12">

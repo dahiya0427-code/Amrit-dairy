@@ -108,6 +108,13 @@ export const Products: CollectionConfig = {
                   fields: [
                     { name: 'inStock', type: 'checkbox', defaultValue: true },
                     {
+                      name: 'stock',
+                      label: 'Stock left',
+                      type: 'number',
+                      min: 0,
+                      admin: { description: 'Optional. Packs in stock: shows "Only N left!" when low, goes down with each order. Empty = not counted.' },
+                    },
+                    {
                       name: 'onDemand',
                       type: 'checkbox',
                       defaultValue: false,
@@ -118,6 +125,28 @@ export const Products: CollectionConfig = {
               ],
             },
             { name: 'subscribable', type: 'checkbox', defaultValue: false, admin: { description: 'Offer daily subscription (milk, curd, buttermilk).' } },
+          ],
+        },
+        {
+          label: 'Combo',
+          description: 'For gift boxes and combos: list the products inside. The site shows "What’s inside" and how much the customer saves compared with buying them separately (using each product’s lowest pack price).',
+          fields: [
+            {
+              name: 'bundle',
+              label: 'Products in this combo',
+              type: 'array',
+              labels: { singular: 'Item', plural: 'Items' },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'product', type: 'relationship', relationTo: 'products', required: true, admin: { width: '60%' } },
+                    { name: 'quantity', type: 'number', min: 1, defaultValue: 1, required: true, admin: { width: '20%' } },
+                    { name: 'note', type: 'text', localized: true, admin: { width: '20%', description: 'e.g. 1 kg jar' } },
+                  ],
+                },
+              ],
+            },
           ],
         },
         {

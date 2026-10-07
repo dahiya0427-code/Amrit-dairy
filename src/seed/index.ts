@@ -14,6 +14,7 @@ import { breeds } from './data/breeds'
 import { departments, facilities, deptBody, facBody } from './data/farm'
 import { areas, faqs, legal, posts, ticker } from './data/content'
 import { categoryExtras, extraFor } from './data/extras'
+import { addStarterAdditions } from './additions'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const MEDIA_DIR = path.resolve(dirname, '../../seed-media')
@@ -255,6 +256,9 @@ for (const l of legal) {
   await payload.update({ collection: 'legal-pages', id: doc.id, locale: 'hi', data: l.hi })
 }
 log(`FAQs: ${faqs.length}, ticker: ${ticker.length}, areas: ${areas.length}, legal: ${legal.length}`)
+
+// ── Combos and Adopt-a-Cow plans ──────────────────────────────
+await addStarterAdditions(payload)
 
 // ── Site settings ─────────────────────────────────────────────
 await payload.updateGlobal({ slug: 'site-settings', locale: 'en', data: { cutoffTime: '9 PM' } })

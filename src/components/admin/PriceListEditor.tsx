@@ -11,10 +11,10 @@ export type PriceRow = {
   category: string
   status: 'active' | 'coming_soon' | 'out_of_stock'
   offer: string | null
-  variants: { id: string; label: string; sku: string; price: number | null; mrp: number | null; inStock: boolean; onDemand: boolean; sitePrice: number | null }[]
+  variants: { id: string; label: string; sku: string; price: number | null; mrp: number | null; inStock: boolean; stock: number | null; onDemand: boolean; sitePrice: number | null }[]
 }
 
-type Edit = { price: string; mrp: string; inStock: boolean }
+type Edit = { price: string; mrp: string; inStock: boolean; stock: string }
 
 const statusLabel = { active: 'Active', coming_soon: 'Coming soon', out_of_stock: 'Out of stock' }
 const toText = (n: number | null) => (n === null || n === undefined ? '' : String(n))
@@ -36,12 +36,12 @@ export function PriceListEditor({ rows: initialRows }: { rows: PriceRow[] }) {
   const categories = useMemo(() => [...new Set(rows.map((r) => r.category).filter(Boolean))], [rows])
   const shown = rows.filter((r) => !filter || r.category === filter)
 
-  const value = (v: PriceRow['variants'][number]): Edit => edits[v.id] ?? { price: toText(v.price), mrp: toText(v.mrp), inStock: v.inStock }
+  const value = (v: PriceRow['variants'][number]): Edit => edits[v.id] ?? { price: toText(v.price), mrp: toText(v.mrp), inStock: v.inStock, stock: toText(v.stock) }
   const set = (v: PriceRow['variants'][number], patch: Partial<Edit>) => setEdits((e) => ({ ...e, [v.id]: { ...value(v), ...patch } }))
 
   const isChanged = (v: PriceRow['variants'][number]) => {
     const e = edits[v.id]
-    return Boolean(e && (toNum(e.price) !== v.price || toNum(e.mrp) !== v.mrp || e.inStock !== v.inStock))
+    return Boolean(e && (toNum(e.price) !== v.price || toNum(e.mrp) !== v.mrp || e.inStock !== v.inStock || toNum(e.stock) !== v.stock))
   }
   const changedCount = rows.flatMap((r) => r.variants).filter(isChanged).length
 
@@ -53,7 +53,7 @@ export function PriceListEditor({ rows: initialRows }: { rows: PriceRow[] }) {
       const next = { ...e }
       for (const r of shown)
         for (const v of r.variants) {
-          const cur = e[v.id] ?? { price: toText(v.price), mrp: toText(v.mrp), inStock: v.inStock }
+          const cur = e[v.id] ?? { price: toText(v.price), mrp: toText(v.mrp), inStock: v.inStock, stock: toText(v.stock) }
           const p = toNum(cur.price)
           if (p) next[v.id] = { ...cur, price: String(Math.max(1, Math.round(p * (1 + pct / 100)))) }
         }
@@ -68,7 +68,7 @@ export function PriceListEditor({ rows: initialRows }: { rows: PriceRow[] }) {
         productId: r.id,
         variants: r.variants.filter(isChanged).map((v) => {
           const e = edits[v.id]
-          return { id: v.id, price: toNum(e.price), mrp: toNum(e.mrp), inStock: e.inStock }
+          return { id: v.id, price: toNum(e.price), mrp: toNum(e.mrp), inStock: e.inStock, stock: toNum(e.stock) }
         }),
       }))
       .filter((c) => c.variants.length)
@@ -107,7 +107,7 @@ export function PriceListEditor({ rows: initialRows }: { rows: PriceRow[] }) {
         <div>
           <h1>Price list</h1>
           <p className="pl-muted">
-            Change prices, MRP and stock for every pack in one place. Prices are in rupees, GST included. For sale prices use <Link href="/admin/collections/offers">Offers</Link>; for codes use{' '}
+            Change prices, MRP and stock for every pack in one place. “Stock left” is optional: when it gets low the shop shows “Only N left!”, and it goes down with each order. Prices are in rupees, GST included. For sale prices use <Link href="/admin/collections/offers">Offers</Link>; for codes use{' '}
             <Link href="/admin/collections/coupons">Coupons</Link>.
           </p>
         </div>
@@ -150,6 +150,7 @@ export function PriceListEditor({ rows: initialRows }: { rows: PriceRow[] }) {
             <th>Price ₹</th>
             <th>MRP ₹</th>
             <th>In stock</th>
+            <th>Stock left</th>
             <th>On the website now</th>
           </tr>
         </thead>
@@ -185,6 +186,9 @@ export function PriceListEditor({ rows: initialRows }: { rows: PriceRow[] }) {
                   </td>
                   <td>
                     <input type="checkbox" checked={e.inStock} onChange={(ev) => set(v, { inStock: ev.target.checked })} aria-label={`${r.title} ${v.label} in stock`} />
+                  </td>
+                  <td>
+                    <input type="number" min="0" step="1" placeholder="not counted" value={e.stock} onChange={(ev) => set(v, { stock: ev.target.value })} aria-label={`Stock left for ${r.title} ${v.label}`} style={{ width: 120 }} />
                   </td>
                   <td>
                     {r.status !== 'active' || v.onDemand || !v.sitePrice ? (

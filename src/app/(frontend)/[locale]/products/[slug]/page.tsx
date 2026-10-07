@@ -7,6 +7,10 @@ import { ProductBuyBox } from '@/components/ProductBuyBox'
 import { ProductCard } from '@/components/ProductCard'
 import { ProductGallery, type GallerySlide } from '@/components/ProductGallery'
 import { RichText } from '@/components/RichText'
+import { ReviewsBlock, summarise } from '@/components/Reviews'
+import { Stars } from '@/components/Stars'
+import Link from 'next/link'
+import { localePath } from '@/i18n/config'
 import { storySlides } from '@/components/StorySlides'
 import { Badge, Breadcrumbs, CheckList, FAQ, SectionHeading } from '@/components/ui'
 import { getDictionary } from '@/i18n'
@@ -14,7 +18,7 @@ import { isLocale } from '@/i18n/config'
 import type { Category, Product } from '@/payload-types'
 import { formatINR } from '@/lib/format'
 import { mediaOf, mediaUrl } from '@/lib/media'
-import { getProduct, getProducts, getSettings } from '@/lib/queries'
+import { getProduct, getProducts, getSettings, getTestimonials } from '@/lib/queries'
 import { buildMetadata, productJsonLd } from '@/lib/seo'
 
 // Rendered on first visit, then cached (ISR) and refreshed when content changes.
@@ -72,7 +76,8 @@ export default async function ProductPage({ params }: Props) {
   const product = await getProduct(slug, locale)
   if (!product) notFound()
   const t = getDictionary(locale)
-  const settings = await getSettings(locale)
+  const [settings, reviews] = await Promise.all([getSettings(locale), getTestimonials(locale, product.id)])
+  const rating = summarise(reviews)
   const category = typeof product.category === 'object' ? (product.category as Category) : null
 
   let related = (product.relatedProducts ?? []).filter((r): r is Product => typeof r === 'object')
@@ -121,7 +126,8 @@ export default async function ProductPage({ params }: Props) {
     unitPriceLabel: v.unitPriceLabel ?? null,
     weightGrams: v.weightGrams ?? null,
     onDemand: Boolean(v.onDemand),
-    available: v.inStock !== false,
+    available: v.inStock !== false && v.stock !== 0,
+    stock: typeof v.stock === 'number' ? v.stock : null,
   }))
   const threshold = settings.freeDeliveryThreshold ? formatINR(settings.freeDeliveryThreshold) : ''
 
@@ -142,7 +148,18 @@ export default async function ProductPage({ params }: Props) {
         </div>
 
         <div>
+          {(product.badge === 'bestseller' || product.combo) && (
+            <p className="mb-2 flex flex-wrap gap-2">
+              {product.badge === 'bestseller' && <Badge tone="bestseller">★ {t.tags.bestseller}</Badge>}
+              {product.combo && <Badge tone="offer">{t.tags.combo}{product.combo.save ? ` · ${t.tags.save(formatINR(product.combo.save))}` : ''}</Badge>}
+            </p>
+          )}
           <h1 className="text-3xl md:text-4xl">{product.title}</h1>
+          {rating.count > 0 && (
+            <a href="#reviews" className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-ink hover:text-gold-700">
+              <Stars value={rating.average} size={18} /> {rating.average.toFixed(1)} · <span className="underline underline-offset-2">{t.reviews.count(rating.count)}</span>
+            </a>
+          )}
           {product.secondaryName && <p className="mt-1 font-serif text-xl text-gold-700">{product.secondaryName}</p>}
           {product.shortDescription && <p className="mt-3 text-lg text-muted">{product.shortDescription}</p>}
 
@@ -171,6 +188,7 @@ export default async function ProductPage({ params }: Props) {
               variants={variants}
               whatsapp={settings.ordersPhone}
               offer={product.offer}
+              lowStockThreshold={settings.lowStockThreshold ?? 5}
             />
           </div>
 
@@ -184,9 +202,11 @@ export default async function ProductPage({ params }: Props) {
           </ul>
 
           <div className="mt-6 border-t border-line">
-            <Accordion title={t.product.description} open>
-              <RichText data={product.description} />
-            </Accordion>
+            {product.description && (
+              <Accordion title={t.product.description} open>
+                <RichText data={product.description} />
+              </Accordion>
+            )}
             {product.ingredients && <Accordion title={t.product.ingredients}><p>{product.ingredients}</p></Accordion>}
             {product.usage && product.usage.length > 0 && (
               <Accordion title={t.pdp.usage}><CheckList items={product.usage.map((u) => u.text)} /></Accordion>
@@ -205,6 +225,37 @@ export default async function ProductPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {product.combo && product.combo.items.length > 0 && (
+        <section className="container-x py-10">
+          <div className="rounded-[28px] bg-ink p-6 text-snow md:p-10">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <h2 className="text-3xl !text-snow md:text-4xl">{t.combo.inside}</h2>
+              {product.combo.save > 0 && (
+                <p className="text-right">
+                  <span className="block text-sm text-snow/70 line-through">{t.combo.worth(formatINR(product.combo.worth))}</span>
+                  <span className="font-serif text-2xl font-bold text-gold-500">{t.combo.youSave(formatINR(product.combo.save))}</span>
+                </p>
+              )}
+            </div>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+              {product.combo.items.map((item) => (
+                <li key={item.slug}>
+                  <Link href={localePath(locale, `/products/${item.slug}`)} className="flex items-center gap-4 rounded-2xl border border-gold-500/30 bg-snow/5 p-4 transition hover:border-gold-500">
+                    <span className="relative h-20 w-20 shrink-0">
+                      {mediaUrl(item.image as never, 'thumb') && <Image src={mediaUrl(item.image as never, 'card') as string} alt="" fill sizes="80px" className="object-contain" />}
+                    </span>
+                    <span>
+                      <span className="block font-serif text-xl font-bold text-snow">{item.quantity > 1 ? `${item.quantity} × ` : ''}{item.title}</span>
+                      {item.note && <span className="text-sm text-gold-500">{item.note}</span>}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {product.highlights && product.highlights.length > 0 && (
         <section className="container-x py-10">
@@ -234,6 +285,8 @@ export default async function ProductPage({ params }: Props) {
 
       {product.faqs && product.faqs.length > 0 && <FAQ locale={locale} faqs={product.faqs} />}
 
+      <ReviewsBlock reviews={reviews} locale={locale} productId={product.id} />
+
       {related.length > 0 && (
         <section className="container-x py-10">
           <SectionHeading title={t.product.related} />
@@ -243,7 +296,7 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
-      <JsonLd data={productJsonLd(locale, product)} />
+      <JsonLd data={productJsonLd(locale, product, rating.count ? { ...rating, reviews } : null)} />
     </>
   )
 }

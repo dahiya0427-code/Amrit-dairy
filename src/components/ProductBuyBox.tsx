@@ -22,6 +22,8 @@ export type BuyBoxVariant = {
   weightGrams: number | null
   onDemand: boolean
   available: boolean
+  /** packs left, when the shop counts stock for this pack */
+  stock?: number | null
 }
 
 type Props = {
@@ -36,6 +38,7 @@ type Props = {
   whatsapp: string
   /** live offer from Shop → Offers, if any */
   offer?: { label: string; percentOff: number } | null
+  lowStockThreshold?: number
 }
 
 export function ProductBuyBox(p: Props) {
@@ -91,6 +94,12 @@ export function ProductBuyBox(p: Props) {
             {t.common.inclTaxes}
             {v.unitPriceLabel ? ` · ${v.unitPriceLabel}` : ''}
           </p>
+          {typeof v.stock === 'number' && v.stock > 0 && v.stock <= (p.lowStockThreshold ?? 5) && (
+            <p className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#6b3d1f] px-3 py-1 text-sm font-bold text-snow">
+              <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-500 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-gold-500" /></span>
+              {t.tags.onlyLeft(v.stock)}
+            </p>
+          )}
         </div>
       ) : (
         <p className="inline-flex rounded-full bg-butter px-4 py-2 font-semibold text-gold-700">
@@ -147,7 +156,7 @@ export function ProductBuyBox(p: Props) {
       ) : (
         <>
           <div ref={actionsRef} className="flex flex-wrap items-center gap-3">
-            <QtyStepper value={qty} onChange={(q) => setQty(Math.max(1, q))} />
+            <QtyStepper value={qty} onChange={(q) => setQty(Math.max(1, Math.min(q, typeof v?.stock === 'number' ? v.stock : 20)))} />
             <button type="button" className="btn btn-gold flex-1" onClick={addToCart} disabled={!buyable}>
               <Icon name="cart" /> {t.common.addToCart}
             </button>

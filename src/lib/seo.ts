@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n'
 import { htmlLang, localePath, type Locale } from '@/i18n/config'
-import type { Product, Post, SiteSetting } from '@/payload-types'
+import type { Product, Post, SiteSetting, Testimonial } from '@/payload-types'
 import { BUSINESS, SITE_URL } from './site'
 import { mediaUrl } from './media'
 import { buyableVariants } from './product'
@@ -126,7 +126,7 @@ export function faqJsonLd(faqs: { question: string; answer: string }[]) {
   }
 }
 
-export function productJsonLd(locale: Locale, product: Product) {
+export function productJsonLd(locale: Locale, product: Product, rating?: { average: number; count: number; reviews: Testimonial[] } | null) {
   const url = abs(localePath(locale, `/products/${product.slug}`))
   const images = (product.images ?? []).map((m) => mediaUrl(m, 'card')).filter(Boolean).map((u) => abs(u as string))
   const variants = buyableVariants(product)
@@ -139,6 +139,19 @@ export function productJsonLd(locale: Locale, product: Product) {
     sku: product.variants?.[0]?.sku,
     brand: { '@type': 'Brand', name: 'Amrit Dairy' },
     url,
+    // only real, approved reviews (Google shows these as stars)
+    ...(rating && rating.count > 0
+      ? {
+          aggregateRating: { '@type': 'AggregateRating', ratingValue: rating.average, reviewCount: rating.count, bestRating: 5, worstRating: 1 },
+          review: rating.reviews.slice(0, 5).map((r) => ({
+            '@type': 'Review',
+            author: { '@type': 'Person', name: r.name },
+            datePublished: r.createdAt.slice(0, 10),
+            reviewBody: r.quote,
+            reviewRating: { '@type': 'Rating', ratingValue: r.rating ?? 5, bestRating: 5 },
+          })),
+        }
+      : {}),
   }
   if (!variants.length) {
     return {

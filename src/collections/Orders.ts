@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { adminsOrManagers } from '@/access'
+import { adjustStock } from '@/lib/stock'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
@@ -130,6 +131,12 @@ export const Orders: CollectionConfig = {
   hooks: {
     // keep each coupon's "used" count in step with its orders (cancelled and unpaid online orders don't count)
     afterChange: [
+      // cancelled or refunded: the packs go back into "Stock left" (once)
+      async ({ doc, previousDoc, operation, req }) => {
+        const gone = (s?: string | null) => s === 'cancelled' || s === 'refunded'
+        if (operation === 'update' && gone(doc.status) && !gone(previousDoc?.status)) await adjustStock(req.payload, doc.items ?? [], 1, req)
+        return doc
+      },
       async ({ doc, previousDoc, req }) => {
         const code = doc.couponCode || previousDoc?.couponCode
         if (!code) return doc

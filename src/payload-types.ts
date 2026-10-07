@@ -79,6 +79,8 @@ export interface Config {
     'cow-offers': CowOffer;
     'cow-offer-files': CowOfferFile;
     'cow-offer-chunks': CowOfferChunk;
+    'adoption-plans': AdoptionPlan;
+    adoptions: Adoption;
     departments: Department;
     facilities: Facility;
     posts: Post;
@@ -107,6 +109,8 @@ export interface Config {
     'cow-offers': CowOffersSelect<false> | CowOffersSelect<true>;
     'cow-offer-files': CowOfferFilesSelect<false> | CowOfferFilesSelect<true>;
     'cow-offer-chunks': CowOfferChunksSelect<false> | CowOfferChunksSelect<true>;
+    'adoption-plans': AdoptionPlansSelect<false> | AdoptionPlansSelect<true>;
+    adoptions: AdoptionsSelect<false> | AdoptionsSelect<true>;
     departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
     facilities: FacilitiesSelect<false> | FacilitiesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -217,6 +221,10 @@ export interface Product {
         unitPriceLabel?: string | null;
         inStock?: boolean | null;
         /**
+         * Optional. Packs in stock: shows "Only N left!" when low, goes down with each order. Empty = not counted.
+         */
+        stock?: number | null;
+        /**
          * Bulk / made to order: shows "Request bulk order" instead of Add to cart.
          */
         onDemand?: boolean | null;
@@ -227,6 +235,17 @@ export interface Product {
    * Offer daily subscription (milk, curd, buttermilk).
    */
   subscribable?: boolean | null;
+  bundle?:
+    | {
+        product: number | Product;
+        quantity: number;
+        /**
+         * e.g. 1 kg jar
+         */
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Product with no background. Used for the floating product on banners and story slides.
    */
@@ -677,7 +696,7 @@ export interface ServiceArea {
   createdAt: string;
 }
 /**
- * Only real customers. The home page shows reviews once at least 3 are approved.
+ * Only real customers. New reviews from the website arrive unapproved: tick "Approved" to show one. The home page shows reviews once at least 3 are approved.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "testimonials".
@@ -686,10 +705,29 @@ export interface Testimonial {
   id: number;
   name: string;
   locality?: string | null;
-  rating?: number | null;
-  quote: string;
+  rating: number;
+  /**
+   * Leave empty for a general review of Amrit Dairy.
+   */
   product?: (number | null) | Product;
+  quote: string;
+  /**
+   * Optional: the customer’s photo of the product, or a screenshot of their WhatsApp message.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Only approved reviews appear on the website.
+   */
   approved?: boolean | null;
+  /**
+   * Ticked automatically when the phone number matches an order.
+   */
+  verified?: boolean | null;
+  source?: ('website' | 'whatsapp' | 'google' | 'in-person') | null;
+  /**
+   * Never shown on the website.
+   */
+  phone?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -814,6 +852,64 @@ export interface CowOfferChunk {
   uploadId: string;
   index: number;
   data: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * The plans on the "Adopt a Cow" page. Untick Active to hide a plan.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adoption-plans".
+ */
+export interface AdoptionPlan {
+  id: number;
+  name: string;
+  price: number;
+  period: 'month' | 'year' | 'once';
+  /**
+   * One short line under the name.
+   */
+  tagline?: string | null;
+  perks?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  highlight?: boolean | null;
+  active?: boolean | null;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Adopt-a-cow sign-ups. Contact them on WhatsApp with payment details, then set the status to Active.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adoptions".
+ */
+export interface Adoption {
+  id: number;
+  name: string;
+  phone: string;
+  email?: string | null;
+  city?: string | null;
+  plan?: (number | null) | AdoptionPlan;
+  /**
+   * Name and price when they signed up.
+   */
+  planSnapshot?: string | null;
+  cow?: string | null;
+  isGift?: boolean | null;
+  giftFor?: string | null;
+  occasion?: string | null;
+  message?: string | null;
+  status?: ('new' | 'contacted' | 'active' | 'ended') | null;
+  /**
+   * Only visible to the team.
+   */
+  internalNotes?: string | null;
+  locale?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1231,6 +1327,14 @@ export interface PayloadLockedDocument {
         value: number | CowOfferChunk;
       } | null)
     | ({
+        relationTo: 'adoption-plans';
+        value: number | AdoptionPlan;
+      } | null)
+    | ({
+        relationTo: 'adoptions';
+        value: number | Adoption;
+      } | null)
+    | ({
         relationTo: 'departments';
         value: number | Department;
       } | null)
@@ -1328,10 +1432,19 @@ export interface ProductsSelect<T extends boolean = true> {
         mrp?: T;
         unitPriceLabel?: T;
         inStock?: T;
+        stock?: T;
         onDemand?: T;
         id?: T;
       };
   subscribable?: T;
+  bundle?:
+    | T
+    | {
+        product?: T;
+        quantity?: T;
+        note?: T;
+        id?: T;
+      };
   cutout?: T;
   hoverImage?: T;
   cardPoints?:
@@ -1593,9 +1706,13 @@ export interface TestimonialsSelect<T extends boolean = true> {
   name?: T;
   locality?: T;
   rating?: T;
-  quote?: T;
   product?: T;
+  quote?: T;
+  photo?: T;
   approved?: T;
+  verified?: T;
+  source?: T;
+  phone?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1709,6 +1826,49 @@ export interface CowOfferChunksSelect<T extends boolean = true> {
   uploadId?: T;
   index?: T;
   data?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adoption-plans_select".
+ */
+export interface AdoptionPlansSelect<T extends boolean = true> {
+  name?: T;
+  price?: T;
+  period?: T;
+  tagline?: T;
+  perks?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  highlight?: T;
+  active?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adoptions_select".
+ */
+export interface AdoptionsSelect<T extends boolean = true> {
+  name?: T;
+  phone?: T;
+  email?: T;
+  city?: T;
+  plan?: T;
+  planSnapshot?: T;
+  cow?: T;
+  isGift?: T;
+  giftFor?: T;
+  occasion?: T;
+  message?: T;
+  status?: T;
+  internalNotes?: T;
+  locale?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2071,6 +2231,10 @@ export interface SiteSetting {
    */
   shippingFee?: number | null;
   /**
+   * Show "Only N left!" on a product when its stock is at or below this number (for packs with a stock count).
+   */
+  lowStockThreshold?: number | null;
+  /**
    * Order before this time for next-morning delivery.
    */
   cutoffTime?: string | null;
@@ -2097,6 +2261,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   freeDeliveryThreshold?: T;
   localDeliveryFee?: T;
   shippingFee?: T;
+  lowStockThreshold?: T;
   cutoffTime?: T;
   updatedAt?: T;
   createdAt?: T;

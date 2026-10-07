@@ -39,10 +39,11 @@ export function Header({ locale, ticker }: { locale: Locale; ticker: TickerItem[
         { label: t.nav.delivery, href: '/delivery' },
       ],
     },
-    { title: t.nav.farmStory, links: [{ label: `🐄 ${t.nav.sellCow}`, href: '/desi-cows#sell-cow' }, ...t.mega.big, { label: t.nav.about, href: '/about' }] },
+    { title: t.nav.farmStory, links: [{ label: `🐄 ${t.nav.sellCow}`, href: '/desi-cows#sell-cow' }, { label: `🙏 ${t.adopt.nav}`, href: '/adopt-a-cow' }, ...t.mega.big, { label: t.nav.about, href: '/about' }] },
     {
       title: t.nav.contact,
       links: [
+        { label: t.reviews.pageTitle, href: '/reviews' },
         { label: t.nav.blog, href: '/blog' },
         { label: t.nav.news, href: '/news' },
         { label: t.nav.contact, href: '/contact' },

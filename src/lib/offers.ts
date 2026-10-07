@@ -5,7 +5,10 @@ import type { Offer, Product } from '@/payload-types'
  * pages (shown prices) and checkout (charged prices), so both always agree.
  */
 export type OfferTag = { label: string; percentOff: number }
-export type PricedProduct = Product & { offer?: OfferTag | null }
+export type RatingTag = { average: number; count: number }
+export type ComboTag = { worth: number; save: number; items: { title: string; slug: string; quantity: number; note: string | null; image: unknown }[] }
+/** A product as the pages get it: offer prices plus review stars, low stock and combo savings. */
+export type PricedProduct = Product & { offer?: OfferTag | null; rating?: RatingTag | null; lowStock?: number | null; combo?: ComboTag | null }
 
 const idOf = (v: unknown) => (typeof v === 'object' && v !== null ? (v as { id: number }).id : (v as number))
 

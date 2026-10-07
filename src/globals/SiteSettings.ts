@@ -50,6 +50,7 @@ export const SiteSettings: GlobalConfig = {
               { name: 'localDeliveryFee', type: 'number', defaultValue: 30, admin: { description: '₹ fee for local delivery below the threshold.' } },
               { name: 'shippingFee', type: 'number', defaultValue: 99, admin: { description: '₹ courier fee below the threshold.' } },
             ] },
+            { name: 'lowStockThreshold', type: 'number', defaultValue: 5, min: 0, admin: { description: 'Show "Only N left!" on a product when its stock is at or below this number (for packs with a stock count).' } },
             { name: 'cutoffTime', type: 'text', defaultValue: '9 PM', localized: true, admin: { description: 'Order before this time for next-morning delivery.' } },
           ],
         },

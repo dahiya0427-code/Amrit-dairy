@@ -3,7 +3,9 @@ import { cache } from 'react'
 import type { Where } from 'payload'
 import { getPayloadClient } from './payload'
 import type { Locale } from '@/i18n/config'
-import { applyOffers } from './offers'
+import type { Product } from '@/payload-types'
+import { applyOffers, type PricedProduct } from './offers'
+import { lowStock, minPrice } from './product'
 
 const one = async <T,>(p: Promise<{ docs: T[] }>) => (await p).docs[0] ?? null
 
@@ -68,14 +70,58 @@ export const getProducts = cache(async (locale: Locale, filter: ProductFilter = 
     sort: 'order',
     where: and.length ? { and } : undefined,
   })
-  const offers = await getOffers(locale)
-  return res.docs.map((p) => applyOffers(p, offers))
+  return decorate(res.docs, locale)
 })
 
 export const getProduct = cache(async (slug: string, locale: Locale) => {
   const payload = await getPayloadClient()
   const p = await one(payload.find({ collection: 'products', locale, depth: 2, limit: 1, where: { slug: { equals: slug } } }))
-  return p ? applyOffers(p, await getOffers(locale)) : null
+  return p ? (await decorate([p], locale))[0] : null
+})
+
+/** Average stars and count of approved reviews, per product id. */
+export const getRatings = cache(async () => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({ collection: 'testimonials', where: { approved: { equals: true } }, depth: 0, limit: 2000, pagination: false, select: { product: true, rating: true } })
+  const sums = new Map<number, { total: number; count: number }>()
+  for (const r of docs) {
+    const id = typeof r.product === 'object' ? r.product?.id : r.product
+    if (!id) continue
+    const s = sums.get(id) ?? { total: 0, count: 0 }
+    s.total += r.rating ?? 5
+    s.count += 1
+    sums.set(id, s)
+  }
+  return new Map([...sums].map(([id, s]) => [id, { average: Math.round((s.total / s.count) * 10) / 10, count: s.count }]))
+})
+
+/** Adds what the pages show on top of the stored product: offer prices, stars, low stock and combo savings. */
+async function decorate(products: Product[], locale: Locale): Promise<PricedProduct[]> {
+  const [offers, ratings, settings] = await Promise.all([getOffers(locale), getRatings(), getSettings(locale)])
+  const threshold = settings.lowStockThreshold ?? 5
+  return products.map((raw) => {
+    const p = applyOffers(raw, offers)
+    const parts = (p.bundle ?? []).filter((b) => typeof b.product === 'object' && b.product)
+    let combo: PricedProduct['combo'] = null
+    if (parts.length) {
+      const worth = parts.reduce((sum, b) => sum + (minPrice(b.product as Product) ?? 0) * (b.quantity ?? 1), 0)
+      const price = minPrice(p) ?? 0
+      combo = {
+        worth,
+        save: price && worth > price ? worth - price : 0,
+        items: parts.map((b) => {
+          const item = b.product as Product
+          return { title: item.title, slug: item.slug, quantity: b.quantity ?? 1, note: b.note ?? null, image: item.cutout || item.images?.[0] || null }
+        }),
+      }
+    }
+    return { ...p, rating: ratings.get(p.id) ?? null, lowStock: lowStock(p, threshold), combo }
+  })
+}
+
+export const getAdoptionPlans = cache(async (locale: Locale) => {
+  const payload = await getPayloadClient()
+  return (await payload.find({ collection: 'adoption-plans', locale, limit: 20, sort: 'order', depth: 0, where: { active: { equals: true } } })).docs
 })
 
 export const getBreeds = cache(async (locale: Locale) => {
@@ -152,7 +198,8 @@ export const getLegalPage = cache(async (slug: string, locale: Locale) => {
   return one(payload.find({ collection: 'legal-pages', locale, limit: 1, where: { slug: { equals: slug } } }))
 })
 
-export const getTestimonials = cache(async (locale: Locale) => {
+export const getTestimonials = cache(async (locale: Locale, productId?: number) => {
   const payload = await getPayloadClient()
-  return (await payload.find({ collection: 'testimonials', locale, limit: 12, where: { approved: { equals: true } } })).docs
+  const where: Where = productId ? { and: [{ approved: { equals: true } }, { product: { equals: productId } }] } : { approved: { equals: true } }
+  return (await payload.find({ collection: 'testimonials', locale, limit: 60, depth: 1, sort: '-createdAt', where })).docs
 })

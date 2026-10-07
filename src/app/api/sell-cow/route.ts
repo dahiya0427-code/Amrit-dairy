@@ -7,6 +7,7 @@ import { SITE_URL, telLink, whatsappLink } from '@/lib/site'
 import { formatINR } from '@/lib/format'
 import { CALF, LABELS, MAX_PHOTOS, MAX_VIDEOS, MILKING_STATUS, TRANSPORT, VACCINES, YES_NO_UNKNOWN } from '@/lib/cow-offer'
 import { isComplete, readFileRange, removeAbandonedUploads } from '@/lib/cow-offer-server'
+import { teamEmails } from '@/lib/notify'
 
 const phone = z.string().trim().regex(/^(\+?91[\s-]?)?[6-9]\d{4}[\s-]?\d{5}$/)
 const text = (max: number) => z.string().trim().max(max).optional().or(z.literal(''))
@@ -59,14 +60,6 @@ const schema = z.object({
 
 const esc = (v: unknown) => String(v ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
 const ATTACH_LIMIT = 18 * 1024 * 1024 // stay under the email size limit
-
-/** Everyone who should hear about a new offer: the site email, the order inbox, and all admins/managers. */
-async function recipients(payload: Awaited<ReturnType<typeof getPayloadClient>>) {
-  const settings = await payload.findGlobal({ slug: 'site-settings', depth: 0 })
-  const staff = await payload.find({ collection: 'users', where: { role: { in: ['admin', 'manager'] } }, limit: 50, depth: 0, overrideAccess: true })
-  const list = [process.env.ORDER_NOTIFY_EMAIL, settings.email, ...staff.docs.map((u) => u.email)]
-  return [...new Set(list.filter((e): e is string => Boolean(e)).map((e) => e.toLowerCase()))]
-}
 
 function emailHtml(offer: CowOffer, photos: number, videos: number) {
   const s = offer.seller
@@ -167,7 +160,7 @@ export async function POST(req: Request) {
       attachments.push({ filename: `cow-photo-${i + 1}.${f.mimeType.split('/')[1] === 'jpeg' ? 'jpg' : f.mimeType.split('/')[1]}`, content: await readFileRange(payload, f) })
       total += f.size
     }
-    const to = await recipients(payload)
+    const to = await teamEmails(payload)
     if (to.length) {
       await payload.sendEmail({
         to,

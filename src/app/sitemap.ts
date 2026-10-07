@@ -6,7 +6,7 @@ import { SITE_URL } from '@/lib/site'
 // Generated per request (cached by the CDN below) so builds never need the database.
 export const dynamic = 'force-dynamic'
 
-const staticPaths = ['/', '/shop', '/farm-story', '/desi-cows', '/about', '/departments', '/facilities', '/blog', '/news', '/contact', '/delivery', '/subscribe', '/bulk-orders']
+const staticPaths = ['/', '/shop', '/farm-story', '/desi-cows', '/adopt-a-cow', '/reviews', '/about', '/departments', '/facilities', '/blog', '/news', '/contact', '/delivery', '/subscribe', '/bulk-orders']
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayloadClient()

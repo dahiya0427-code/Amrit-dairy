@@ -2,6 +2,8 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Icon } from '@/components/Icon'
+import { AdoptBand } from '@/components/AdoptBand'
+import { ReviewsBlock } from '@/components/Reviews'
 import { ProductCard } from '@/components/ProductCard'
 import { ScrollStory } from '@/components/ScrollStory'
 import { getDictionary } from '@/i18n'
@@ -9,7 +11,7 @@ import { isLocale, localePath, type Locale } from '@/i18n/config'
 import { formatINR } from '@/lib/format'
 import { cowPhoto } from '@/lib/cow-photo'
 import { minPrice } from '@/lib/product'
-import { getBreeds, getCategories, getProduct, getProducts, getSettings } from '@/lib/queries'
+import { getBreeds, getCategories, getProduct, getProducts, getSettings, getTestimonials } from '@/lib/queries'
 import { buildMetadata } from '@/lib/seo'
 import { whatsappLink } from '@/lib/site'
 
@@ -39,12 +41,14 @@ export default async function HomePage({ params }: Props) {
   const p = t.premium
   const href = (path: string) => localePath(locale, path)
 
-  const [settings, categories, featured, ghee, breeds] = await Promise.all([
+  const [settings, categories, featured, ghee, breeds, reviews, allProducts] = await Promise.all([
     getSettings(locale),
     getCategories(locale),
     getProducts(locale, { featured: true, limit: 8 }),
     getProduct('desi-cow-golden-ghee', locale),
     getBreeds(locale),
+    getTestimonials(locale),
+    getProducts(locale),
   ])
   const gheePrice = ghee ? minPrice(ghee) : null
   const farmBreeds = breeds.filter((b) => b.onFarm).slice(0, 5)
@@ -91,6 +95,18 @@ export default async function HomePage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* Customer reviews: shown once at least 3 real reviews are approved */}
+      {reviews.length >= 3 && (
+        <div className="border-t border-line">
+          <ReviewsBlock reviews={reviews.slice(0, 6)} locale={locale} showProduct products={allProducts.map((x) => ({ id: x.id, title: x.title }))} />
+          <p className="container-x -mt-6 pb-12">
+            <Link href={href('/reviews')} className="font-semibold text-gold-700 underline underline-offset-4">{t.reviews.seeAll} →</Link>
+          </p>
+        </div>
+      )}
+
+      <AdoptBand locale={locale} photos={farmBreeds.map((b) => cowPhoto(b)).filter((x): x is string => Boolean(x))} />
 
     </>
   )

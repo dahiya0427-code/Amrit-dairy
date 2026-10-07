@@ -6,7 +6,7 @@ import config from '@payload-config'
 
 export type PriceChange = {
   productId: number
-  variants: { id: string; price: number | null; mrp: number | null; inStock: boolean }[]
+  variants: { id: string; price: number | null; mrp: number | null; inStock: boolean; stock?: number | null }[]
 }
 
 const money = (v: unknown) => (v === null || v === '' || v === undefined ? null : Math.max(0, Math.round(Number(v) * 100) / 100))
@@ -30,7 +30,8 @@ export async function savePrices(changes: PriceChange[]): Promise<{ productId: n
         const price = money(c.price)
         const mrp = money(c.mrp)
         if (price !== null && !Number.isFinite(price)) throw new Error(`Price for ${v.label} is not a number`)
-        return { ...v, price, mrp: mrp && Number.isFinite(mrp) ? mrp : null, inStock: Boolean(c.inStock) }
+        const stock = c.stock === null || c.stock === undefined ? null : Math.max(0, Math.round(Number(c.stock)))
+        return { ...v, price, mrp: mrp && Number.isFinite(mrp) ? mrp : null, inStock: Boolean(c.inStock), stock: stock !== null && Number.isFinite(stock) ? stock : null }
       })
       await payload.update({ collection: 'products', id: product.id, locale: 'en', data: { variants }, user, overrideAccess: false })
       results.push({ productId: change.productId, ok: true })

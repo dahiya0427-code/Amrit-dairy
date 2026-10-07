@@ -12,6 +12,7 @@ import { Badge } from './ui'
 import { CardAddButton } from './CardAddButton'
 import { FlipToggle } from './FlipToggle'
 import { Icon } from './Icon'
+import { Stars } from './Stars'
 
 export function ProductCard({ product, locale, priority = false }: { product: PricedProduct; locale: Locale; priority?: boolean }) {
   const t = getDictionary(locale)
@@ -102,7 +103,9 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
         </Link>
         <span className="pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-start gap-1">
           {product.offer && <Badge tone="offer">{product.offer.label} · {product.offer.percentOff}% {t.common.off}</Badge>}
-          {product.badge === 'bestseller' && <Badge tone="bestseller">{t.common.bestseller}</Badge>}
+          {product.combo && <Badge tone="offer">{t.tags.combo}{product.combo.save ? ` · ${t.tags.save(formatINR(product.combo.save))}` : ''}</Badge>}
+          {product.badge === 'bestseller' && <Badge tone="bestseller">★ {t.tags.bestseller}</Badge>}
+          {product.lowStock && <span className="inline-flex items-center rounded-full bg-[#6b3d1f] px-2.5 py-1 text-xs font-bold text-snow">{t.tags.onlyLeft(product.lowStock)}</span>}
           {product.badge === 'new' && <Badge tone="new">{t.common.new}</Badge>}
           {product.status === 'coming_soon' && <Badge tone="soon">{t.common.comingSoon}</Badge>}
           {product.status === 'out_of_stock' && <Badge tone="soon">{t.common.outOfStock}</Badge>}
@@ -114,6 +117,11 @@ export function ProductCard({ product, locale, priority = false }: { product: Pr
           <Link href={url} className="hover:underline">{product.title}</Link>
         </h3>
         {product.secondaryName && <p className="text-sm text-muted">{product.secondaryName}</p>}
+        {product.rating && (
+          <p className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-muted">
+            <Stars value={product.rating.average} size={14} /> {product.rating.average.toFixed(1)} ({product.rating.count})
+          </p>
+        )}
         <div className="mt-auto pt-2">
           {price ? (
             <p className="mb-3 text-xl font-bold tabular-nums text-gold-700">

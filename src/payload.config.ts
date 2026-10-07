@@ -21,6 +21,8 @@ import { Leads } from './collections/Leads'
 import { CowOffers } from './collections/CowOffers'
 import { CowOfferFiles } from './collections/CowOfferFiles'
 import { CowOfferChunks } from './collections/CowOfferChunks'
+import { AdoptionPlans } from './collections/AdoptionPlans'
+import { Adoptions } from './collections/Adoptions'
 import { Testimonials } from './collections/Testimonials'
 import { Breeds } from './collections/Breeds'
 import { Departments } from './collections/Departments'
@@ -62,6 +64,8 @@ export default buildConfig({
     CowOffers,
     CowOfferFiles,
     CowOfferChunks,
+    AdoptionPlans,
+    Adoptions,
     Departments,
     Facilities,
     Posts,

@@ -4,6 +4,7 @@ import { getPayloadClient } from '@/lib/payload'
 import { CheckoutError, newAccessToken, newOrderNumber, priceCart, sendOrderEmails } from '@/lib/orders'
 import { createRazorpayOrder, razorpayEnabled } from '@/lib/razorpay'
 import { clientIp, rateLimit } from '@/lib/ratelimit'
+import { adjustStock } from '@/lib/stock'
 
 const schema = z.object({
   locale: z.enum(['en', 'hi']).default('en'),
@@ -65,6 +66,9 @@ export async function POST(req: Request) {
         customer: { ...customer, email: customer.email || undefined },
       },
     })
+
+    // take the packs off "Stock left" (put back automatically if the order is cancelled)
+    await adjustStock(payload, order.items ?? [], -1)
 
     if (!online) {
       await sendOrderEmails(payload, order, settings)
