@@ -5,6 +5,7 @@ import * as migration_20260929_042514_media_files from './20260929_042514_media_
 import * as migration_20261007_145144_cow_offers from './20261007_145144_cow_offers';
 import * as migration_20261007_153703_reviews_stock_combos_adoption from './20261007_153703_reviews_stock_combos_adoption';
 
+import * as migration_20261008_090000_fill_dairy_cutouts from './20261008_090000_fill_dairy_cutouts';
 export const migrations = [
   {
     up: migration_20260925_130455_initial.up,
@@ -35,5 +36,10 @@ export const migrations = [
     up: migration_20261007_153703_reviews_stock_combos_adoption.up,
     down: migration_20261007_153703_reviews_stock_combos_adoption.down,
     name: '20261007_153703_reviews_stock_combos_adoption'
+  },
+  {
+    up: migration_20261008_090000_fill_dairy_cutouts.up,
+    down: migration_20261008_090000_fill_dairy_cutouts.down,
+    name: '20261008_090000_fill_dairy_cutouts',
   },
 ];

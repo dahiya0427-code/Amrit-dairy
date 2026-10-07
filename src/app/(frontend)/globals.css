@@ -440,21 +440,21 @@ html, body { overflow-x: clip; }
 
 /* Footer credit: the designer's name in shimmering gold, with twinkling sparkles */
 .credit-glow {
-  position: absolute; left: 50%; top: 50%; width: 420px; height: 160px; transform: translate(-50%, -50%);
+  position: absolute; left: 50%; top: 50%; width: 320px; height: 90px; transform: translate(-50%, -50%);
   background: radial-gradient(ellipse at center, rgba(201, 162, 74, 0.28), transparent 70%);
   animation: credit-breathe 4s ease-in-out infinite; pointer-events: none;
 }
-.credit-name { position: relative; display: inline-flex; align-items: center; gap: 0.6rem; padding: 0 0.25rem; }
+.credit-name { position: relative; display: inline-flex; align-items: center; gap: 0.35rem; }
 .credit-text {
-  font-family: var(--font-elegant); font-weight: 700; font-size: 2rem; line-height: 1; letter-spacing: 0.14em;
+  font-family: var(--font-elegant); font-weight: 700; font-size: 1rem; line-height: 1; letter-spacing: 0.1em;
   background: linear-gradient(100deg, #b58d36 0%, #c9a24a 30%, #fff4cf 45%, #f3dc9a 50%, #c9a24a 65%, #b58d36 100%);
   background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 0 10px rgba(201, 162, 74, 0.45));
+  filter: drop-shadow(0 0 6px rgba(201, 162, 74, 0.35));
   animation: credit-shimmer 3.5s linear infinite;
 }
-@media (min-width: 768px) { .credit-text { font-size: 2.6rem; } }
-.credit-spark { color: #f3dc9a; font-size: 1rem; animation: credit-twinkle 2.4s ease-in-out infinite; }
-.credit-spark-b { animation-delay: 1.2s; font-size: 0.8rem; }
+@media (min-width: 768px) { .credit-text { font-size: 1.1rem; } }
+.credit-spark { color: #f3dc9a; font-size: 0.6rem; animation: credit-twinkle 2.4s ease-in-out infinite; }
+.credit-spark-b { animation-delay: 1.2s; font-size: 0.5rem; }
 @keyframes credit-shimmer { from { background-position: 150% 0; } to { background-position: -100% 0; } }
 @keyframes credit-twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); } 50% { opacity: 1; transform: scale(1.15) rotate(45deg); } }
 @keyframes credit-breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }

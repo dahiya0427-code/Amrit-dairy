@@ -108,7 +108,7 @@ export function Footer({
       {/* Credit for the designer: her name in shimmering gold with twinkling sparkles */}
       <div className="relative overflow-hidden bg-[#2b1b10] text-center text-[#f6eee0]">
         <span className="credit-glow" aria-hidden="true" />
-        <p className="container-x relative flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-5 pb-24 text-sm md:pb-5 md:text-base">
+        <p className="container-x relative flex flex-wrap items-center justify-center gap-x-2 gap-y-1 py-4 pb-24 text-sm md:pb-4 md:text-base">
           <span className="opacity-80">{t.footer.madeBy}</span>
           <span className="credit-name">
             <span className="credit-spark credit-spark-a" aria-hidden="true">✦</span>
