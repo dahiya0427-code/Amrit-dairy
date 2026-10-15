@@ -105,13 +105,13 @@ export function Footer({
         </div>
       </div>
 
-      {/* Credit for the designer: "Crafted with ♥ by Nancy" in small spaced capitals */}
+      {/* Credit for the agency that built the site, linking to their website: "Crafted with ♥ by Pehchaan Digital" */}
       <div className="bg-[#2b1b10] text-center">
         <p className={`container-x flex flex-wrap items-center justify-center gap-x-1.5 py-4 pb-24 font-bold uppercase text-[#f6eee0]/70 md:pb-4 ${locale === 'hi' ? 'text-sm' : 'text-[11px] tracking-[0.22em] md:text-xs'}`}>
           <span>{t.footer.madeBy.before}</span>
           <span className="credit-heart" role="img" aria-label="love">♥</span>
           <span>{t.footer.madeBy.after}</span>
-          <span className="tracking-[0.22em] text-gold-500">Nancy</span>
+          <a href="https://pehchaandigital.com" target="_blank" rel="noopener" className="tracking-[0.22em] text-gold-500 underline-offset-4 transition hover:text-[#f3dc9a] hover:underline">Pehchaan Digital</a>
         </p>
       </div>
     </footer>
